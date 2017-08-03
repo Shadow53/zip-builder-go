@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+    "path/filepath"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -27,7 +28,7 @@ func Download(src, dest string) {
 }
 
 func downloadToTempDir(urlstr, filename string, useExisting bool) string {
-	dest := viper.GetString("tempdir") + "/" + filename
+	dest := filepath.Join(viper.GetString("tempdir"), filename)
 	if _, err := os.Stat("dest"); !useExisting || err != nil {
 		if !useExisting || os.IsNotExist(err) {
 			Download(urlstr+"/index.xml", dest)
@@ -67,7 +68,7 @@ type FDroidRepo struct {
 	Apps    []FDroidApp `xml:"application"`
 }
 
-func DownloadFromFDroidRepo(app lib.AppInfo, dest string) {
+func DownloadFromFDroidRepo(app *lib.AppInfo, dest string) {
 	// Get path to repo index file
 	index := getFDroidRepoIndex(app.FileInfo.Url)
 

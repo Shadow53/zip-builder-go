@@ -1,7 +1,11 @@
 package lib
 
 import (
+    "crypto/md5"
+    "encoding/hex"
+    "io/ioutil"
 	"log"
+    "os"
     "strings"
 
 	"github.com/spf13/viper"
@@ -18,12 +22,15 @@ type FileInfo struct {
 }
 
 type AppInfo struct {
-	PackageName     string
-	UrlIsFDroidRepo bool
-	DozeWhitelist   bool
-	SystemUser      bool
-	FileInfo        FileInfo
-	Permissions     []string
+	PackageName             string
+	UrlIsFDroidRepo         bool
+	DozeWhitelist           bool
+	DozeWhitelistExceptIdle bool
+	DataSaverWhitelist      bool
+	AllowSystemUser         bool
+	BlacklistSystemUser     bool
+	FileInfo                FileInfo
+	Permissions             []string
 }
 
 type ZipInfo struct {
@@ -89,12 +96,15 @@ func parseFileConfig(file map[string]interface{}) FileInfo {
 
 func parseAppConfig(app map[string]interface{}) AppInfo {
 	return AppInfo{
-		PackageName:     StringOrDefault(app["package_name"], ""),
-		UrlIsFDroidRepo: BoolOrDefault(app["is_fdroid_repo"], false),
-		DozeWhitelist:   BoolOrDefault(app["doze_whitelist"], false),
-		SystemUser:      BoolOrDefault(app["grant_system_user"], false),
-		FileInfo:        parseFileConfig(app),
-		Permissions:     StringSliceOrNil(app["permissions"])}
+		PackageName:             StringOrDefault(app["package_name"], ""),
+		UrlIsFDroidRepo:         BoolOrDefault(app["is_fdroid_repo"], false),
+		DozeWhitelist:           BoolOrDefault(app["doze_whitelist"], false),
+		DozeWhitelistExceptIdle: BoolOrDefault(app["doze_whitelist_except_idle"], false),
+        DataSaverWhitelist:      BoolOrDefault(app["data_saver_whitelist"], false),
+		AllowSystemUser:         BoolOrDefault(app["grant_system_user"], false),
+		BlacklistSystemUser:     BoolOrDefault(app["blacklist_system_user"], false),
+		FileInfo:                parseFileConfig(app),
+		Permissions:             StringSliceOrNil(app["permissions"])}
 }
 
 func parseZipConfig(zip map[string]interface{}) ZipInfo {
@@ -139,10 +149,11 @@ func MakeConfig() ([]ZipInfo, map[string]AppInfo, map[string]FileInfo) {
 	return zips, apps, files
 }
 
-func CreateUpdaterScript(dest string) {
-
-}
-
-func CreateAddondScript(dest string) {
-
+func GenerateMD5File(path string) {
+    bytes, err := ioutil.ReadFile(path)
+    ExitIfError(err)
+    sum := md5.Sum(bytes)
+    log.Println(hex.EncodeToString(sum[:]))
+    text := hex.EncodeToString(sum[:]) + " " + path[strings.LastIndex(path, string(os.PathSeparator))+1:]
+    ioutil.WriteFile(path + ".md5", []byte(text), 0644)
 }
