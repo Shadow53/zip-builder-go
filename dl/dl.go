@@ -5,6 +5,7 @@ import (
 	"io"
 	"io/ioutil"
 	"lib"
+    "log"
 	"net/http"
 	"net/url"
 	"os"
@@ -15,6 +16,7 @@ import (
 )
 
 func Download(src, dest string) {
+    log.Println("Downloading " + src)
 	out, err := os.Create(dest)
 	defer out.Close()
 	lib.ExitIfError(err)
@@ -31,7 +33,7 @@ func downloadToTempDir(urlstr, filename string, useExisting bool) string {
 	dest := filepath.Join(viper.GetString("tempdir"), filename)
 	if _, err := os.Stat("dest"); !useExisting || err != nil {
 		if !useExisting || os.IsNotExist(err) {
-			Download(urlstr+"/index.xml", dest)
+			Download(urlstr, dest)
 		} else {
 			lib.ExitIfError(err)
 		}
@@ -42,7 +44,7 @@ func downloadToTempDir(urlstr, filename string, useExisting bool) string {
 func getFDroidRepoIndex(urlstr string) string {
 	url, err := url.Parse(urlstr)
 	lib.ExitIfError(err)
-	return downloadToTempDir(urlstr, url.Host+".xml", true)
+    return downloadToTempDir(urlstr+"/index.xml", url.Host+".xml", true)
 }
 
 type FDroidHash struct {
