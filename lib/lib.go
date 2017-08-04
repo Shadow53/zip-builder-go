@@ -80,8 +80,8 @@ func StringSliceOrNil(item interface{}) []string {
 func parseFileConfig(file map[string]interface{}) FileInfo {
     dest := StringOrDefault(file["destination"], "")
     start := strings.LastIndex(dest, "/") + 1
-    var name string
-    if start > -1 {
+    name := StringOrDefault(file["package_name"], "") + ".apk"
+    if name == ".apk" && start > -1 {
         name = dest[start:]
     }
 	return FileInfo{

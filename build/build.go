@@ -31,9 +31,10 @@ func zipFolder(root string, zipinfo lib.ZipInfo) {
         lib.ExitIfError(err)
         
         header.Name = strings.TrimPrefix(path, root)
+        header.Name = strings.TrimPrefix(header.Name, "/")
         
         if info.IsDir() {
-            header.Name += string(os.PathSeparator)
+            header.Name += "/"
         } else {
             header.Method = zip.Deflate
         }

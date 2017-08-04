@@ -13,10 +13,10 @@ import (
 func makeFileInstallScriptlet(file lib.FileInfo, buffer *bytes.Buffer) {
     // Create the parent directories of the file and set their metadata
     destParent := file.Destination[0:strings.LastIndex(file.Destination, "/")]
-    buffer.WriteString("assert(run_program(\"/system/xbin/busybox\", \"mkdir\", \"-p\", \"")
+    buffer.WriteString("assert(run_program(\"/sbin/busybox\", \"mkdir\", \"-p\", \"")
     buffer.WriteString(destParent)
     buffer.WriteString("\") == 0);\n")
-    buffer.WriteString("set_metadata_recursive(\"")
+    buffer.WriteString("assert(set_metadata_recursive(\"")
     buffer.WriteString(destParent)
     buffer.WriteString("\", \"uid\", 0, \"gid\", 0, \"fmode\", 0644, \"dmode\", 0755) == \"\");\n")
     // Extract the file and assert it was extracted successfully
@@ -66,6 +66,7 @@ func makeUpdaterScript(root string, zip lib.ZipInfo, apps map[string]lib.AppInfo
     }
     
     // TODO: Dynamically decide which partitions need to be mounted
+    // No way of knowing what filesystem the device uses, so just try all of them
     var script bytes.Buffer
     script.WriteString(`ui_print("--------------------------------------");
 ui_print("Mounting system");
@@ -77,22 +78,23 @@ run_program("/sbin/busybox", "mount", "/system");
         // The weird spacing should cause a nice tree structure in the output
         // The generated code should recursively delete directories and normal delete files
         // TODO: Add output telling what is happening
-        script.WriteString("if run_program(\"/system/xbin/busybox\", \"[\", \"-d\", \"")
+        script.WriteString("ifelse(run_program(\"/sbin/busybox\", \"[\", \"-d\", \"")
         script.WriteString(file)
-        script.WriteString("\", \"]\") then\n    delete_recursive(\"")
+        script.WriteString("\", \"]\"), \n    delete_recursive(\"")
         script.WriteString(file)
-        script.WriteString("\")\nelse\n    if run_program(\"/system/xbin/busybox\", \"[\", \"-f\", \"")
-        script.WriteString("\", \"]\") then\n        delete(\"")
+        script.WriteString("\"),\n    ifelse(run_program(\"/sbin/busybox\", \"[\", \"-f\", \"")
         script.WriteString(file)
-        script.WriteString("\")\n    endif\nendif\n")
+        script.WriteString("\", \"]\"),\n        delete(\"")
+        script.WriteString(file)
+        script.WriteString("\")\n    )\n);\n")
     }
     
     script.WriteString(extractFiles.String())
     
     script.WriteString(`ui_print("Unmounting /system");
-unmount("/system");
 ui_print("Done!");
 ui_print("--------------------------------------");
+unmount("/system");
 `)
     
     scriptDest := filepath.Join(root, "/META-INF/com/google/android")
