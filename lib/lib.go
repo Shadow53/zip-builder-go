@@ -3,6 +3,7 @@ package lib
 import (
     "crypto/md5"
     "encoding/hex"
+    "io"
     "io/ioutil"
 	"log"
     "os"
@@ -121,6 +122,7 @@ func parseZipConfig(zip map[string]interface{}) ZipInfo {
 // TODO: Throw exceptions if values are not as expected
 func MakeConfig() ([]ZipInfo, map[string]AppInfo, map[string]FileInfo) {
 	// Read data from config into memory
+    log.Print("Loading configuration...")
 	configApps := viper.Get("apps").([]interface{})
 	apps := make(map[string]AppInfo)
 	for _, a := range configApps {
@@ -145,15 +147,21 @@ func MakeConfig() ([]ZipInfo, map[string]AppInfo, map[string]FileInfo) {
 		zip := z.(map[string]interface{})
 		zips = append(zips, parseZipConfig(zip))
 	}
-
+    log.Println("Loaded")
 	return zips, apps, files
 }
 
 func GenerateMD5File(path string) {
-    bytes, err := ioutil.ReadFile(path)
+    log.Println("Generating MD5 file for " + path)
+    file, err := os.Open(path)
     ExitIfError(err)
-    sum := md5.Sum(bytes)
-    log.Println(hex.EncodeToString(sum[:]))
-    text := hex.EncodeToString(sum[:]) + " " + path[strings.LastIndex(path, string(os.PathSeparator))+1:]
+    defer file.Close()
+    
+    hash := md5.New()
+    _, err = io.Copy(hash, file)
+    ExitIfError(err)
+    
+    sum := hash.Sum(nil)
+    text := hex.EncodeToString(sum) + "  " + path[strings.LastIndex(path, string(os.PathSeparator))+1:] + "\n"
     ioutil.WriteFile(path + ".md5", []byte(text), 0644)
 }

@@ -4,6 +4,7 @@ import (
     "bytes"
     "io/ioutil"
     "lib"
+    "log"
     "os"
     "path/filepath"
     "strings"
@@ -19,6 +20,10 @@ func makeFileInstallScriptlet(file lib.FileInfo, buffer *bytes.Buffer) {
     buffer.WriteString("assert(set_metadata_recursive(\"")
     buffer.WriteString(destParent)
     buffer.WriteString("\", \"uid\", 0, \"gid\", 0, \"fmode\", 0644, \"dmode\", 0755) == \"\");\n")
+    // Tell the user what is happening
+    buffer.WriteString("ui_print(\"Extracting ")
+    buffer.WriteString(file.Destination)
+    buffer.WriteString("\");\n")
     // Extract the file and assert it was extracted successfully
     buffer.WriteString("assert(package_extract_file(\"files/")
     buffer.WriteString(file.FileName)
@@ -34,6 +39,7 @@ func makeFileInstallScriptlet(file lib.FileInfo, buffer *bytes.Buffer) {
 }
 
 func makeUpdaterScript(root string, zip lib.ZipInfo, apps map[string]lib.AppInfo, files map[string]lib.FileInfo) {
+    log.Println("Generating updater-script")
     // This variable holds a "set" of files to be deleted
     filesToDelete := make(map[string]bool)
     
@@ -78,13 +84,17 @@ run_program("/sbin/busybox", "mount", "/system");
         // The weird spacing should cause a nice tree structure in the output
         // The generated code should recursively delete directories and normal delete files
         // TODO: Add output telling what is happening
-        script.WriteString("ifelse(run_program(\"/sbin/busybox\", \"[\", \"-d\", \"")
+        script.WriteString("ifelse(run_program(\"/sbin/busybox\", \"test\", \"-d\", \"")
         script.WriteString(file)
-        script.WriteString("\", \"]\"), \n    delete_recursive(\"")
+        script.WriteString("\") == 0, \n    ui_print(\"Recursively deleting ")
         script.WriteString(file)
-        script.WriteString("\"),\n    ifelse(run_program(\"/sbin/busybox\", \"[\", \"-f\", \"")
+        script.WriteString("\") && delete_recursive(\"")
         script.WriteString(file)
-        script.WriteString("\", \"]\"),\n        delete(\"")
+        script.WriteString("\"),\n    ifelse(run_program(\"/sbin/busybox\", \"test\", \"-f\", \"")
+        script.WriteString(file)
+        script.WriteString("\") == 0,\n        ui_print(\"Deleting ")
+        script.WriteString(file)
+        script.WriteString("\") && delete(\"")
         script.WriteString(file)
         script.WriteString("\")\n    )\n);\n")
     }

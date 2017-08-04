@@ -12,13 +12,14 @@ import (
 	"github.com/spf13/viper"
 )
 
-func zipFolder(root string, zipinfo lib.ZipInfo) {
+func zipFolder(root string, zipinfo lib.ZipInfo) string {
     zipdest := filepath.Join(viper.GetString("destination"), zipinfo.Name + ".zip")
+    log.Println("Creating zip file at " + zipdest)
     // Create destination directory if it doesn't exist
     os.MkdirAll(viper.GetString("destination"), os.ModeDir | 0755)
     zipfile, err := os.Create(zipdest)
     lib.ExitIfError(err)
-    defer log.Println("Created zip archive at " + zipdest)
+    defer log.Println("Zip file created")
     defer zipfile.Close()
     
     archive := zip.NewWriter(zipfile)
@@ -52,8 +53,7 @@ func zipFolder(root string, zipinfo lib.ZipInfo) {
         _, err = io.Copy(writer, file)
         return err
     })
-    // DOES NOT (YET) WORK
-    //lib.GenerateMD5File(zipdest)
+    return zipdest
 }
 
 // TODO: Change app dl-ing to error if app doesn't exist
@@ -71,9 +71,11 @@ func MakeZip(zip lib.ZipInfo, apps map[string]lib.AppInfo, files map[string]lib.
 			if apps[app].UrlIsFDroidRepo {
                 // Create separate variable to get around not being able to address map items
                 appRef := apps[app]
+                log.Println("Downloading " + appRef.FileInfo.FileName + " from F-Droid repo at " + appRef.FileInfo.Url)
 				dl.DownloadFromFDroidRepo(&appRef, apppath)
                 apps[app] = appRef
 			} else {
+                log.Println("Downloading " + apps[app].FileInfo.FileName)
 				dl.Download(apps[app].FileInfo.Url, apppath)
 			}
 			// TODO: Verify hash of file, error on mismatch
@@ -83,6 +85,7 @@ func MakeZip(zip lib.ZipInfo, apps map[string]lib.AppInfo, files map[string]lib.
 	for _, file := range zip.Files {
 		if files[file].Url != "" {
 			filepath := filepath.Join(zippath, "files", files[file].FileName)
+            log.Println("Downloading " + files[file].FileName)
 			dl.Download(files[file].Url, filepath)
 			// TODO: Verify hash of file, error on mismatch
 		}
@@ -93,7 +96,9 @@ func MakeZip(zip lib.ZipInfo, apps map[string]lib.AppInfo, files map[string]lib.
 	makeAddondScript(zippath, &zip, apps, &files)
 	makeUpdaterScript(zippath, zip, apps, files)
     // Source is hardcoded because I know it will not change until I change it
+    log.Println("Downloading update-binary")
     dl.Download("https://gitlab.com/Shadow53/zip-builder/raw/master/update-binary", filepath.Join(zippath, "META-INF", "com", "google", "android", "update-binary"))
     
-    zipFolder(zippath, zip)
+    // Generate zip and md5 file
+    lib.GenerateMD5File(zipFolder(zippath, zip))
 }

@@ -4,12 +4,14 @@ import (
     "bytes"
     "io/ioutil"
     "lib"
+    "log"
     "os"
     "path/filepath"
     "strings"
 )
 
 func makeAddondScript(root string, zip *lib.ZipInfo, apps map[string]lib.AppInfo, files *map[string]lib.FileInfo) {
+    log.Println("Generating addon.d recovery script")
     var backupFiles []string
     var deleteFiles map[string]bool
     

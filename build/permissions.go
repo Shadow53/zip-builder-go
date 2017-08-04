@@ -3,6 +3,7 @@ package build
 import (
     "encoding/xml"
     "lib"
+    "log"
     "os"
     "path/filepath"
     "strings"
@@ -41,6 +42,7 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps map[string]lib.AppInfo, f
     }
     
     if len(exceptions.Apps) > 0 {
+        log.Println("Generating permissions file")
         fileDest := filepath.Join(root, "files")
         os.MkdirAll(fileDest, os.ModeDir | 0755)
         fileDest = filepath.Join(fileDest, "permissions.xml")
@@ -162,6 +164,7 @@ func makeSysconfigFile(root string, zip *lib.ZipInfo, apps map[string]lib.AppInf
     if len(sysconfig.DozeWhitelist) > 0   || len(sysconfig.DozeWhitelistExceptIdle) > 0 || len(sysconfig.DataSaverWhitelist) > 0 ||
        len(sysconfig.SystemWhitelist) > 0 || len(sysconfig.SystemBlacklist) > 0 {
            
+        log.Println("Generating sysconfig file")
         fileDest := filepath.Join(root, "files")
         os.MkdirAll(fileDest, os.ModeDir | 0755)
         fileDest = filepath.Join(fileDest, "sysconfig.xml")
