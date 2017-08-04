@@ -12,6 +12,53 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Only extracts libraries if being installed under /system
+// To be fair, that's almost always where apps get installed...
+func unzipSystemLibs(root string, zipinfo *lib.ZipInfo, app lib.AppInfo, files *map[string]lib.FileInfo) {
+    if strings.HasPrefix(app.FileInfo.Destination, "/system/") {
+        // Hold all library files for this app in {ZIPROOT}/files/app-lib/
+        destFolder := filepath.Join(root, "files", app.PackageName + "-lib")
+        
+        reader, err := zip.OpenReader(filepath.Join(root, "files", app.FileInfo.FileName))
+        lib.ExitIfError(err)
+        
+        // Extract only files whose paths begin with "lib/"
+        for _, file := range reader.File {
+            if strings.HasPrefix(file.Name, "lib/") {
+                log.Println("Extracting libraries from " + app.PackageName)
+                // Only create the parent folder if there is a file to extract
+                err = os.MkdirAll(destFolder, os.ModeDir | 0755)
+                lib.ExitIfError(err)
+                
+                fileName := file.Name[strings.LastIndex(file.Name, "lib/")+4:]
+                path := filepath.Join(destFolder, fileName)
+                os.MkdirAll(path[:strings.LastIndex(path, "/")], os.ModeDir | 0755)
+                
+                fileReader, err := file.Open()
+                lib.ExitIfError(err)
+                defer fileReader.Close()
+                
+                targetFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+                lib.ExitIfError(err)
+                defer targetFile.Close()
+                
+                _, err = io.Copy(targetFile, fileReader)
+                lib.ExitIfError(err)
+                
+                // Will only be reached by actual files
+                fileId := app.PackageName + "-" + file.Name
+                // If file extracted correctly without problems, add to list
+                (*files)[fileId] = lib.FileInfo{
+                    Destination: app.FileInfo.Destination[:strings.LastIndex(app.FileInfo.Destination, "/")] + "/" + file.Name,
+                    Mode:        "0644",
+                    FileName:    app.PackageName + "-lib/" + fileName }
+                    
+                zipinfo.Files = append(zipinfo.Files, fileId)
+            }
+        }
+    }
+}
+
 func zipFolder(root string, zipinfo lib.ZipInfo) string {
     zipdest := filepath.Join(viper.GetString("destination"), zipinfo.Name + ".zip")
     log.Println("Creating zip file at " + zipdest)
@@ -76,6 +123,7 @@ func MakeZip(zip lib.ZipInfo, apps map[string]lib.AppInfo, files map[string]lib.
 			} else {
                 dl.Download(apps[app].FileInfo.Url, apppath)
 			}
+			unzipSystemLibs(zippath, &zip, apps[app], &files)
 			// TODO: Verify hash of file, error on mismatch
 		}
 	}
