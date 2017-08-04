@@ -71,12 +71,10 @@ func MakeZip(zip lib.ZipInfo, apps map[string]lib.AppInfo, files map[string]lib.
 			if apps[app].UrlIsFDroidRepo {
                 // Create separate variable to get around not being able to address map items
                 appRef := apps[app]
-                log.Println("Downloading " + appRef.FileInfo.FileName + " from F-Droid repo at " + appRef.FileInfo.Url)
-				dl.DownloadFromFDroidRepo(&appRef, apppath)
+                dl.DownloadFromFDroidRepo(&appRef, apppath)
                 apps[app] = appRef
 			} else {
-                log.Println("Downloading " + apps[app].FileInfo.FileName)
-				dl.Download(apps[app].FileInfo.Url, apppath)
+                dl.Download(apps[app].FileInfo.Url, apppath)
 			}
 			// TODO: Verify hash of file, error on mismatch
 		}
@@ -85,8 +83,7 @@ func MakeZip(zip lib.ZipInfo, apps map[string]lib.AppInfo, files map[string]lib.
 	for _, file := range zip.Files {
 		if files[file].Url != "" {
 			filepath := filepath.Join(zippath, "files", files[file].FileName)
-            log.Println("Downloading " + files[file].FileName)
-			dl.Download(files[file].Url, filepath)
+            dl.Download(files[file].Url, filepath)
 			// TODO: Verify hash of file, error on mismatch
 		}
 	}
