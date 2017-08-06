@@ -16,28 +16,29 @@ stages:
     #- test
     - build
 
-format:
-    stage: test
-    script:
+#format:
+#    stage: test
+#    script:
         # Add here all the dependencies, or use glide/govendor to get
         # them automatically.
         # - curl https://glide.sh/get | sh
-        - go get github.com/alecthomas/kingpin
-        - go tool vet -composites=false -shadow=true *.go
-        - go test -race $(go list ./... | grep -v /vendor/)
+#        - go get github.com/alecthomas/kingpin
+#        - go tool vet -composites=false -shadow=true *.go
+#        - go test -race $(go list ./... | grep -v /vendor/)
 
 compile:
     stage: build
     script:
         # Add here all the dependencies, or use glide/govendor/...
         # to get them automatically.
-        - go get github.com/alecthomas/kingpin
+        # Doing so manually until I learn an automatic tool
+        - go get github.com/spf13/viper
         # Better put this in a Makefile
         - for os in android linux darwin windows
         - do
         -   for arch in arm arm64 386 amd64
         -   do
-        -     go build -race -ldflags "-extldflags '-static'" -o zip-builder.${GOOS}.${GOARCH}
+        -     go build -buildmode exe -compiler gccgo -race -o zip-builder.${GOOS}.${GOARCH}
         -   done
         - done
         - tar czf binaries.tar.gz bin/
