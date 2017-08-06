@@ -46,6 +46,7 @@ compile:
         - CGO_ENABLED=0 GO386=sse2 GOOS=windows GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
         - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
         - tar czf binaries.tar.gz zip-builder.*
+        - mv
     artifacts:
         paths:
-            - binaries.tar.gz
+            - /go/src/gitlab.com/Shadow53/binaries.tar.gz
