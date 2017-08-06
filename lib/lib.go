@@ -12,6 +12,27 @@ import (
 	"github.com/spf13/viper"
 )
 
+var (
+    Versions []string = []string{
+        /*"2.3",
+        "4.0",
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4",*/
+        "5.0",
+        "5.1",
+        "6.0",
+        "7.0",
+        "7.1",
+        "8.0" }
+    Arches []string = []string{
+        "arm",
+        "arm64",
+        "x86",
+        "x86_64" }
+)
+
 type FileInfo struct {
 	Url                string
 	Destination        string
@@ -22,6 +43,12 @@ type FileInfo struct {
 	FileName           string
 }
 
+type AndroidVersionInfo struct {
+    HasArchSpecificInfo bool     // Architectures were set in config. If false, just read from Arm
+    Base                string   // Which Android version's config this was based on
+    Arch                map[string]FileInfo
+}
+
 type AppInfo struct {
 	PackageName             string
 	UrlIsFDroidRepo         bool
@@ -30,7 +57,7 @@ type AppInfo struct {
 	DataSaverWhitelist      bool
 	AllowSystemUser         bool
 	BlacklistSystemUser     bool
-	FileInfo                FileInfo
+	AndroidVersion          map[string]AndroidVersionInfo
 	Permissions             []string
 }
 
@@ -44,9 +71,12 @@ type ZipInfo struct {
 	Files              []string
 }
 
+type Files map[string]map[string]AndroidVersionInfo
+type Apps  map[string]AppInfo
+
 func ExitIfError(err error) {
 	if err != nil {
-		log.Fatalln(err)
+        log.Fatalln(err)// If arches specified
 	}
 }
 
@@ -78,79 +108,6 @@ func StringSliceOrNil(item interface{}) []string {
 	}
 }
 
-func parseFileConfig(file map[string]interface{}) FileInfo {
-    dest := StringOrDefault(file["destination"], "")
-    start := strings.LastIndex(dest, "/") + 1
-    name := StringOrDefault(file["package_name"], "") + ".apk"
-    if name == ".apk" && start > -1 {
-        name = dest[start:]
-    }
-	return FileInfo{
-		Url:                StringOrDefault(file["url"], ""),
-		Destination:        dest,
-		InstallRemoveFiles: StringSliceOrNil(file["install_remove_files"]),
-		UpdateRemoveFiles:  StringSliceOrNil(file["update_remove_files"]),
-		Hash:               StringOrDefault(file["hash"], ""),
-		Mode:               StringOrDefault(file["mode"], "0644"),
-		FileName:           name}
-}
-
-func parseAppConfig(app map[string]interface{}) AppInfo {
-	return AppInfo{
-		PackageName:             StringOrDefault(app["package_name"], ""),
-		UrlIsFDroidRepo:         BoolOrDefault(app["is_fdroid_repo"], false),
-		DozeWhitelist:           BoolOrDefault(app["doze_whitelist"], false),
-		DozeWhitelistExceptIdle: BoolOrDefault(app["doze_whitelist_except_idle"], false),
-        DataSaverWhitelist:      BoolOrDefault(app["data_saver_whitelist"], false),
-		AllowSystemUser:         BoolOrDefault(app["grant_system_user"], false),
-		BlacklistSystemUser:     BoolOrDefault(app["blacklist_system_user"], false),
-		FileInfo:                parseFileConfig(app),
-		Permissions:             StringSliceOrNil(app["permissions"])}
-}
-
-func parseZipConfig(zip map[string]interface{}) ZipInfo {
-	return ZipInfo{
-		Name:               StringOrDefault(zip["name"], ""),
-		Arch:               StringOrDefault(zip["arch"], ""),
-		SdkVersion:         StringOrDefault(zip["android_sdk"], ""),
-		InstallRemoveFiles: StringSliceOrNil(zip["install_remove_files"]),
-		UpdateRemoveFiles:  StringSliceOrNil(zip["update_remove_files"]),
-		Apps:               StringSliceOrNil(zip["apps"]),
-		Files:              StringSliceOrNil(zip["files"])}
-}
-
-// TODO: Throw exceptions if values are not as expected
-func MakeConfig() ([]ZipInfo, map[string]AppInfo, map[string]FileInfo) {
-	// Read data from config into memory
-    log.Print("Loading configuration...")
-	configApps := viper.Get("apps").([]interface{})
-	apps := make(map[string]AppInfo)
-	for _, a := range configApps {
-		app := a.(map[string]interface{})
-		if app["name"].(string) != "" {
-			apps[app["name"].(string)] = parseAppConfig(app)
-		}
-	}
-
-	configFiles := viper.Get("files").([]interface{})
-	files := make(map[string]FileInfo)
-	for _, f := range configFiles {
-		file := f.(map[string]interface{})
-		if file["name"].(string) != "" && file["url"].(string) != "" && file["destination"].(string) != "" {
-			files[file["name"].(string)] = parseFileConfig(file)
-		}
-	}
-
-	configZips := viper.Get("zips").([]interface{})
-	var zips []ZipInfo
-	for _, z := range configZips {
-		zip := z.(map[string]interface{})
-		zips = append(zips, parseZipConfig(zip))
-	}
-    log.Println("Loaded")
-	return zips, apps, files
-}
-
 func GenerateMD5File(path string) {
     log.Println("Generating MD5 file for " + path)
     file, err := os.Open(path)
@@ -164,4 +121,10 @@ func GenerateMD5File(path string) {
     sum := hash.Sum(nil)
     text := hex.EncodeToString(sum) + "  " + path[strings.LastIndex(path, string(os.PathSeparator))+1:] + "\n"
     ioutil.WriteFile(path + ".md5", []byte(text), 0644)
+}
+
+func Debug(msg string) {
+    if viper.GetBool("debug") {
+        log.Println("DEBUG: " + msg)
+    }
 }

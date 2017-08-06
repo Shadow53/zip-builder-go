@@ -26,8 +26,21 @@ type Permissions struct {
     Apps    []PermissionApp `xml:"exception"`
 }
 
-func makePermsFile(root string, zip *lib.ZipInfo, apps map[string]lib.AppInfo, files *map[string]lib.FileInfo) {
+// Permissions file is not Android version-specific because any permissions
+// or apps not found should end up ignored
+func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) {
     var exceptions Permissions
+    permissionFile := make(map[string]lib.AndroidVersionInfo)
+    fileInfo := lib.FileInfo{
+        Destination: "/system/etc/default-permissions/" + zip.Name + "-permissions.xml",
+        Mode:        "0644",
+        FileName:    "permissions.xml" }
+    
+    // Generate path to permissions file
+    fileDest := filepath.Join(root, "files")
+    os.MkdirAll(fileDest, os.ModeDir | 0755)
+    fileDest = filepath.Join(fileDest, "permissions.xml")
+    
     for _, app := range zip.Apps {
         if apps[app].PackageName != "" {
             perms := PermissionApp{ Name: apps[app].PackageName }
@@ -41,11 +54,24 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps map[string]lib.AppInfo, f
         }
     }
     
+    var minVersion string
+    for _, ver := range lib.Versions {
+        for _, app := range zip.Apps {
+            if minVersion == "" && apps[app].AndroidVersion[ver].Base == ver {
+                minVersion = ver
+            }
+            if minVersion != "" {
+                permissionFile[ver] = lib.AndroidVersionInfo{
+                    Arch: make(map[string]lib.FileInfo),
+                    Base: minVersion }
+                // Only need to set this because is not arch-specific, will be reached first
+                permissionFile[ver].Arch[lib.Arches[0]] = fileInfo
+            }
+        }
+    }
+    
     if len(exceptions.Apps) > 0 {
-        log.Println("Generating permissions file")
-        fileDest := filepath.Join(root, "files")
-        os.MkdirAll(fileDest, os.ModeDir | 0755)
-        fileDest = filepath.Join(fileDest, "permissions.xml")
+        log.Println("Generating permissions file for " + zip.Name)
         
         file, err := os.Create(fileDest)
         lib.ExitIfError(err)
@@ -59,10 +85,7 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps map[string]lib.AppInfo, f
         lib.ExitIfError(err)
         
         // File was created, add to files list for install/addon.d backup
-        (*files)["permissions.xml"] = lib.FileInfo{
-            Destination: "/system/etc/default-permissions/" + zip.Name + "-permissions.xml",
-            Mode:        "0644",
-            FileName:    "permissions.xml" }
+        (*files)["permissions.xml"] = permissionFile
         
         zip.Files = append(zip.Files, "permissions.xml")
     }
@@ -138,8 +161,14 @@ type SysConfig struct {
     DataSaverWhitelist      []DataSaverWhitelist      `xml:"allow-in-data-usage-save"`
 }
 
-func makeSysconfigFile(root string, zip *lib.ZipInfo, apps map[string]lib.AppInfo, files *map[string]lib.FileInfo) {
+func makeSysconfigFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) {
     var sysconfig SysConfig
+    sysconfigFile := make(map[string]lib.AndroidVersionInfo)
+    fileInfo := lib.FileInfo{
+        Destination: "/system/etc/sysconfig/" + zip.Name + ".xml",
+        Mode:        "0644",
+        FileName:    "sysconfig.xml" }
+        
     for _, app := range zip.Apps {
         if apps[app].PackageName != "" {
             a := apps[app]
@@ -157,6 +186,22 @@ func makeSysconfigFile(root string, zip *lib.ZipInfo, apps map[string]lib.AppInf
             }
             if a.BlacklistSystemUser {
                 sysconfig.SystemBlacklist = append(sysconfig.SystemBlacklist, SystemBlacklistUser{ Package: a.PackageName })
+            }
+        }
+    }
+    
+    var minVersion string
+    for _, ver := range lib.Versions {
+        for _, app := range zip.Apps {
+            if minVersion == "" && apps[app].AndroidVersion[ver].Base == ver {
+                minVersion = ver
+            }
+            if minVersion != "" {
+                sysconfigFile[ver] = lib.AndroidVersionInfo{
+                    Arch: make(map[string]lib.FileInfo),
+                    Base: minVersion }
+                // Only need to set this because is not arch-specific, will be reached first
+                sysconfigFile[ver].Arch[lib.Arches[0]] = fileInfo
             }
         }
     }
@@ -181,10 +226,7 @@ func makeSysconfigFile(root string, zip *lib.ZipInfo, apps map[string]lib.AppInf
         lib.ExitIfError(err)
         
         // File was created, add to files list for install/addon.d backup
-        (*files)["sysconfig.xml"] = lib.FileInfo{
-            Destination: "/system/etc/sysconfig/" + zip.Name + ".xml",
-            Mode:        "0644",
-            FileName:    "sysconfig.xml" }
+        (*files)["sysconfig.xml"] = sysconfigFile
             
             zip.Files = append(zip.Files, "sysconfig.xml")
     }

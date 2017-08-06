@@ -2,6 +2,7 @@ package main
 
 import (
     "build"
+    "config"
 	"io/ioutil"
 	"lib"
 	"log"
@@ -32,10 +33,12 @@ func main() {
 	}
 	
 	// Load configuration to memory
-	zips, apps, files := lib.MakeConfig()
+	zips, apps, files := config.MakeConfig()
     
     // Build each zip
     for _, zip := range zips {
-        build.MakeZip(zip, apps, files)
+        if zip.Name != "" {
+            build.MakeZip(zip, apps, files)
+        }
     }
 }
