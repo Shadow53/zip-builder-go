@@ -9,7 +9,7 @@ image: golang:latest
 # Thus, making a symbolic link corrects this.
 before_script:
     - ln -s /builds /go/src/gitlab.com
-    - mv /go/src/gitlab.com/Shadow53/zip-builder /go/src/gitlab/Shadow53/src
+    - mv /go/src/gitlab.com/Shadow53/zip-builder /go/src/gitlab.com/Shadow53/src
     - cd /go/src/gitlab.com/Shadow53
 
 stages:
