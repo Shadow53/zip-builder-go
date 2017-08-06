@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/viper"
-	"gitlab.com/Shadow53/build"
-	"gitlab.com/Shadow53/config"
-	"gitlab.com/Shadow53/lib"
+	"gitlab.com/Shadow53/zip-builder/build"
+	"gitlab.com/Shadow53/zip-builder/config"
+	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
 func main() {

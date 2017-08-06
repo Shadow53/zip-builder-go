@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gitlab.com/Shadow53/lib"
+	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
 func genAddondScript(dest string, zip lib.ZipInfo, backupFiles []string, deleteFiles map[string]bool) {

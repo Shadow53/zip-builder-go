@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
-	"gitlab.com/Shadow53/dl"
-	"gitlab.com/Shadow53/lib"
+	"gitlab.com/Shadow53/zip-builder/dl"
+	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
 // Only extracts libraries if being installed under /system

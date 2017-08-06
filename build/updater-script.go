@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gitlab.com/Shadow53/lib"
+	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
 // TODO: Add support for arch-specific and Android version-specific files

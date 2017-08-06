@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
-	"gitlab.com/Shadow53/lib"
+	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
 func parseFileConfig(file map[string]interface{}) lib.FileInfo {
