@@ -1,11 +1,11 @@
 # This file is a template, and might need editing before it works on your project.
-image: golang:latest
+image: golang:1.6.1
 
 # The problem is that to be able to use go get, one needs to put
 # the repository in the $GOPATH. So for example if your gitlab domain
 # is mydomainperso.com, and that your repository is repos/projectname, and
 # the default GOPATH being /go, then you'd need to have your
-# repository in /go/src/mydomainperso.com/repos/projectname 
+# repository in /go/src/mydomainperso.com/repos/projectname
 # Thus, making a symbolic link corrects this.
 before_script:
     - ln -s /builds /go/src/gitlab.com
@@ -34,15 +34,15 @@ compile:
         - go get github.com/spf13/viper
         # Better put this in a Makefile
         - GOOS=android GOARCH=arm go build -buildmode exe -compiler gccgo -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
-        
+
         - GOOS=linux GOARCH=arm go build -buildmode exe -compiler gccgo -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
         - GOOS=linux GOARCH=arm64 go build -buildmode exe -compiler gccgo -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
         - GO386=sse2 GOOS=linux GOARCH=386 go build -buildmode exe -compiler gccgo -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
         - GOOS=linux GOARCH=amd64 go build -buildmode exe -compiler gccgo -race -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
-        
+
         - GO386=sse2 GOOS=darwin GOARCH=386 go build -buildmode exe -compiler gccgo -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
         - GOOS=darwin GOARCH=amd64 go build -buildmode exe -compiler gccgo -race -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
-        
+
         - GO386=sse2 GOOS=windows GOARCH=386 go build -buildmode exe -compiler gccgo -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
         - GOOS=windows GOARCH=amd64 go build -buildmode exe -compiler gccgo -race -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/main
         - tar czf binaries.tar.gz bin/
