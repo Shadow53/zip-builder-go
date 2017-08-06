@@ -3,11 +3,12 @@ package build
 import (
 	"bytes"
 	"io/ioutil"
-	"lib"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"gitlab.com/Shadow53/lib"
 )
 
 func genAddondScript(dest string, zip lib.ZipInfo, backupFiles []string, deleteFiles map[string]bool) {

@@ -1,36 +1,36 @@
 package lib
 
 import (
-    "crypto/md5"
-    "encoding/hex"
-    "io"
-    "io/ioutil"
+	"crypto/md5"
+	"encoding/hex"
+	"io"
+	"io/ioutil"
 	"log"
-    "os"
-    "strings"
+	"os"
+	"strings"
 
 	"github.com/spf13/viper"
 )
 
 var (
-    Versions []string = []string{
-        /*"2.3",
-        "4.0",
-        "4.1",
-        "4.2",
-        "4.3",
-        "4.4",*/
-        "5.0",
-        "5.1",
-        "6.0",
-        "7.0",
-        "7.1",
-        "8.0" }
-    Arches []string = []string{
-        "arm",
-        "arm64",
-        "x86",
-        "x86_64" }
+	Versions []string = []string{
+		/*"2.3",
+		  "4.0",
+		  "4.1",
+		  "4.2",
+		  "4.3",
+		  "4.4",*/
+		"5.0",
+		"5.1",
+		"6.0",
+		"7.0",
+		"7.1",
+		"8.0"}
+	Arches []string = []string{
+		"arm",
+		"arm64",
+		"x86",
+		"x86_64"}
 )
 
 type FileInfo struct {
@@ -44,9 +44,9 @@ type FileInfo struct {
 }
 
 type AndroidVersionInfo struct {
-    HasArchSpecificInfo bool     // Architectures were set in config. If false, just read from Arm
-    Base                string   // Which Android version's config this was based on
-    Arch                map[string]FileInfo
+	HasArchSpecificInfo bool   // Architectures were set in config. If false, just read from Arm
+	Base                string // Which Android version's config this was based on
+	Arch                map[string]FileInfo
 }
 
 type AppInfo struct {
@@ -72,11 +72,11 @@ type ZipInfo struct {
 }
 
 type Files map[string]map[string]AndroidVersionInfo
-type Apps  map[string]AppInfo
+type Apps map[string]AppInfo
 
 func ExitIfError(err error) {
 	if err != nil {
-        log.Fatalln(err)// If arches specified
+		log.Fatalln(err) // If arches specified
 	}
 }
 
@@ -109,22 +109,22 @@ func StringSliceOrNil(item interface{}) []string {
 }
 
 func GenerateMD5File(path string) {
-    log.Println("Generating MD5 file for " + path)
-    file, err := os.Open(path)
-    ExitIfError(err)
-    defer file.Close()
-    
-    hash := md5.New()
-    _, err = io.Copy(hash, file)
-    ExitIfError(err)
-    
-    sum := hash.Sum(nil)
-    text := hex.EncodeToString(sum) + "  " + path[strings.LastIndex(path, string(os.PathSeparator))+1:] + "\n"
-    ioutil.WriteFile(path + ".md5", []byte(text), 0644)
+	log.Println("Generating MD5 file for " + path)
+	file, err := os.Open(path)
+	ExitIfError(err)
+	defer file.Close()
+
+	hash := md5.New()
+	_, err = io.Copy(hash, file)
+	ExitIfError(err)
+
+	sum := hash.Sum(nil)
+	text := hex.EncodeToString(sum) + "  " + path[strings.LastIndex(path, string(os.PathSeparator))+1:] + "\n"
+	ioutil.WriteFile(path+".md5", []byte(text), 0644)
 }
 
 func Debug(msg string) {
-    if viper.GetBool("debug") {
-        log.Println("DEBUG: " + msg)
-    }
+	if viper.GetBool("debug") {
+		log.Println("DEBUG: " + msg)
+	}
 }
