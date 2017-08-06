@@ -1,0 +1,46 @@
+# This file is a template, and might need editing before it works on your project.
+image: golang:latest
+
+# The problem is that to be able to use go get, one needs to put
+# the repository in the $GOPATH. So for example if your gitlab domain
+# is mydomainperso.com, and that your repository is repos/projectname, and
+# the default GOPATH being /go, then you'd need to have your
+# repository in /go/src/mydomainperso.com/repos/projectname 
+# Thus, making a symbolic link corrects this.
+before_script:
+    - ln -s /builds /go/src/gitlab.com
+    - mv /go/src/gitlab.com/Shadow53/zip-builder /go/src/gitlab/Shadow53/src
+    - cd /go/src/gitlab.com/Shadow53
+
+stages:
+    #- test
+    - build
+
+format:
+    stage: test
+    script:
+        # Add here all the dependencies, or use glide/govendor to get
+        # them automatically.
+        # - curl https://glide.sh/get | sh
+        - go get github.com/alecthomas/kingpin
+        - go tool vet -composites=false -shadow=true *.go
+        - go test -race $(go list ./... | grep -v /vendor/)
+
+compile:
+    stage: build
+    script:
+        # Add here all the dependencies, or use glide/govendor/...
+        # to get them automatically.
+        - go get github.com/alecthomas/kingpin
+        # Better put this in a Makefile
+        - for os in android linux darwin windows
+        - do
+        -   for arch in arm arm64 386 amd64
+        -   do
+        -     go build -race -ldflags "-extldflags '-static'" -o zip-builder.${GOOS}.${GOARCH}
+        -   done
+        - done
+        - tar czf binaries.tar.gz bin/
+    artifacts:
+        paths:
+            - binaries.tar.gz
