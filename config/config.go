@@ -20,7 +20,9 @@ func parseFileConfig(file map[string]interface{}) lib.FileInfo {
 		Destination:        dest,
 		InstallRemoveFiles: lib.StringSliceOrNil(file["install_remove_files"]),
 		UpdateRemoveFiles:  lib.StringSliceOrNil(file["update_remove_files"]),
-		Hash:               lib.StringOrDefault(file["hash"], ""),
+		MD5:                lib.StringOrDefault(file["md5"], ""),
+		SHA1:               lib.StringOrDefault(file["sha1"], ""),
+		SHA256:             lib.StringOrDefault(file["sha256"], ""),
 		Mode:               lib.StringOrDefault(file["mode"], "0644"),
 		FileName:           name}
 }
@@ -38,8 +40,14 @@ func mergeFileConfig(file *lib.FileInfo, toMerge lib.FileInfo) {
 	if toMerge.UpdateRemoveFiles != nil {
 		file.UpdateRemoveFiles = toMerge.UpdateRemoveFiles
 	}
-	if toMerge.Hash != "" {
-		file.Hash = toMerge.Hash
+	if toMerge.MD5 != "" {
+		file.MD5 = toMerge.MD5
+	}
+	if toMerge.SHA1 != "" {
+		file.SHA1 = toMerge.SHA1
+	}
+	if toMerge.SHA256 != "" {
+		file.SHA256 = toMerge.SHA256
 	}
 	if toMerge.Mode != "" {
 		file.Mode = toMerge.Mode

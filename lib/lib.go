@@ -2,7 +2,10 @@ package lib
 
 import (
 	"crypto/md5"
+	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/hex"
+	"hash"
 	"io"
 	"io/ioutil"
 	"log"
@@ -41,6 +44,9 @@ type FileInfo struct {
 	Hash               string
 	Mode               string
 	FileName           string
+	MD5                string
+	SHA1               string
+	SHA256             string
 }
 
 type AndroidVersionInfo struct {
@@ -110,17 +116,31 @@ func StringSliceOrNil(item interface{}) []string {
 
 func GenerateMD5File(path string) {
 	log.Println("Generating MD5 file for " + path)
-	file, err := os.Open(path)
+	text := GetHash(path, "md5") + "  " + path[strings.LastIndex(path, string(os.PathSeparator))+1:] + "\n"
+	ioutil.WriteFile(path+".md5", []byte(text), 0644)
+}
+
+func GetHash(fileToHash, algo string) string {
+	var hash hash.Hash
+	switch algo {
+	case "md5":
+		hash = md5.New()
+	case "sha1":
+		hash = sha1.New()
+	case "sha256":
+		hash = sha256.New()
+	default:
+		return ""
+	}
+
+	file, err := os.Open(fileToHash)
 	ExitIfError(err)
 	defer file.Close()
 
-	hash := md5.New()
 	_, err = io.Copy(hash, file)
 	ExitIfError(err)
 
-	sum := hash.Sum(nil)
-	text := hex.EncodeToString(sum) + "  " + path[strings.LastIndex(path, string(os.PathSeparator))+1:] + "\n"
-	ioutil.WriteFile(path+".md5", []byte(text), 0644)
+	return hex.EncodeToString(hash.Sum(nil))
 }
 
 func Debug(msg string) {

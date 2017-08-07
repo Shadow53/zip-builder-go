@@ -66,15 +66,20 @@ func unzipSystemLibs(root string, zipinfo *lib.ZipInfo, app lib.AppInfo, ver, ar
 										HasArchSpecificInfo: true}
 								}
 
+								dest := "/system/lib"
+								if (strings.Index(a, "64") > -1) {
+									dest = dest + "64"
+								}
+								// Includes the '/'
+								dest = dest + fileName[strings.LastIndex(fileName, "/"):]
+
 								(*files)[fileId][v].Arch[a] = lib.FileInfo{
-									Destination: app.AndroidVersion[ver].Arch[arch].Destination[:strings.LastIndex(app.AndroidVersion[ver].Arch[arch].Destination, "/")] + "/" + file.Name,
+									Destination: dest,
 									Mode:        "0644",
 									FileName:    ver + "/" + a + "/" + app.PackageName + "-lib/" + fileName}
 							}
 
 							zipinfo.Files = append(zipinfo.Files, fileId)
-						} else {
-							lib.Debug("FILE AT " + file.Name + " DOES NOT MATCH ARCH " + a)
 						}
 					}
 				}
@@ -163,6 +168,34 @@ func MakeZip(zip lib.ZipInfo, apps lib.Apps, files lib.Files) {
 						} else {
 							dl.Download(apps[app].AndroidVersion[ver].Arch[arch].Url, apppath)
 						}
+						// Test checksums
+						md5sum := apps[app].AndroidVersion[ver].Arch[arch].MD5
+						sha1sum := apps[app].AndroidVersion[ver].Arch[arch].SHA1
+						sha256sum := apps[app].AndroidVersion[ver].Arch[arch].SHA256
+						if md5sum != "" {
+							log.Println("Checking md5sum")
+							sum := lib.GetHash(apppath, "md5")
+							if sum != md5sum {
+								log.Fatal("Unexpected md5sum. Expected " + md5sum + " but got " + sum)
+							}
+							log.Println("md5sum matches")
+						}
+						if sha1sum != "" {
+							log.Println("Checking sha1sum")
+							sum := lib.GetHash(apppath, "sha1")
+							if sum != sha1sum {
+								log.Fatal("Unexpected sha1sum. Expected " + sha1sum + " but got " + sum)
+							}
+							log.Println("sha1sum matches")
+						}
+						if sha256sum != "" {
+							log.Println("Checking sha256sum")
+							sum := lib.GetHash(apppath, "sha256")
+							if sum != sha256sum {
+								log.Fatal("Unexpected sha256sum. Expected " + sha256sum + " but got " + sum)
+							}
+							log.Println("sha256sum matches")
+						}
 						unzipSystemLibs(zippath, &zip, apps[app], ver, arch, &files)
 						// TODO: Verify hash of file, error on mismatch
 					} else {
@@ -195,7 +228,34 @@ func MakeZip(zip lib.ZipInfo, apps lib.Apps, files lib.Files) {
 						files[file][ver].Arch[arch] = archInfo
 						filepath := filepath.Join(zippath, "files", filename)
 						dl.Download(files[file][ver].Arch[arch].Url, filepath)
-						// TODO: Verify hash of file, error on mismatch
+						// Test checksums
+						md5sum := files[file][ver].Arch[arch].MD5
+						sha1sum := files[file][ver].Arch[arch].SHA1
+						sha256sum := files[file][ver].Arch[arch].SHA256
+						if md5sum != "" {
+							log.Println("Checking md5sum")
+							sum := lib.GetHash(filepath, "md5")
+							if sum != md5sum {
+								log.Fatal("Unexpected md5sum. Expected " + md5sum + " but got " + sum)
+							}
+							log.Println("md5sum matches")
+						}
+						if sha1sum != "" {
+							log.Println("Checking sha1sum")
+							sum := lib.GetHash(filepath, "sha1")
+							if sum != sha1sum {
+								log.Fatal("Unexpected sha1sum. Expected " + sha1sum + " but got " + sum)
+							}
+							log.Println("sha1sum matches")
+						}
+						if sha256sum != "" {
+							log.Println("Checking sha256sum")
+							sum := lib.GetHash(filepath, "sha256")
+							if sum != sha256sum {
+								log.Fatal("Unexpected sha256sum. Expected " + sha256sum + " but got " + sum)
+							}
+							log.Println("sha256sum matches")
+						}
 					} else {
 						lib.Debug("WARNING: URL IS EMPTY FOR " + file)
 					}

@@ -56,7 +56,7 @@ func getFDroidRepoIndex(urlstr string) string {
 }
 
 type FDroidHash struct {
-	Type string `xml:",attr"`
+	Type string `xml:"type,attr"`
 	Hash string `xml:",chardata"`
 }
 
@@ -95,6 +95,35 @@ func DownloadFromFDroidRepo(app *lib.AppInfo, ver, arch, dest string) {
 			if tmpapp.Id == app.PackageName {
 				lib.Debug("ADDING PERMISSIONS LISTED ON F-DROID")
 				app.Permissions = strings.Split(tmpapp.Apks[0].Permissions, ",")
+				for _, ver := range lib.Versions {
+					if app.AndroidVersion[ver].Base != "" {
+						if app.AndroidVersion[ver].HasArchSpecificInfo {
+							for _, arch := range lib.Arches {
+								file := app.AndroidVersion[ver].Arch[arch]
+								switch tmpapp.Apks[0].Hash.Type {
+								case "md5":
+									file.MD5 = tmpapp.Apks[0].Hash.Hash
+								case "sha1":
+									file.SHA1 = tmpapp.Apks[0].Hash.Hash
+								case "sha256":
+									file.SHA256 = tmpapp.Apks[0].Hash.Hash
+								}
+								app.AndroidVersion[ver].Arch[arch] = file
+							}
+						} else {
+							file := app.AndroidVersion[ver].Arch[lib.Arches[0]]
+							switch tmpapp.Apks[0].Hash.Type {
+							case "md5":
+								file.MD5 = tmpapp.Apks[0].Hash.Hash
+							case "sha1":
+								file.SHA1 = tmpapp.Apks[0].Hash.Hash
+							case "sha256":
+								file.SHA256 = tmpapp.Apks[0].Hash.Hash
+							}
+							app.AndroidVersion[ver].Arch[lib.Arches[0]] = file
+						}
+					}
+				}
 				// Download file and store file locations
 				tmppath := downloadToTempDir(app.AndroidVersion[ver].Arch[arch].Url+"/"+tmpapp.Apks[0].FileName, app.PackageName+".apk", false)
 				err = os.Rename(tmppath, dest)
