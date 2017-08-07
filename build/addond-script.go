@@ -27,7 +27,7 @@ func genAddondScript(dest string, zip lib.ZipInfo, backupFiles []string, deleteF
 . /tmp/backuptool.functions
 
 list_files() {
-cat <<EOF
+  cat <<EOF
 `)
 
 	script.WriteString(strings.Join(backupFiles, "\n"))
@@ -36,20 +36,20 @@ cat <<EOF
 EOF
 }
 
-case "\$1" in
-backup)
-  list_files | while read FILE DUMMY; do
-    echo "Backing up $FILE"
-    backup_file $S/"$FILE"
-  done
-;;
-restore)
-  list_files | while read FILE REPLACEMENT; do
-    echo "Restoring $REPLACEMENT"
-    R=""
-    [ -n "$REPLACEMENT" ] && R="$S/$REPLACEMENT"
-    [ -f "$C/$S/$FILE" -o -L "$C/$S/$FILE" ] && restore_file $S/"$FILE" "$R"
-  done
+case "$1" in
+  backup)
+    list_files | while read FILE DUMMY; do
+      echo "Backing up $FILE"
+      backup_file $S/"$FILE"
+    done
+  ;;
+  restore)
+    list_files | while read FILE REPLACEMENT; do
+      echo "Restoring $REPLACEMENT"
+      R=""
+      [ -n "$REPLACEMENT" ] && R="$S/$REPLACEMENT"
+      [ -f "$C/$S/$FILE" ] && restore_file $S/"$FILE" "$R"
+    done
 `)
 
 	for file, _ := range deleteFiles {
@@ -57,19 +57,19 @@ restore)
 		script.WriteString(file)
 		script.WriteString("\n")
 	}
-	script.WriteString(`;;
-pre-backup)
-#Stub
-;;
-post-backup)
-#Stub
-;;
-pre-restore)
-#Stub
-;;
-post-restore)
-#Stub
-;;
+	script.WriteString(`  ;;
+  pre-backup)
+  #Stub
+  ;;
+  post-backup)
+  #Stub
+  ;;
+  pre-restore)
+  #Stub
+  ;;
+  post-restore)
+  #Stub
+  ;;
 esac`)
 
 	ioutil.WriteFile(dest, []byte(script.String()), 0644)
