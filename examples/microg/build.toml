@@ -3,7 +3,8 @@
   package_name = "com.google.android.gms"
   url = "https://microg.org/fdroid/repo"
   is_fdroid_repo = true
-  destination = "/system/app/GmsCore/GmsCore.apk"
+  # Needs to be in priv-app to be doze/data-saver whitelisted
+  destination = "/system/priv-app/GmsCore/GmsCore.apk"
   install_remove_files = [
     "/system/app/GmsCore",
     "/system/priv-app/GmsCore",
@@ -24,9 +25,10 @@
   package_name = "com.google.android.gsf"
   url = "https://microg.org/fdroid/repo"
   is_fdroid_repo = true
-  destination = "/system/app/GsfProxy/GsfProxy.apk"
+  destination = "/system/priv-app/GsfProxy/GsfProxy.apk"
   install_remove_files = [
     "/system/app/GsfProxy",
+    "/system/priv-app/GsfProxy",
     "/system/priv-app/GoogleServicesFramework"
   ]
   [[apps.androidversion]]
