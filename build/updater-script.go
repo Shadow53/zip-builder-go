@@ -2,8 +2,8 @@ package build
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -133,8 +133,8 @@ func makePerItemScriptlet(item map[string]lib.AndroidVersionInfo, buff *bytes.Bu
 	}
 }
 
-func makeUpdaterScript(root string, zip lib.ZipInfo, apps lib.Apps, files lib.Files) {
-	log.Println("Generating updater-script")
+func makeUpdaterScript(root string, zip lib.ZipInfo, apps lib.Apps, files lib.Files) error {
+	fmt.Println("Generating updater-script")
 
 	var script bytes.Buffer
 
@@ -168,8 +168,15 @@ unmount("/system");
 `)
 
 	scriptDest := filepath.Join(root, "/META-INF/com/google/android")
-	os.MkdirAll(scriptDest, os.ModeDir|0755)
+	err := os.MkdirAll(scriptDest, os.ModeDir|0755)
+	if err != nil {
+		return fmt.Errorf("Error while creating directory %v:\n  %v", scriptDest, err)
+	}
 	scriptDest = filepath.Join(scriptDest, "updater-script")
 
-	ioutil.WriteFile(scriptDest, []byte(script.String()), 0644)
+	err = ioutil.WriteFile(scriptDest, []byte(script.String()), 0644)
+	if err != nil {
+		return fmt.Errorf("Error while writing updater-script to %v:\n  %v", scriptDest, err)
+	}
+	return nil
 }

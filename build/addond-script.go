@@ -2,8 +2,8 @@ package build
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,7 +11,7 @@ import (
 	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
-func genAddondScript(dest string, zip lib.ZipInfo, backupFiles []string, deleteFiles map[string]bool) {
+func genAddondScript(dest string, zip lib.ZipInfo, backupFiles []string, deleteFiles map[string]bool) error {
 	var script bytes.Buffer
 	script.WriteString(`#!/sbin/sh
 #
@@ -72,11 +72,15 @@ case "$1" in
   ;;
 esac`)
 
-	ioutil.WriteFile(dest, []byte(script.String()), 0644)
+	err := ioutil.WriteFile(dest, []byte(script.String()), 0644)
+	if err != nil {
+		return fmt.Errorf("Error while writing addon.d survival script to %v:\n  %v", dest, err)
+	}
+	return nil
 }
 
-func makeAddondScripts(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) {
-	log.Println("Generating addon.d recovery script(s)")
+func makeAddondScripts(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) error {
+	fmt.Println("Generating addon.d recovery script(s)")
 	addondFile := make(map[string]lib.AndroidVersionInfo)
 	// Set to lowest version so it is set if nothing is installed, for when a zip only removes
 	baseVersion := lib.Versions[0]
@@ -125,7 +129,10 @@ VersionL:
 
 			if len(backupFiles)+len(deleteFiles) > 0 {
 				scriptDest := filepath.Join(root, "files")
-				os.MkdirAll(scriptDest, os.ModeDir|0755)
+				err := os.MkdirAll(scriptDest, os.ModeDir|0755)
+				if err != nil {
+					return fmt.Errorf("Error while making parent directories for %v:\n  %v", scriptDest, err)
+				}
 				fileName := "addond-" + baseVersion
 				if isArchSpecific {
 					fileName = fileName + "-" + arch
@@ -133,7 +140,10 @@ VersionL:
 				fileName = fileName + ".sh"
 				scriptDest = filepath.Join(scriptDest, fileName)
 
-				genAddondScript(scriptDest, *zip, backupFiles, deleteFiles)
+				err = genAddondScript(scriptDest, *zip, backupFiles, deleteFiles)
+				if err != nil {
+					return fmt.Errorf("Error while generating the addon.d survival script for %v:\n  %v", zip.Name, err)
+				}
 
 				androidInfo := addondFile[ver]
 				if androidInfo.Base == "" {
@@ -166,4 +176,5 @@ VersionL:
 
 	lib.Debug("ADDING ADDON.D FILE TO ZIP FILE LIST")
 	zip.Files = append(zip.Files, "addond")
+	return nil
 }

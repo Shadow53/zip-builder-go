@@ -2,7 +2,7 @@ package build
 
 import (
 	"encoding/xml"
-	"log"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -29,7 +29,7 @@ type Permissions struct {
 
 // Permissions file is not Android version-specific because any permissions
 // or apps not found should end up ignored
-func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) {
+func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) error {
 	var exceptions Permissions
 	permissionFile := make(map[string]lib.AndroidVersionInfo)
 	fileInfo := lib.FileInfo{
@@ -39,7 +39,10 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.File
 
 	// Generate path to permissions file
 	fileDest := filepath.Join(root, "files")
-	os.MkdirAll(fileDest, os.ModeDir|0755)
+	err := os.MkdirAll(fileDest, os.ModeDir|0755)
+	if err != nil {
+		return fmt.Errorf("Error while creating directory %v:\n  %v", fileDest, err)
+	}
 	fileDest = filepath.Join(fileDest, "permissions.xml")
 
 	for _, app := range zip.Apps {
@@ -72,24 +75,32 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.File
 	}
 
 	if len(exceptions.Apps) > 0 {
-		log.Println("Generating permissions file for " + zip.Name)
+		fmt.Println("Generating permissions file for " + zip.Name)
 
 		file, err := os.Create(fileDest)
-		lib.ExitIfError(err)
+		if err != nil {
+			return fmt.Errorf("Error while creating file %v:\n  %v", fileDest, err)
+		}
 		defer file.Close()
 
-		file.Write([]byte(xml.Header))
+		_, err = file.Write([]byte(xml.Header))
+		if err != nil {
+			return fmt.Errorf("Error while writing XML header to file %v:\n  %v", fileDest, err)
+		}
 
 		enc := xml.NewEncoder(file)
-		enc.Indent("  ", "    ")
+		enc.Indent("", "    ")
 		err = enc.Encode(exceptions)
-		lib.ExitIfError(err)
+		if err != nil {
+			return fmt.Errorf("Error while writing permissions XML to %v:\n  %v", fileDest, err)
+		}
 
 		// File was created, add to files list for install/addon.d backup
 		(*files)["permissions.xml"] = permissionFile
 
 		zip.Files = append(zip.Files, "permissions.xml")
 	}
+	return nil
 }
 
 /*
@@ -160,7 +171,7 @@ type SysConfig struct {
 	DataSaverWhitelist      []DataSaverWhitelist      `xml:"allow-in-data-usage-save"`
 }
 
-func makeSysconfigFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) {
+func makeSysconfigFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) error {
 	var sysconfig SysConfig
 	sysconfigFile := make(map[string]lib.AndroidVersionInfo)
 	fileInfo := lib.FileInfo{
@@ -208,25 +219,36 @@ func makeSysconfigFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.
 	if len(sysconfig.DozeWhitelist) > 0 || len(sysconfig.DozeWhitelistExceptIdle) > 0 || len(sysconfig.DataSaverWhitelist) > 0 ||
 		len(sysconfig.SystemWhitelist) > 0 || len(sysconfig.SystemBlacklist) > 0 {
 
-		log.Println("Generating sysconfig file")
+		fmt.Println("Generating sysconfig file")
 		fileDest := filepath.Join(root, "files")
-		os.MkdirAll(fileDest, os.ModeDir|0755)
+		err := os.MkdirAll(fileDest, os.ModeDir|0755)
+		if err != nil {
+			return fmt.Errorf("Error while creating directory at %v:\n  %v", fileDest, err)
+		}
 		fileDest = filepath.Join(fileDest, "sysconfig.xml")
 
 		file, err := os.Create(fileDest)
-		lib.ExitIfError(err)
+		if err != nil {
+			return fmt.Errorf("Error while creating file %v:\n  %v", fileDest, err)
+		}
 		defer file.Close()
 
-		file.Write([]byte(xml.Header))
+		_, err = file.Write([]byte(xml.Header))
+		if err != nil {
+			return fmt.Errorf("Error while writing XML header to %v:\n  %v", fileDest, err)
+		}
 
 		enc := xml.NewEncoder(file)
-		enc.Indent("  ", "    ")
+		enc.Indent("", "    ")
 		err = enc.Encode(sysconfig)
-		lib.ExitIfError(err)
+		if err != nil {
+			return fmt.Errorf("Error while writing sysconfig XML to %v:\n  %v", fileDest, err)
+		}
 
 		// File was created, add to files list for install/addon.d backup
 		(*files)["sysconfig.xml"] = sysconfigFile
 
 		zip.Files = append(zip.Files, "sysconfig.xml")
 	}
+	return nil
 }

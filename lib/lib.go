@@ -5,10 +5,10 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"hash"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
 
@@ -80,47 +80,58 @@ type ZipInfo struct {
 type Files map[string]map[string]AndroidVersionInfo
 type Apps map[string]AppInfo
 
-func ExitIfError(err error) {
-	if err != nil {
-		log.Fatalln(err) // If arches specified
-	}
-}
-
 func StringOrDefault(item interface{}, def string) string {
 	if item != nil {
-		return item.(string)
-	} else {
-		return def
+		str, ok := item.(string)
+		if ok {
+			return str
+		}
 	}
+	return def
 }
 
 func BoolOrDefault(item interface{}, def bool) bool {
 	if item != nil {
-		return item.(bool)
-	} else {
-		return def
+		b, ok := item.(bool)
+		if ok {
+			return b
+		}
 	}
+	return def
 }
 
 func StringSliceOrNil(item interface{}) []string {
 	if item != nil {
 		var slice []string
-		for _, val := range item.([]interface{}) {
-			slice = append(slice, val.(string))
+		arr, ok := item.([]interface{})
+		if ok {
+			for _, val := range arr {
+				str, ok := val.(string)
+				if ok {
+					slice = append(slice, str)
+				}
+			}
+			return slice
 		}
-		return slice
-	} else {
-		return nil
 	}
+	return nil
 }
 
-func GenerateMD5File(path string) {
-	log.Println("Generating MD5 file for " + path)
-	text := GetHash(path, "md5") + "  " + path[strings.LastIndex(path, string(os.PathSeparator))+1:] + "\n"
-	ioutil.WriteFile(path+".md5", []byte(text), 0644)
+func GenerateMD5File(path string) error {
+	fmt.Println("Generating MD5 file for " + path)
+	text, err := GetHash(path, "md5")
+	if err != nil {
+		return fmt.Errorf("Error while generating the md5 for %v:\n  %v", path, err)
+	}
+	text = text + "  " + path[strings.LastIndex(path, string(os.PathSeparator))+1:] + "\n"
+	err = ioutil.WriteFile(path+".md5", []byte(text), 0644)
+	if err != nil {
+		return fmt.Errorf("Error while writing the md5 file for %v:\n  %v", path, err)
+	}
+	return nil
 }
 
-func GetHash(fileToHash, algo string) string {
+func GetHash(fileToHash, algo string) (string, error) {
 	var hash hash.Hash
 	switch algo {
 	case "md5":
@@ -130,21 +141,25 @@ func GetHash(fileToHash, algo string) string {
 	case "sha256":
 		hash = sha256.New()
 	default:
-		return ""
+		return "", fmt.Errorf("Unknown hash algorithm: %v", algo)
 	}
 
 	file, err := os.Open(fileToHash)
-	ExitIfError(err)
+	if err != nil {
+		return "", fmt.Errorf("Error while opening the file at %v for reading:\n  %v", fileToHash, err)
+	}
 	defer file.Close()
 
 	_, err = io.Copy(hash, file)
-	ExitIfError(err)
+	if err != nil {
+		return "", fmt.Errorf("Error while reading the file at %v:\n  %v", fileToHash, err)
+	}
 
-	return hex.EncodeToString(hash.Sum(nil))
+	return hex.EncodeToString(hash.Sum(nil)), nil
 }
 
 func Debug(msg string) {
 	if viper.GetBool("debug") {
-		log.Println("DEBUG: " + msg)
+		fmt.Println("DEBUG: " + msg)
 	}
 }

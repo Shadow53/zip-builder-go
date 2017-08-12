@@ -1,9 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 	"gitlab.com/Shadow53/zip-builder/build"
@@ -12,25 +13,50 @@ import (
 
 func main() {
 	// Create temporary directory, set as default
-	dir, err := ioutil.TempDir("", "zip-builder-")
-	defer os.RemoveAll(dir)
+	dir, tmpErr := ioutil.TempDir("", "zip-builder-")
 	viper.SetDefault("tempdir", dir)
 	// All config files must be called "build"...
 	viper.SetConfigName("build")
 	viper.AddConfigPath(".")
-	err = viper.ReadInConfig()
+	err := viper.ReadInConfig()
 
 	if err != nil {
-		log.Panicf("Fatal error on config file: %s \n", err)
+		fmt.Printf("Error while reading the configuration file:\n  %v\n", err)
+		os.Exit(1)
 	}
 
-	// Load configuration to memory
-	zips, apps, files := config.MakeConfig()
+	// This would be the mother of all collisions
+	// Anyone specifying a random directory like /tmp/zip-builder-238943
+	// should expect a *slight* chance of erroring
+	if viper.GetString("tempdir") == dir {
+		if tmpErr != nil {
+			fmt.Printf("Error while creating a temporary directory:\n  %v\n", tmpErr)
+			os.Exit(1)
+		} else {
+			defer os.RemoveAll(dir)
+		}
+	}
 
+	absDest, err := filepath.Abs(viper.GetString("destination"))
+	if err != nil {
+		fmt.Printf("Error while converting %v to an absolute path:\n  %v\n", viper.GetString("destination"), err)
+		os.Exit(1)
+	}
+	viper.Set("destination", absDest)
+
+	// Load configuration to memory
+	zips, apps, files, err := config.MakeConfig()
+	if err != nil {
+		fmt.Printf("Error occurred while building configuration:\n  %v\n", err)
+		os.Exit(1)
+	}
 	// Build each zip
 	for _, zip := range zips {
 		if zip.Name != "" {
-			build.MakeZip(zip, apps, files)
+			err = build.MakeZip(zip, apps, files)
+			if err != nil {
+				fmt.Printf("Error while building zip %v:\n  %v\n", zip.Name, err)
+			}
 		}
 	}
 }

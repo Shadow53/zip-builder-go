@@ -2,9 +2,9 @@ package dl
 
 import (
 	"encoding/xml"
+	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -15,24 +15,32 @@ import (
 	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
-func Download(src, dest string) {
-	log.Println("Downloading " + src)
+func Download(src, dest string) error {
+	fmt.Println("Downloading " + src)
 	lib.Debug("SOURCE URL: " + src)
 	lib.Debug("DESTINATION: " + dest)
 
 	out, err := os.Create(dest)
-	lib.ExitIfError(err)
+	if err != nil {
+		return fmt.Errorf("Error while creating a file at %v:\n  %v", dest, err)
+	}
 	defer out.Close()
 
 	resp, err := http.Get(src)
-	lib.ExitIfError(err)
+	if err != nil {
+		return fmt.Errorf("Error while setting up a connection to %v:\n  %v", src, err)
+	}
 	defer resp.Body.Close()
 
 	_, err = io.Copy(out, resp.Body)
-	lib.ExitIfError(err)
+	if err != nil {
+		return fmt.Errorf("Error while writing to the file at %v:\n  %v", dest, err)
+	}
+
+	return nil
 }
 
-func downloadToTempDir(urlstr, filename string, useExisting bool) string {
+func downloadToTempDir(urlstr, filename string, useExisting bool) (string, error) {
 	dest := filepath.Join(viper.GetString("tempdir"), filename)
 	if _, err := os.Stat("dest"); !useExisting || err != nil {
 		if !useExisting || os.IsNotExist(err) {
@@ -43,15 +51,17 @@ func downloadToTempDir(urlstr, filename string, useExisting bool) string {
 			}
 			Download(urlstr, dest)
 		} else {
-			lib.ExitIfError(err)
+			return "", fmt.Errorf("Error while testing file at %v:\n  %v", filename, err)
 		}
 	}
-	return dest
+	return dest, nil
 }
 
-func getFDroidRepoIndex(urlstr string) string {
+func getFDroidRepoIndex(urlstr string) (string, error) {
 	url, err := url.Parse(urlstr)
-	lib.ExitIfError(err)
+	if err != nil {
+		return "", fmt.Errorf("Error while parsing %v as a URL:\n  %v", urlstr, err)
+	}
 	return downloadToTempDir(urlstr+"/index.xml", url.Host+".xml", true)
 }
 
@@ -78,17 +88,27 @@ type FDroidRepo struct {
 	Apps    []FDroidApp `xml:"application"`
 }
 
-func DownloadFromFDroidRepo(app *lib.AppInfo, ver, arch, dest string) {
+func DownloadFromFDroidRepo(app *lib.AppInfo, ver, arch, dest string) error {
 	lib.Debug("DOWNLOADING " + app.PackageName + " FROM F-DROID")
 	if app.AndroidVersion[ver].Arch[arch].Url != "" {
-		index := getFDroidRepoIndex(app.AndroidVersion[ver].Arch[arch].Url)
-
+		index, err := getFDroidRepoIndex(app.AndroidVersion[ver].Arch[arch].Url)
+		if err != nil {
+			return fmt.Errorf("Error while downloading %v from %v:\n  %v", app.PackageName,
+				app.AndroidVersion[ver].Arch[arch].Url, err)
+		}
 		// Read contents of index file and parse XML for desired info
 		bytes, err := ioutil.ReadFile(index)
-		lib.ExitIfError(err)
+		if err != nil {
+			return fmt.Errorf("Error while reading F-Droid index from %v:\n  %v",
+				app.AndroidVersion[ver].Arch[arch].Url, err)
+		}
+
 		var repoInfo FDroidRepo
 		err = xml.Unmarshal(bytes, &repoInfo)
-		lib.ExitIfError(err)
+		if err != nil {
+			return fmt.Errorf("Error while parsing XML from %v:\n  %v",
+				app.AndroidVersion[ver].Arch[arch].Url, err)
+		}
 
 		// Navigate parsed XML for information on the desired package
 		for _, tmpapp := range repoInfo.Apps {
@@ -125,10 +145,16 @@ func DownloadFromFDroidRepo(app *lib.AppInfo, ver, arch, dest string) {
 					}
 				}
 				// Download file and store file locations
-				tmppath := downloadToTempDir(app.AndroidVersion[ver].Arch[arch].Url+"/"+tmpapp.Apks[0].FileName, app.PackageName+".apk", false)
+				tmppath, err := downloadToTempDir(app.AndroidVersion[ver].Arch[arch].Url+"/"+tmpapp.Apks[0].FileName, app.PackageName+".apk", false)
+				if err != nil {
+					return err
+				}
 				err = os.Rename(tmppath, dest)
-				lib.ExitIfError(err)
+				if err != nil {
+					return fmt.Errorf("Error while moving temporary file from %v to %v:\n  %v", tmppath, dest, err)
+				}
 			}
 		}
 	}
+	return nil
 }
