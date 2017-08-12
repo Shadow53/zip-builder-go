@@ -80,6 +80,10 @@
     number = "5.1"
 
 [[zips]]
+  name = "fdroid"
+  apps = ["f-droid"]
+
+[[zips]]
   name = "no-gapps"
   apps = [
     "f-droid",
