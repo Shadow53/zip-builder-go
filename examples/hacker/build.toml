@@ -1,0 +1,54 @@
+[[apps]]
+  name = "hackerskb"
+  package_name = "org.pocketworkstation.pckeyboard"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/HackersKeyboard/HackersKeyboard.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "termux"
+  package_name = "com.termux"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Termux/Termux.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "termux-api"
+  package_name = "com.termux.api"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/TermuxAPI/TermuxAPI.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "termux-widget"
+  package_name = "com.termux.widget"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/TermuxWidget/TermuxWidget.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "termux-styling"
+  package_name = "com.termux.styling"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/TermuxStyling/TermuxStyling.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[zips]]
+  name = "hacker"
+  apps = [
+    "hackerskb",
+    "termux",
+    "termux-api",
+    "termux-widget",
+    "termux-styling"
+  ]

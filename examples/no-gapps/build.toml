@@ -1,0 +1,92 @@
+[[apps]]
+  name = "f-droid"
+  package_name = "org.fdroid.fdroid"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/FDroid/FDroid.apk"
+  grant_system_user = true
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "davdroid"
+  package_name = "at.bitfire.davdroid"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/DAVDroid/DAVDroid.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "openlauncher"
+  package_name = "com.benny.openlauncher"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/OpenLauncher/OpenLauncher.apk"
+  install_remove_files = ["/system/app/Launcher3"]
+  update_remove_files = ["/system/app/Launcher3"]
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "opentasks"
+  package_name = "org.dmfs.tasks"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/OpenTasks/OpenTasks.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "etar"
+  package_name = "ws.xsoh.etar"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Etar/Etar.apk"
+  install_remove_files = ["/system/app/Calendar"]
+  update_remove_files = ["/system/app/Calendar"]
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "anysoftkb"
+  package_name = "com.menny.android.anysoftkeyboard"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/AnySoftKeyboard/AnySoftKeyboard.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "firefox"
+  package_name = "org.mozilla.firefox"
+  url = "https://download.mozilla.org/?product=fennec-latest&os=android&lang=multi"
+  destination = "/system/app/Firefox/Firefox.apk"
+  md5 = "4de64fb6a8908f25f15ef8e90f6d7fcb"
+  sha1 = "278a462b4a2c8cb6db14502a0ba63a4f10861265"
+  sha256 = "71b9a0423eab24fe30d6680be48ecdc90b6648aec26af5404db0525bca9d7678"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "yalpstore"
+  package_name = "com.github.yeriomin.yalpstore"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/priv-app/YalpStore/YalpStore.apk"
+  grant_system_user = true
+  doze_whitelist_except_idle = true
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[zips]]
+  name = "no-gapps"
+  apps = [
+    "f-droid",
+    "firefox",
+    "davdroid",
+    "opentasks",
+    "etar",
+    "anysoftkb",
+    "yalpstore"
+  ]

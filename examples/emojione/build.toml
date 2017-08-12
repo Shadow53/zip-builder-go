@@ -1,0 +1,13 @@
+[[files]]
+  name = "emojione"
+  url = "https://raw.githubusercontent.com/emojione/emojione/master/extras/fonts/emojione-android.ttf"
+  md5 = "2e8e64f2e134a15357f0b8dd3a77c42a"
+  sha1 = "ade3b127942ec5e1b91d4c4960c61ea8a3d4e617"
+  sha256 = "6efb1a43873876bcc9476562e20cf8d875eca20bab456d83a580f46a39321139"
+  destination = "/system/fonts/NotoColorEmoji.ttf"
+  [[files.androidversion]]
+    number = "5.0"
+
+[[zips]]
+  name = "emojione"
+  files = ["emojione"]

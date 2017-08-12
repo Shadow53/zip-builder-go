@@ -1,0 +1,150 @@
+[[apps]]
+  name = "microgms"
+  package_name = "com.google.android.gms"
+  url = "https://microg.org/fdroid/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/GmsCore/GmsCore.apk"
+  install_remove_files = [
+    "/system/app/GmsCore",
+    "/system/priv-app/GmsCore",
+    "/system/priv-app/GmsCore_update",
+    "/system/app/PrebuiltGmsCore",
+    "/system/priv-app/PrebuiltGmsCore",
+    "/system/priv-app/GmsCoreSetupPrebuilt",
+    "/system/priv-app/GoogleLoginService",
+    "/system/app/UnifiedNlp"
+  ]
+  doze_whitelist = true
+  data_saver_whitelist = true
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "microgsf"
+  package_name = "com.google.android.gsf"
+  url = "https://microg.org/fdroid/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/GsfProxy/GsfProxy.apk"
+  install_remove_files = [
+    "/system/app/GsfProxy",
+    "/system/priv-app/GoogleServicesFramework"
+  ]
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "playstore-patched"
+  package_name = "com.android.vending"
+  url = "https://gitlab.com/Nanolx/NanoMod/raw/master/Full/system/priv-app/Phonesky/Phonesky.apk"
+  md5 = "13a6f30d5781d10e2f6233afa87910e9"
+  sha1 = "7ef7d650ef24d87636ed9f52aa871148c609818d"
+  sha256 = "0142be2d8b1296018058e9c5502920f6371168a40f00be6c3152a0ae3f607da6"
+  destination = "/system/priv-app/Phonesky/Phonesky.apk"
+  install_remove_files = [
+    "/system/priv-app/PlayStore",
+    "/system/priv-app/FakeStore",
+    "/system/priv-app/Phonesky"
+  ]
+  permissions = ["FAKE_PACKAGE_SIGNATURE"]
+  doze_whitelist_except_idle = true
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "playstore"
+  package_name = "com.android.vending"
+  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80812900.apk"
+  md5 = "13a6f30d5781d10e2f6233afa87910e9"
+  sha1 = "7ef7d650ef24d87636ed9f52aa871148c609818d"
+  sha256 = "0142be2d8b1296018058e9c5502920f6371168a40f00be6c3152a0ae3f607da6"
+  destination = "/system/priv-app/Phonesky/Phonesky.apk"
+  install_remove_files = [
+    "/system/priv-app/PlayStore",
+    "/system/priv-app/FakeStore",
+    "/system/priv-app/Phonesky"
+  ]
+  doze_whitelist_except_idle = true
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "fakestore"
+  package_name = "com.android.vending"
+  destination = "/system/priv-app/Phonesky/Phonesky.apk"
+  install_remove_files = [
+    "/system/priv-app/PlayStore",
+    "/system/priv-app/FakeStore",
+    "/system/priv-app/Phonesky"
+  ]
+  permissions = ["FAKE_PACKAGE_SIGNATURE"]
+  url = "https://microg.org/fdroid/repo"
+  is_fdroid_repo = true
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "unifiednlp"
+  package_name = "com.google.android.gms"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/UnifiedNlp/UnifiedNlp.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "mozillanlp"
+  package_name = "org.microg.nlp.backend.ichnaea"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MozillaNlpBackend/MozillaNlpBackend.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "nominatim"
+  package_name = "org.microg.nlp.backend.nominatim"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/NominatimNlpBackend/NominatimNlpBackend.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[zips]]
+  name = "microg-playstore"
+  apps = [
+    "microgms",
+    "microgsf",
+    "playstore-patched",
+    "mozillanlp",
+    "nominatim"
+  ]
+
+[[zips]]
+  name = "microg"
+  apps = [
+    "microgms",
+    "microgsf",
+    "fakestore",
+    "mozillanlp",
+    "nominatim"
+  ]
+
+[[zips]]
+  name = "playstore-patched"
+  apps = [
+    "playstore-patched"
+  ]
+
+[[zips]]
+  name = "playstore"
+  apps = [
+    "playstore"
+  ]
+
+[[zips]]
+  name = "unifiednlp"
+  apps = [
+    "unifiednlp",
+    "mozillanlp",
+    "nominatim"
+  ]
