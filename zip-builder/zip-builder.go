@@ -14,6 +14,7 @@ import (
 func main() {
 	// Create temporary directory, set as default
 	dir, tmpErr := ioutil.TempDir("", "zip-builder-")
+	defer os.RemoveAll(dir)
 	viper.SetDefault("tempdir", dir)
 	viper.SetDefault("destination", "./build/")
 	// All config files must be called "build"...
@@ -34,7 +35,7 @@ func main() {
 			fmt.Printf("Error while creating a temporary directory:\n  %v\n", tmpErr)
 			os.Exit(1)
 		} else {
-			defer os.RemoveAll(dir)
+
 		}
 	}
 
