@@ -70,7 +70,7 @@
     sha256 = "118558669343117df3047f6cf8cc3895fdc8952e5dd8c24f37acfaaf18edfba3"
 
 [[zips]]
-  #name = "contacts-calendar-sync"
+  name = "contacts-calendar-sync"
   apps = [
     "backup-transporter",
     "contacts-adapter",
@@ -78,14 +78,14 @@
   ]
 
 [[zips]]
-  #name = "contacts-sync"
+  name = "contacts-sync"
   apps = [
     "backup-transporter",
     "contacts-adapter"
   ]
 
 [[zips]]
-  #name = "calendar-sync"
+  name = "calendar-sync"
   apps = [
     "backup-transporter",
     "calendar-adapter"
