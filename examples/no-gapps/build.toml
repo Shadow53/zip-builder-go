@@ -6,7 +6,7 @@
   destination = "/system/app/FDroid/FDroid.apk"
   grant_system_user = true
   [[apps.androidversion]]
-    number = "5.0"
+    number = "5.1"
 
 [[apps]]
   name = "davdroid"
@@ -62,9 +62,9 @@
   package_name = "org.mozilla.firefox"
   url = "https://download.mozilla.org/?product=fennec-latest&os=android&lang=multi"
   destination = "/system/app/Firefox/Firefox.apk"
-  md5 = "4de64fb6a8908f25f15ef8e90f6d7fcb"
-  sha1 = "278a462b4a2c8cb6db14502a0ba63a4f10861265"
-  sha256 = "71b9a0423eab24fe30d6680be48ecdc90b6648aec26af5404db0525bca9d7678"
+  md5 = "3d55d2ecb83a5a8042810e2c59c4b3da"
+  sha1 = "4a71396deb16350d4688b5b0f6c429d07053cf59"
+  sha256 = "6bef6a9821ab289c291128b5c1ba3aa23e782ae8bdf3952a594e71ab28edb782"
   [[apps.androidversion]]
     number = "5.1"
 
