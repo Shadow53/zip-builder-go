@@ -44,19 +44,19 @@ func makeFileDeleteScriptlet(filesToDelete map[string]bool, buffer *bytes.Buffer
 		// The weird spacing should cause a nice tree structure in the output
 		// The generated code should recursively delete directories and normal delete files
 		// TODO: Add output telling what is happening
-		buffer.WriteString("ifelse(run_program(\"/sbin/busybox\", \"test\", \"-d\", \"")
+		buffer.WriteString("if run_program(\"/sbin/busybox\", \"test\", \"-d\", \"")
 		buffer.WriteString(file)
-		buffer.WriteString("\") == 0, \n    ui_print(\"Recursively deleting existing folder ")
+		buffer.WriteString("\") == 0 then\n    ui_print(\"Recursively deleting existing folder ")
 		buffer.WriteString(file)
 		buffer.WriteString("\") && delete_recursive(\"")
 		buffer.WriteString(file)
-		buffer.WriteString("\"),\n    ifelse(run_program(\"/sbin/busybox\", \"test\", \"-f\", \"")
+		buffer.WriteString("\");\nelse\n    if run_program(\"/sbin/busybox\", \"test\", \"-f\", \"")
 		buffer.WriteString(file)
-		buffer.WriteString("\") == 0,\n        ui_print(\"Deleting existing file ")
+		buffer.WriteString("\") == 0 then\n        ui_print(\"Deleting existing file ")
 		buffer.WriteString(file)
 		buffer.WriteString("\") && delete(\"")
 		buffer.WriteString(file)
-		buffer.WriteString("\")\n    )\n);\n")
+		buffer.WriteString("\");\n    endif;\nendif;\n")
 	}
 }
 
@@ -143,6 +143,9 @@ func makeUpdaterScript(root string, zip lib.ZipInfo, apps lib.Apps, files lib.Fi
 ui_print("Mounting system");
 ifelse(is_mounted("/system"), unmount("/system"));
 run_program("/sbin/busybox", "mount", "/system");
+ui_print("Mounting data");
+ifelse(is_mounted("/data"), unmount("/data"));
+run_program("/sbin/busybox", "mount", "/data");
 `)
 
 	filesToDelete := make(map[string]bool)
@@ -159,6 +162,21 @@ run_program("/sbin/busybox", "mount", "/system");
 
 	for _, file := range zip.Files {
 		makePerItemScriptlet(files[file], &script)
+		if file == "permissions.xml" {
+			script.WriteString(`if run_program("/sbin/busybox", "test", "-d", "/data/data") == 0 then
+		ui_print("---");
+		ui_print("|- WARNING:");
+		ui_print("|- It appears you have previously booted");
+		ui_print("|- into this system. This zip includes a");
+		ui_print("|- set of permissions to grant to installed");
+		ui_print("|- apps by default, however default");
+		ui_print("|- permissions are only applied on FIRST");
+		ui_print("|- boot. You will need to manually grant");
+		ui_print("|- permissions to these apps.");
+		ui_print("---");
+endif;
+`)
+		}
 	}
 
 	script.WriteString(`ui_print("Unmounting /system");
