@@ -129,8 +129,6 @@ func parseAppConfig(app map[string]interface{}) lib.AppInfo {
 func parseZipConfig(zip map[string]interface{}) lib.ZipInfo {
 	return lib.ZipInfo{
 		Name:               lib.StringOrDefault(zip["name"], ""),
-		Arch:               lib.StringOrDefault(zip["arch"], ""),
-		SdkVersion:         lib.StringOrDefault(zip["android_sdk"], ""),
 		InstallRemoveFiles: lib.StringSliceOrNil(zip["install_remove_files"]),
 		UpdateRemoveFiles:  lib.StringSliceOrNil(zip["update_remove_files"]),
 		Apps:               lib.StringSliceOrNil(zip["apps"]),
