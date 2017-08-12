@@ -68,7 +68,7 @@ func makePerItemScriptlet(item map[string]lib.AndroidVersionInfo, buff *bytes.Bu
 	var deleteFiles bytes.Buffer
 	for i, ver := range lib.Versions {
 		lib.Debug("ANDROID VERSION: " + ver)
-		testVersion := "is_substring(\"" + ver + "\", getprop(\"ro.build.version.release\"))"
+		testVersion := "is_substring(\"" + ver + "\", file_getprop(\"/system/build.prop\", \"ro.build.version.release\"))"
 		if item[ver].Base != "" {
 			if item[ver].Base != ver && i < len(lib.Versions)-1 {
 				if multVersionTest != "" {
@@ -112,7 +112,7 @@ func makePerItemScriptlet(item map[string]lib.AndroidVersionInfo, buff *bytes.Bu
 							} else {
 								archBuff.WriteString(arch)
 							}
-							archBuff.WriteString("\", getprop(\"ro.product.cpu.abilist\") + getprop(\"ro.product.cpu.abi\")) then\n")
+							archBuff.WriteString("\", file_getprop(\"/system/build.prop\", \"ro.product.cpu.abilist\") + file_getprop(\"/system/build.prop\", \"ro.product.cpu.abi\")) then\n")
 
 							archFilesToDelete := make(map[string]bool)
 							// Add any files that this app wants deleted
