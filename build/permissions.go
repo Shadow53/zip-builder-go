@@ -116,7 +116,7 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.File
  *   as if it was whitelisted in Android Settings
  * "allow-in-data-usage-save"
  * - If the system is restricting background data
- *   usage, do not restrict for this app
+ *   usage, do not restrict for this app. Only for priv-app.
  *
  * Other tags NOT (yet) included:
  * "group"
