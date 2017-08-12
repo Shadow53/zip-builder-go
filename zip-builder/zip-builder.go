@@ -15,6 +15,7 @@ func main() {
 	// Create temporary directory, set as default
 	dir, tmpErr := ioutil.TempDir("", "zip-builder-")
 	viper.SetDefault("tempdir", dir)
+	viper.SetDefault("destination", "./build/")
 	// All config files must be called "build"...
 	viper.SetConfigName("build")
 	viper.AddConfigPath(".")
