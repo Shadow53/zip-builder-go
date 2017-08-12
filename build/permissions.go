@@ -99,11 +99,9 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.File
  * - Blacklists app from being granted system user
  *   privileges if it would normally have them
  * "allow-in-power-save-except-idle"
- * - My best guess is that the app is not Dozed or
- *   delayed from being Dozed if it is in the middle
- *   of doing something - not idle
+ * - Doze whitelisting but not App Standby
  * "allow-in-power-save"
- * - Complete Doze whitelisting, should be the same
+ * - Doze *and* App Standby whitelisting, should be the same
  *   as if it was whitelisted in Android Settings
  * "allow-in-data-usage-save"
  * - If the system is restricting background data
