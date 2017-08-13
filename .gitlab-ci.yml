@@ -35,16 +35,16 @@ default-job:
         # Better put this in a Makefile
         #- CGO_ENABLED=0 GOOS=android GOARCH=arm go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
 
-        - CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
-        - CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
-        - CGO_ENABLED=0 GO386=sse2 GOOS=linux GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
-        - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
+        - CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -buildmode exe -compiler gc -o zip-builder.$GOOS.$GOARCH gitlab.com/Shadow53/zip-builder/zip-builder
+        - CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -buildmode exe -compiler gc -o zip-builder.$GOOS.$GOARCH gitlab.com/Shadow53/zip-builder/zip-builder
+        - CGO_ENABLED=0 GO386=sse2 GOOS=linux GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder.$GOOS.$GOARCH gitlab.com/Shadow53/zip-builder/zip-builder
+        - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder.$GOOS.$GOARCH gitlab.com/Shadow53/zip-builder/zip-builder
 
-        - CGO_ENABLED=0 GO386=sse2 GOOS=darwin GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
-        - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
+        - CGO_ENABLED=0 GO386=sse2 GOOS=darwin GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder.$GOOS.$GOARCH gitlab.com/Shadow53/zip-builder/zip-builder
+        - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder.$GOOS.$GOARCH gitlab.com/Shadow53/zip-builder/zip-builder
 
-        - CGO_ENABLED=0 GO386=sse2 GOOS=windows GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
-        - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder.${GOOS}.${GOARCH} gitlab.com/Shadow53/zip-builder/zip-builder
+        - CGO_ENABLED=0 GO386=sse2 GOOS=windows GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder.$GOOS.$GOARCH gitlab.com/Shadow53/zip-builder/zip-builder
+        - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder.$GOOS.$GOARCH gitlab.com/Shadow53/zip-builder/zip-builder
         - ls
     artifacts:
         paths:
