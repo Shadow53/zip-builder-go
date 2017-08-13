@@ -46,7 +46,7 @@ default-job:
         - CGO_ENABLED=0 GO386=sse2 GOOS=windows GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder-win32.exe gitlab.com/Shadow53/zip-builder/zip-builder
         - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder-win64.exe gitlab.com/Shadow53/zip-builder/zip-builder
         - ls
-        - mv zip-builder* /builds/
+        - mv zip-builder* /builds/Shadow53/zip-builder/
     artifacts:
         paths:
             - zip-builder-linux-arm
@@ -81,7 +81,7 @@ release-job:
 
         - CGO_ENABLED=0 GO386=sse2 GOOS=windows GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder-win32.exe gitlab.com/Shadow53/zip-builder/zip-builder
         - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder-win64.exe gitlab.com/Shadow53/zip-builder/zip-builder
-        - mv zip-builder* /builds/
+        - mv zip-builder* /builds/Shadow53/zip-builder
     artifacts:
         paths:
             - zip-builder-linux-arm
