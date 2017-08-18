@@ -1,10 +1,12 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/viper"
 	"gitlab.com/Shadow53/zip-builder/build"
@@ -12,20 +14,39 @@ import (
 )
 
 func main() {
-	// Create temporary directory, set as default
-	dir, tmpErr := ioutil.TempDir("", "zip-builder-")
-	defer os.RemoveAll(dir)
-	viper.SetDefault("tempdir", dir)
+	var destination string
+	var configPath string
+	config.InitFlags(&destination, &configPath)
+	flag.Parse()
+
 	viper.SetDefault("destination", "./build/")
 	// All config files must be called "build"...
-	viper.SetConfigName("build")
-	viper.AddConfigPath(".")
+	if configPath == "" {
+		viper.SetConfigName("build")
+		viper.AddConfigPath(".")
+	} else {
+		lastSep := strings.LastIndex(configPath, "/") + 1
+		path := configPath[:lastSep]
+		file := configPath[lastSep:strings.LastIndex(configPath, ".")]
+		viper.SetConfigName(file)
+		viper.AddConfigPath(path)
+	}
+
 	err := viper.ReadInConfig()
 
 	if err != nil {
 		fmt.Printf("Error while reading the configuration file:\n  %v\n", err)
 		os.Exit(1)
 	}
+
+	if destination != "" {
+		viper.Set("destination", destination)
+	}
+
+	// Create temporary directory, use this
+	dir, tmpErr := ioutil.TempDir("", "zip-builder-")
+	defer os.RemoveAll(dir)
+	viper.Set("tempdir", dir)
 
 	// This would be the mother of all collisions
 	// Anyone specifying a random directory like /tmp/zip-builder-238943
