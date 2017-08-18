@@ -62,9 +62,7 @@
   package_name = "org.mozilla.firefox"
   url = "https://download.mozilla.org/?product=fennec-latest&os=android&lang=multi"
   destination = "/system/app/Firefox/Firefox.apk"
-  md5 = "3d55d2ecb83a5a8042810e2c59c4b3da"
-  sha1 = "4a71396deb16350d4688b5b0f6c429d07053cf59"
-  sha256 = "6bef6a9821ab289c291128b5c1ba3aa23e782ae8bdf3952a594e71ab28edb782"
+  md5 = "a63e98c49d2f8795d174032dfb8980f5"
   [[apps.androidversion]]
     number = "5.1"
 
