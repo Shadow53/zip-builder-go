@@ -89,7 +89,7 @@ func unzipSystemLibs(root string, zipinfo *lib.ZipInfo, app lib.AppInfo, ver, ar
 								(*files)[fileId][v].Arch[a] = lib.FileInfo{
 									Destination: dest,
 									Mode:        "0644",
-									FileName:    ver + "/" + a + "/" + app.PackageName + "-lib/" + fileName}
+									FileName:    ver + "/" + arch + "/" + app.PackageName + "-lib/" + fileName}
 							}
 
 							zipinfo.Files = append(zipinfo.Files, fileId)
