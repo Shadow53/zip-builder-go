@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/spf13/viper"
 )
@@ -47,12 +48,19 @@ type FileInfo struct {
 	MD5                string
 	SHA1               string
 	SHA256             string
+	Mux                sync.RWMutex
 }
 
 type AndroidVersionInfo struct {
 	HasArchSpecificInfo bool   // Architectures were set in config. If false, just read from Arm
 	Base                string // Which Android version's config this was based on
-	Arch                map[string]FileInfo
+	Arch                map[string]*FileInfo
+	Mux                 sync.RWMutex
+}
+
+type AndroidVersions struct {
+	Version map[string]*AndroidVersionInfo
+	Mux     sync.RWMutex
 }
 
 type AppInfo struct {
@@ -63,8 +71,9 @@ type AppInfo struct {
 	DataSaverWhitelist      bool
 	AllowSystemUser         bool
 	BlacklistSystemUser     bool
-	AndroidVersion          map[string]AndroidVersionInfo
+	Android                 AndroidVersions
 	Permissions             []string
+	Mux                     sync.RWMutex
 }
 
 type ZipInfo struct {
@@ -75,10 +84,17 @@ type ZipInfo struct {
 	UpdateRemoveFiles  []string
 	Apps               []string
 	Files              []string
+	Mux                sync.RWMutex
 }
 
-type Files map[string]map[string]AndroidVersionInfo
-type Apps map[string]AppInfo
+type Files struct {
+	File map[string]*AndroidVersions
+	Mux  sync.RWMutex
+}
+type Apps struct {
+	App map[string]*AppInfo
+	Mux sync.RWMutex
+}
 
 func StringOrDefault(item interface{}, def string) string {
 	if item != nil {

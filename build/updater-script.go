@@ -12,9 +12,11 @@ import (
 )
 
 // TODO: Add support for arch-specific and Android version-specific files
-func makeFileInstallScriptlet(file lib.FileInfo, buffer *bytes.Buffer) {
+func makeFileInstallScriptlet(file *lib.FileInfo, buffer *bytes.Buffer) {
 	// Create the parent directories of the file and set their metadata
+	file.Mux.RLock()
 	destParent := file.Destination[0:strings.LastIndex(file.Destination, "/")]
+	file.Mux.RUnlock()
 	buffer.WriteString("assert(run_program(\"/sbin/busybox\", \"mkdir\", \"-p\", \"")
 	buffer.WriteString(destParent)
 	buffer.WriteString("\") == 0);\n")
@@ -23,24 +25,34 @@ func makeFileInstallScriptlet(file lib.FileInfo, buffer *bytes.Buffer) {
 	buffer.WriteString("\", \"uid\", 0, \"gid\", 0, \"fmode\", 0644, \"dmode\", 0755) == \"\");\n")
 	// Tell the user what is happening
 	buffer.WriteString("ui_print(\"Extracting ")
+	file.Mux.RLock()
 	buffer.WriteString(file.Destination)
+	file.Mux.RUnlock()
 	buffer.WriteString("\");\n")
 	// Extract the file and assert it was extracted successfully
 	buffer.WriteString("assert(package_extract_file(\"files/")
+	file.Mux.RLock()
 	buffer.WriteString(file.FileName)
+	file.Mux.RUnlock()
 	buffer.WriteString("\", \"")
+	file.Mux.RLock()
 	buffer.WriteString(file.Destination)
+	file.Mux.RUnlock()
 	buffer.WriteString("\") == \"t\");\n")
 	// Set metadata for the file and assert that was successful
 	buffer.WriteString("assert(set_metadata(\"")
+	file.Mux.RLock()
 	buffer.WriteString(file.Destination)
+	file.Mux.RUnlock()
 	buffer.WriteString("\", \"uid\", 0, \"gid\", 0, \"mode\", ")
+	file.Mux.RLock()
 	buffer.WriteString(file.Mode)
+	file.Mux.RUnlock()
 	buffer.WriteString(") == \"\");\n")
 }
 
 func makeFileDeleteScriptlet(filesToDelete map[string]bool, buffer *bytes.Buffer) {
-	for file, _ := range filesToDelete {
+	for file := range filesToDelete {
 		// The weird spacing should cause a nice tree structure in the output
 		// The generated code should recursively delete directories and normal delete files
 		// TODO: Add output telling what is happening
@@ -60,7 +72,7 @@ func makeFileDeleteScriptlet(filesToDelete map[string]bool, buffer *bytes.Buffer
 	}
 }
 
-func makePerItemScriptlet(item map[string]lib.AndroidVersionInfo, buff *bytes.Buffer) {
+func makePerItemScriptlet(item map[string]*lib.AndroidVersionInfo, buff *bytes.Buffer) {
 	multVersionTest := ""
 	verFilesToDelete := make(map[string]bool)
 	var archBuff bytes.Buffer
@@ -69,7 +81,7 @@ func makePerItemScriptlet(item map[string]lib.AndroidVersionInfo, buff *bytes.Bu
 	for i, ver := range lib.Versions {
 		lib.Debug("ANDROID VERSION: " + ver)
 		testVersion := "is_substring(\"" + ver + "\", file_getprop(\"/system/build.prop\", \"ro.build.version.release\"))"
-		if item[ver].Base != "" {
+		if item[ver] != nil && item[ver].Base != "" {
 			if item[ver].Base != ver && i < len(lib.Versions)-1 {
 				if multVersionTest != "" {
 					multVersionTest = multVersionTest + " || "
@@ -104,7 +116,7 @@ func makePerItemScriptlet(item map[string]lib.AndroidVersionInfo, buff *bytes.Bu
 					}
 				} else {
 					for _, arch := range lib.Arches {
-						if item[ver].Arch[arch].FileName != "" {
+						if item[ver].Arch[arch] != nil && item[ver].Arch[arch].FileName != "" {
 							lib.Debug("TESTING FOR ANDROID ARCH: " + arch)
 							archBuff.WriteString("if is_substring(\"")
 							if arch == "arm" {
@@ -133,7 +145,7 @@ func makePerItemScriptlet(item map[string]lib.AndroidVersionInfo, buff *bytes.Bu
 	}
 }
 
-func makeUpdaterScript(root string, zip lib.ZipInfo, apps lib.Apps, files lib.Files) error {
+func makeUpdaterScript(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib.Files) error {
 	fmt.Println("Generating updater-script")
 
 	var script bytes.Buffer
@@ -155,13 +167,24 @@ run_program("/sbin/busybox", "mount", "/data");
 	makeFileDeleteScriptlet(filesToDelete, &script)
 
 	for _, app := range zip.Apps {
-		if apps[app].PackageName != "" {
-			makePerItemScriptlet(apps[app].AndroidVersion, &script)
+		apps.Mux.RLock()
+		apps.App[app].Mux.RLock()
+		if apps.App[app].PackageName != "" {
+			apps.App[app].Android.Mux.RLock()
+			makePerItemScriptlet(apps.App[app].Android.Version, &script)
+			apps.App[app].Android.Mux.RUnlock()
 		}
+		apps.App[app].Mux.RUnlock()
+		apps.Mux.RUnlock()
 	}
 
 	for _, file := range zip.Files {
-		makePerItemScriptlet(files[file], &script)
+		files.Mux.RLock()
+		files.File[file].Mux.RLock()
+		makePerItemScriptlet(files.File[file].Version, &script)
+		files.File[file].Mux.RUnlock()
+		files.Mux.RUnlock()
+
 		if file == "permissions.xml" {
 			script.WriteString(`if run_program("/sbin/busybox", "test", "-d", "/data/data") == 0 then
 		ui_print("---");
