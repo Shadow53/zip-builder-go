@@ -19,7 +19,7 @@
   data_saver_whitelist = true
   [[apps.androidversion]]
     number = "5.1"
-
+   
 [[apps]]
   name = "microgsf"
   package_name = "com.google.android.gsf"
@@ -38,9 +38,7 @@
   name = "playstore-patched"
   package_name = "com.android.vending"
   url = "https://gitlab.com/Nanolx/NanoMod/raw/master/Full/system/priv-app/Phonesky/Phonesky.apk"
-  md5 = "ebf4660c47b593c3aabb74a32ed17727"
-  sha1 = "d50e6cd2b70ee68e7bcdeab1fe94078efb39a5c3"
-  sha256 = "46d6a6a40a76c2e34a908ddce61e6cfa05697c143da8e8305bbfda29494d54f8"
+  md5 = "260ef5b3d6ec0992c71bdbc060aa2ac1"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   install_remove_files = [
     "/system/priv-app/PlayStore",
@@ -55,10 +53,8 @@
 [[apps]]
   name = "playstore"
   package_name = "com.android.vending"
-  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80812900.apk"
-  md5 = "80ffc701090f273a305ec6dbae45e3b1"
-  sha1 = "33721ecec157d368c1019d794f011b648e9985fb"
-  sha256 = "900a9c3e8da946d325cafb8f4e021e07007a5cefbaa221488d54bd47a1f4425c"
+  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80813100.apk"
+  sha256 = "e3d3e990529e9b79c826e1c84cdfd262c9e0d555b4bd17747cd21d9c1dfdcd92"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   install_remove_files = [
     "/system/priv-app/PlayStore",
