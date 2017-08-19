@@ -60,6 +60,9 @@ windows-x86_64:
 default-deploy:
     stage: deploy
     script:
+      - cd /builds/
+      - ls
+      - cd /builds/Shadow53/zip-builder/
       - ls
     artifacts:
         paths:
@@ -78,6 +81,9 @@ default-deploy:
 release-deploy:
     stage: deploy
     script:
+      - cd /builds/
+      - ls
+      - cd /builds/Shadow53/zip-builder/
       - ls
     artifacts:
         paths:
