@@ -60,6 +60,8 @@ windows-x86_64:
 
 default-deploy:
     stage: deploy
+    script:
+      - ls
     artifacts:
         paths:
             - zip-builder-linux-arm
@@ -76,6 +78,8 @@ default-deploy:
 
 release-deploy:
     stage: deploy
+    script:
+      - ls
     artifacts:
         paths:
             - zip-builder-linux-arm
