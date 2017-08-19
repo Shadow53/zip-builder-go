@@ -7,93 +7,83 @@ before_script:
 
 stages:
     - build
-    - deploy
 
 linux-arm:
     stage: build
     script:
         - CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -buildmode exe -compiler gc -o zip-builder-linux-arm gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-linux-arm /builds/Shadow53/zip-builder/
+    artifacts:
+        paths:
+            - zip-builder-linux-arm
+        expire_in: 1 week
 
 linux-arm64:
     stage: build
     script:
         - CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -buildmode exe -compiler gc -o zip-builder-linux-arm64 gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-linux-arm64 /builds/Shadow53/zip-builder/
+    artifacts:
+        paths:
+            - zip-builder-linux-arm64
+        expire_in: 1 week
 
 linux-x86:
     stage: build
     script:
         - CGO_ENABLED=0 GO386=sse2 GOOS=linux GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder-linux-x86 gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-linux-x86 /builds/Shadow53/zip-builder/
+    artifacts:
+        paths:
+            - zip-builder-linux-x86
+        expire_in: 1 week
 
 linux-x86_64:
     stage: build
     script:
         - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder-linux-x86_64 gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-linux-x86_64 /builds/Shadow53/zip-builder/
+    artifacts:
+        paths:
+            - zip-builder-linux-x86_64
+        expire_in: 1 week
 
 darwin-x86:
     stage: build
     script:
         - CGO_ENABLED=0 GO386=sse2 GOOS=darwin GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder-darwin-x86 gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-darwin-x86 /builds/Shadow53/zip-builder/
+    artifacts:
+        paths:
+            - zip-builder-darwin-x86
+        expire_in: 1 week
 
 darwin-x86_64:
     stage: build
     script:
         - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder-darwin-x86_64 gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-darwin-x86_64 /builds/Shadow53/zip-builder/
+    artifacts:
+        paths:
+            - zip-builder-darwin-x86_64
+        expire_in: 1 week
 
 windows-x86:
     stage: build
     script:
         - CGO_ENABLED=0 GO386=sse2 GOOS=windows GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder-win32.exe gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-win32.exe /builds/Shadow53/zip-builder/
+    artifacts:
+        paths:
+            - zip-builder-win32.exe
+        expire_in: 1 week
 
 windows-x86_64:
     stage: build
     script:
         - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder-win64.exe gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-win64.exe /builds/Shadow53/zip-builder/
-
-default-deploy:
-    stage: deploy
-    script:
-      - cd /builds/
-      - ls
-      - cd /builds/Shadow53/zip-builder/
-      - ls
     artifacts:
         paths:
-            - zip-builder-linux-arm
-            - zip-builder-linux-arm64
-            - zip-builder-linux-x86
-            - zip-builder-linux-x86_64
-            - zip-builder-darwin-x86
-            - zip-builder-darwin-x86_64
-            - zip-builder-win32.exe
             - zip-builder-win64.exe
         expire_in: 1 week
-    except:
-        - tags
-
-release-deploy:
-    stage: deploy
-    script:
-      - cd /builds/
-      - ls
-      - cd /builds/Shadow53/zip-builder/
-      - ls
-    artifacts:
-        paths:
-            - zip-builder-linux-arm
-            - zip-builder-linux-arm64
-            - zip-builder-linux-x86
-            - zip-builder-linux-x86_64
-            - zip-builder-darwin-x86
-            - zip-builder-darwin-x86_64
-            - zip-builder-win32.exe
-            - zip-builder-win64.exe
-    only:
-        - tags
