@@ -20,7 +20,6 @@ linux-arm64:
     script:
         - CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -buildmode exe -compiler gc -o zip-builder-linux-arm64 gitlab.com/Shadow53/zip-builder/zip-builder
         - mv zip-builder-linux-arm64 /builds/Shadow53/zip-builder/
-        - tags
 
 linux-x86:
     stage: build
@@ -50,13 +49,13 @@ windows-x86:
     stage: build
     script:
         - CGO_ENABLED=0 GO386=sse2 GOOS=windows GOARCH=386 go build -buildmode exe -compiler gc -o zip-builder-win32.exe gitlab.com/Shadow53/zip-builder/zip-builder
-        - mv zip-builder-darwin-x86 /builds/Shadow53/zip-builder/
+        - mv zip-builder-win32.exe /builds/Shadow53/zip-builder/
 
 windows-x86_64:
     stage: build
     script:
         - CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -buildmode exe -compiler gc -o zip-builder-win64.exe gitlab.com/Shadow53/zip-builder/zip-builder
-        - mv zip-builder-darwin-x86_64 /builds/Shadow53/zip-builder/
+        - mv zip-builder-win64.exe /builds/Shadow53/zip-builder/
 
 default-deploy:
     stage: deploy
