@@ -19,7 +19,7 @@
   data_saver_whitelist = true
   [[apps.androidversion]]
     number = "5.1"
-   
+
 [[apps]]
   name = "microgsf"
   package_name = "com.google.android.gsf"
@@ -38,7 +38,7 @@
   name = "playstore-patched"
   package_name = "com.android.vending"
   url = "https://gitlab.com/Nanolx/NanoMod/raw/master/Full/system/priv-app/Phonesky/Phonesky.apk"
-  md5 = "260ef5b3d6ec0992c71bdbc060aa2ac1"
+  sha256 = "998dd14cff319aeacf573d576fe18045234c022ca79e95c57678a3e76b020b5c"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   install_remove_files = [
     "/system/priv-app/PlayStore",
@@ -108,7 +108,7 @@
     number = "5.1"
 
 [[zips]]
-  name = "microg-playstore"
+  #name = "microg-playstore"
   apps = [
     "microgms",
     "microgsf",
@@ -118,7 +118,7 @@
   ]
 
 [[zips]]
-  name = "microg"
+  #name = "microg"
   apps = [
     "microgms",
     "microgsf",
@@ -140,7 +140,7 @@
   ]
 
 [[zips]]
-  name = "unifiednlp"
+  #name = "unifiednlp"
   apps = [
     "unifiednlp",
     "mozillanlp",
