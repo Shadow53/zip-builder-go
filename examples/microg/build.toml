@@ -108,7 +108,7 @@
     number = "5.1"
 
 [[zips]]
-  #name = "microg-playstore"
+  name = "microg-playstore"
   apps = [
     "microgms",
     "microgsf",
@@ -118,7 +118,7 @@
   ]
 
 [[zips]]
-  #name = "microg"
+  name = "microg"
   apps = [
     "microgms",
     "microgsf",
@@ -140,7 +140,7 @@
   ]
 
 [[zips]]
-  #name = "unifiednlp"
+  name = "unifiednlp"
   apps = [
     "unifiednlp",
     "mozillanlp",
