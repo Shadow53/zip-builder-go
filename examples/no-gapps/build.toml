@@ -3,7 +3,7 @@
   package_name = "org.fdroid.fdroid"
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
-  destination = "/system/app/FDroid/FDroid.apk"
+  destination = "/system/priv-app/FDroid/FDroid.apk"
   grant_system_user = true
   [[apps.androidversion]]
     number = "5.1"
@@ -13,7 +13,8 @@
   package_name = "at.bitfire.davdroid"
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
-  destination = "/system/app/DAVDroid/DAVDroid.apk"
+  destination = "/system/priv-app/DAVDroid/DAVDroid.apk"
+  doze_whitelist = true
   [[apps.androidversion]]
     number = "5.1"
 
@@ -23,8 +24,14 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/OpenLauncher/OpenLauncher.apk"
-  install_remove_files = ["/system/app/Launcher3"]
-  update_remove_files = ["/system/app/Launcher3"]
+  install_remove_files = [
+    "/system/app/Launcher3",
+    "/system/priv-app/Trebuchet"
+  ]
+  update_remove_files = [
+    "/system/app/Launcher3",
+    "/system/priv-app/Trebuchet"
+  ]
   [[apps.androidversion]]
     number = "5.1"
 
@@ -77,6 +84,93 @@
   [[apps.androidversion]]
     number = "5.1"
 
+[[apps]]
+  name = "silence"
+  package_name = "org.smssecure.smssecure"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Silence/Silence.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "vanilla-music"
+  package_name = "ch.blinkenlights.android.vanilla"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Vanilla/Vanilla.apk"
+  install_remove_files = [
+    "/system/priv-app/Eleven",
+    "/system/app/Phonograph"
+  ]
+  update_remove_files = [
+    "/system/priv-app/Eleven",
+    "/system/app/Phonograph"
+  ]
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "vanilla-cover-fetch"
+  package_name = "com.kanedias.vanilla.coverfetch"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/VanillaCoverFetch/VanillaCoverFetch.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "vanilla-tag-editor"
+  package_name = "com.kanedias.vanilla.audiotag"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/VanillaTagEditor/VanillaTagEditor.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "vanilla-lyrics"
+  package_name = "com.kanedias.vanilla.lyrics"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/VanillaLyrics/VanillaLyrics.apk"
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "clock+"
+  package_name = "com.philliphsu.clock2"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Clock+/Clock+.apk"
+  install_remove_files = [
+    "/system/app/DeskClock",
+    "/system/app/OmniClockOSS"
+  ]
+  update_remove_files = [
+    "/system/app/DeskClock",
+    "/system/app/OmniClockOSS"
+  ]
+  [[apps.androidversion]]
+    number = "5.1"
+
+[[apps]]
+  name = "opencamera"
+  package_name = "net.sourceforge.opencamera"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/OpenCamera/OpenCamera.apk"
+  install_remove_files = [
+    "/system/app/Camera2",
+    "/system/app/SnapdragonCamera"
+  ]
+  update_remove_files = [
+    "/system/app/Camera2",
+    "/system/app/SnapdragonCamera"
+  ]
+  [[apps.androidversion]]
+    number = "5.1"
+
 [[zips]]
   name = "fdroid"
   apps = ["f-droid"]
@@ -84,11 +178,19 @@
 [[zips]]
   name = "no-gapps"
   apps = [
+    "anysoftkb",
+    "clock+",
+    "davdroid",
+    "etar",
     "f-droid",
     "firefox",
-    "davdroid",
+    "opencamera",
+    "openlauncher",
     "opentasks",
-    "etar",
-    "anysoftkb",
+    "silence",
+    "vanilla-music",
+    "vanilla-cover-fetch",
+    "vanilla-lyrics",
+    "vanilla-tag-editor",
     "yalpstore"
   ]
