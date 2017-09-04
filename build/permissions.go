@@ -29,13 +29,16 @@ type Permissions struct {
 
 // Permissions file is not Android version-specific because any permissions
 // or apps not found should end up ignored
-func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) error {
+func makePermsFile(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib.Files) error {
 	var exceptions Permissions
-	permissionFile := make(map[string]lib.AndroidVersionInfo)
+	permissionFile := make(map[string]*lib.AndroidVersionInfo)
+
+	zip.Mux.RLock()
 	fileInfo := lib.FileInfo{
 		Destination: "/system/etc/default-permissions/" + zip.Name + "-permissions.xml",
 		Mode:        "0644",
 		FileName:    "permissions.xml"}
+	zip.Mux.RUnlock()
 
 	// Generate path to permissions file
 	fileDest := filepath.Join(root, "files")
@@ -45,10 +48,24 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.File
 	}
 	fileDest = filepath.Join(fileDest, "permissions.xml")
 
-	for _, app := range zip.Apps {
-		if apps[app].PackageName != "" {
-			perms := PermissionApp{Name: apps[app].PackageName}
-			for _, perm := range apps[app].Permissions {
+	zip.RLock()
+	zipApps := zip.Apps
+	zip.RUnlock()
+	for _, app := range zipApps {
+		packageName := ""
+		var permissions []string = nil
+		apps.RLock()
+		if apps.AppExists(app) {
+			apps.RLockApp(app)
+			packageName = apps.App[app].PackageName
+			permissions = apps.App[app].Permissions
+			apps.RUnlockApp(app)
+		}
+		apps.RUnlock()
+
+		if packageName != "" {
+			perms := PermissionApp{Name: packageName}
+			for _, perm := range permissions {
 				if strings.Index(perm, ".") < 0 {
 					perm = "android.permission." + perm
 				}
@@ -60,17 +77,23 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.File
 
 	var minVersion string
 	for _, ver := range lib.Versions {
-		for _, app := range zip.Apps {
-			if minVersion == "" && apps[app].AndroidVersion[ver].Base == ver {
-				minVersion = ver
+		for _, app := range zipApps {
+			apps.RLockApp(app)
+			if apps.AppVersionExists(app, ver) {
+				apps.RLockAppVersion(app, ver)
+				if minVersion == "" && apps.GetAppVersion(app, ver).Base == ver {
+					minVersion = ver
+				}
+				apps.RUnlockAppVersion(app, ver)
+				if minVersion != "" {
+					permissionFile[ver] = &lib.AndroidVersionInfo{
+						Arch: make(map[string]*lib.FileInfo),
+						Base: minVersion}
+					// Only need to set this because is not arch-specific, will be reached first
+					permissionFile[ver].Arch[lib.Arches[0]] = &fileInfo
+				}
 			}
-			if minVersion != "" {
-				permissionFile[ver] = lib.AndroidVersionInfo{
-					Arch: make(map[string]lib.FileInfo),
-					Base: minVersion}
-				// Only need to set this because is not arch-specific, will be reached first
-				permissionFile[ver].Arch[lib.Arches[0]] = fileInfo
-			}
+			apps.RUnlockApp(app)
 		}
 	}
 
@@ -96,9 +119,20 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.File
 		}
 
 		// File was created, add to files list for install/addon.d backup
-		(*files)["permissions.xml"] = permissionFile
+		zip.RLock()
+		fileId := zip.Name + "-permissions.xml"
+		zip.RUnlock()
+		files.Lock()
+		files.SetFile(fileId, &lib.AndroidVersions{})
+		files.Unlock()
 
-		zip.Files = append(zip.Files, "permissions.xml")
+		files.LockFile(fileId)
+		files.GetFile(fileId).Version = permissionFile
+		files.UnlockFile(fileId)
+
+		zip.Lock()
+		zip.Files = append(zip.Files, fileId)
+		zip.Unlock()
 	}
 	return nil
 }
@@ -171,48 +205,58 @@ type SysConfig struct {
 	DataSaverWhitelist      []DataSaverWhitelist      `xml:"allow-in-data-usage-save"`
 }
 
-func makeSysconfigFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.Files) error {
+func makeSysconfigFile(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib.Files) error {
 	var sysconfig SysConfig
-	sysconfigFile := make(map[string]lib.AndroidVersionInfo)
+	sysconfigFile := make(map[string]*lib.AndroidVersionInfo)
+	zip.RLock()
 	fileInfo := lib.FileInfo{
 		Destination: "/system/etc/sysconfig/" + zip.Name + ".xml",
 		Mode:        "0644",
 		FileName:    "sysconfig.xml"}
+	zipApps := zip.Apps
+	zip.RUnlock()
 
-	for _, app := range zip.Apps {
-		if apps[app].PackageName != "" {
-			a := apps[app]
-			if a.DozeWhitelist {
-				sysconfig.DozeWhitelist = append(sysconfig.DozeWhitelist, DozeWhitelist{Package: a.PackageName})
+	for _, app := range zipApps {
+		apps.RLockApp(app)
+		if apps.GetApp(app).PackageName != "" {
+			if apps.GetApp(app).DozeWhitelist {
+				sysconfig.DozeWhitelist = append(sysconfig.DozeWhitelist, DozeWhitelist{Package: apps.GetApp(app).PackageName})
 			}
-			if a.DozeWhitelistExceptIdle {
-				sysconfig.DozeWhitelistExceptIdle = append(sysconfig.DozeWhitelistExceptIdle, DozeWhitelistExceptIdle{Package: a.PackageName})
+			if apps.GetApp(app).DozeWhitelistExceptIdle {
+				sysconfig.DozeWhitelistExceptIdle = append(sysconfig.DozeWhitelistExceptIdle, DozeWhitelistExceptIdle{Package: apps.GetApp(app).PackageName})
 			}
-			if a.DataSaverWhitelist {
-				sysconfig.DataSaverWhitelist = append(sysconfig.DataSaverWhitelist, DataSaverWhitelist{Package: a.PackageName})
+			if apps.GetApp(app).DataSaverWhitelist {
+				sysconfig.DataSaverWhitelist = append(sysconfig.DataSaverWhitelist, DataSaverWhitelist{Package: apps.GetApp(app).PackageName})
 			}
-			if a.AllowSystemUser {
-				sysconfig.SystemWhitelist = append(sysconfig.SystemWhitelist, SystemWhitelistUser{Package: a.PackageName})
+			if apps.GetApp(app).AllowSystemUser {
+				sysconfig.SystemWhitelist = append(sysconfig.SystemWhitelist, SystemWhitelistUser{Package: apps.GetApp(app).PackageName})
 			}
-			if a.BlacklistSystemUser {
-				sysconfig.SystemBlacklist = append(sysconfig.SystemBlacklist, SystemBlacklistUser{Package: a.PackageName})
+			if apps.GetApp(app).BlacklistSystemUser {
+				sysconfig.SystemBlacklist = append(sysconfig.SystemBlacklist, SystemBlacklistUser{Package: apps.GetApp(app).PackageName})
 			}
 		}
+		apps.RUnlockApp(app)
 	}
 
 	var minVersion string
 	for _, ver := range lib.Versions {
-		for _, app := range zip.Apps {
-			if minVersion == "" && apps[app].AndroidVersion[ver].Base == ver {
-				minVersion = ver
+		for _, app := range zipApps {
+			apps.RLockApp(app)
+			if apps.AppVersionExists(app, ver) {
+				apps.RLockAppVersion(app, ver)
+				if minVersion == "" && apps.GetAppVersion(app, ver).Base == ver {
+					minVersion = ver
+				}
+				apps.RUnlockAppVersion(app, ver)
+				if minVersion != "" {
+					sysconfigFile[ver] = &lib.AndroidVersionInfo{
+						Arch: make(map[string]*lib.FileInfo),
+						Base: minVersion}
+					// Only need to set this because is not arch-specific, will be reached first
+					sysconfigFile[ver].Arch[lib.Arches[0]] = &fileInfo
+				}
 			}
-			if minVersion != "" {
-				sysconfigFile[ver] = lib.AndroidVersionInfo{
-					Arch: make(map[string]lib.FileInfo),
-					Base: minVersion}
-				// Only need to set this because is not arch-specific, will be reached first
-				sysconfigFile[ver].Arch[lib.Arches[0]] = fileInfo
-			}
+			apps.RUnlockApp(app)
 		}
 	}
 
@@ -246,9 +290,20 @@ func makeSysconfigFile(root string, zip *lib.ZipInfo, apps lib.Apps, files *lib.
 		}
 
 		// File was created, add to files list for install/addon.d backup
-		(*files)["sysconfig.xml"] = sysconfigFile
+		zip.RLock()
+		fileId := zip.Name + "-sysconfig.xml"
+		zip.RUnlock()
+		files.Lock()
+		files.SetFile(fileId, &lib.AndroidVersions{})
+		files.Unlock()
 
-		zip.Files = append(zip.Files, "sysconfig.xml")
+		files.LockFile(fileId)
+		files.GetFile(fileId).Version = sysconfigFile
+		files.UnlockFile(fileId)
+
+		zip.Lock()
+		zip.Files = append(zip.Files, fileId)
+		zip.Unlock()
 	}
 	return nil
 }

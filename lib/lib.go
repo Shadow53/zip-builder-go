@@ -36,50 +36,6 @@ var (
 		"x86_64"}
 )
 
-type FileInfo struct {
-	Url                string
-	Destination        string
-	InstallRemoveFiles []string
-	UpdateRemoveFiles  []string
-	Hash               string
-	Mode               string
-	FileName           string
-	MD5                string
-	SHA1               string
-	SHA256             string
-}
-
-type AndroidVersionInfo struct {
-	HasArchSpecificInfo bool   // Architectures were set in config. If false, just read from Arm
-	Base                string // Which Android version's config this was based on
-	Arch                map[string]FileInfo
-}
-
-type AppInfo struct {
-	PackageName             string
-	UrlIsFDroidRepo         bool
-	DozeWhitelist           bool
-	DozeWhitelistExceptIdle bool
-	DataSaverWhitelist      bool
-	AllowSystemUser         bool
-	BlacklistSystemUser     bool
-	AndroidVersion          map[string]AndroidVersionInfo
-	Permissions             []string
-}
-
-type ZipInfo struct {
-	Name               string
-	Arch               string
-	SdkVersion         string
-	InstallRemoveFiles []string
-	UpdateRemoveFiles  []string
-	Apps               []string
-	Files              []string
-}
-
-type Files map[string]map[string]AndroidVersionInfo
-type Apps map[string]AppInfo
-
 func StringOrDefault(item interface{}, def string) string {
 	if item != nil {
 		str, ok := item.(string)

@@ -7,16 +7,19 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/spf13/viper"
 	"gitlab.com/Shadow53/zip-builder/build"
 	"gitlab.com/Shadow53/zip-builder/config"
+	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
 func main() {
 	var destination string
 	var configPath string
-	config.InitFlags(&destination, &configPath)
+	var debug bool
+	config.InitFlags(&destination, &configPath, &debug)
 	flag.Parse()
 
 	viper.SetDefault("destination", "./build/")
@@ -43,21 +46,18 @@ func main() {
 		viper.Set("destination", destination)
 	}
 
+	if debug {
+		viper.Set("debug", true)
+	}
+
 	// Create temporary directory, use this
 	dir, tmpErr := ioutil.TempDir("", "zip-builder-")
-	defer os.RemoveAll(dir)
+	//defer os.RemoveAll(dir)
 	viper.Set("tempdir", dir)
 
-	// This would be the mother of all collisions
-	// Anyone specifying a random directory like /tmp/zip-builder-238943
-	// should expect a *slight* chance of erroring
-	if viper.GetString("tempdir") == dir {
-		if tmpErr != nil {
-			fmt.Printf("Error while creating a temporary directory:\n  %v\n", tmpErr)
-			os.Exit(1)
-		} else {
-
-		}
+	if tmpErr != nil {
+		fmt.Printf("Error while creating a temporary directory:\n  %v\n", tmpErr)
+		os.Exit(1)
 	}
 
 	absDest, err := filepath.Abs(viper.GetString("destination"))
@@ -74,12 +74,30 @@ func main() {
 		os.Exit(1)
 	}
 	// Build each zip
+	var wg sync.WaitGroup
+	ch := make(chan error)
 	for _, zip := range zips {
-		if zip.Name != "" {
-			err = build.MakeZip(zip, apps, files)
-			if err != nil {
-				fmt.Printf("Error while building zip %v:\n  %v\n", zip.Name, err)
+		wg.Add(1)
+		go func(zip lib.ZipInfo, apps *lib.Apps, files *lib.Files, wg *sync.WaitGroup, ch chan error) {
+			defer wg.Done()
+			if zip.Name != "" {
+				build.MakeZip(&zip, apps, files, ch)
 			}
+		}(zip, apps, files, &wg, ch)
+	}
+
+	var errs []error
+	go func(ch *chan error, errs *[]error) {
+		for err := range *ch {
+			fmt.Println(err)
+			*errs = append(*errs, err)
 		}
+	}(&ch, &errs)
+
+	wg.Wait()
+	close(ch)
+
+	for _, err := range errs {
+		fmt.Printf("\n%v", err)
 	}
 }

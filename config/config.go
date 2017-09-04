@@ -8,14 +8,14 @@ import (
 	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
-func parseFileConfig(file map[string]interface{}) lib.FileInfo {
+func parseFileConfig(file map[string]interface{}) *lib.FileInfo {
 	dest := lib.StringOrDefault(file["destination"], "")
 	start := strings.LastIndex(dest, "/") + 1
 	name := lib.StringOrDefault(file["package_name"], "") + ".apk"
 	if name == ".apk" && start > -1 {
 		name = dest[start:]
 	}
-	return lib.FileInfo{
+	return &lib.FileInfo{
 		Url:                lib.StringOrDefault(file["url"], ""),
 		Destination:        dest,
 		InstallRemoveFiles: lib.StringSliceOrNil(file["install_remove_files"]),
@@ -27,7 +27,7 @@ func parseFileConfig(file map[string]interface{}) lib.FileInfo {
 		FileName:           name}
 }
 
-func mergeFileConfig(file *lib.FileInfo, toMerge lib.FileInfo) {
+func mergeFileConfig(file *lib.FileInfo, toMerge *lib.FileInfo) {
 	if toMerge.Url != "" {
 		file.Url = toMerge.Url
 	}
@@ -57,8 +57,8 @@ func mergeFileConfig(file *lib.FileInfo, toMerge lib.FileInfo) {
 	}
 }
 
-func parseAndroidVersionConfig(item map[string]interface{}) (map[string]lib.AndroidVersionInfo, error) {
-	versionInfo := make(map[string]lib.AndroidVersionInfo)
+func parseAndroidVersionConfig(item map[string]interface{}) (map[string]*lib.AndroidVersionInfo, error) {
+	versionInfo := make(map[string]*lib.AndroidVersionInfo)
 	var versionSet bool
 	var versionsArr, hasVersions = item["androidversion"].([]interface{})
 	if !hasVersions {
@@ -70,13 +70,13 @@ func parseAndroidVersionConfig(item map[string]interface{}) (map[string]lib.Andr
 			version, versionOk := verInterface.(map[string]interface{})
 			if versionOk && lib.StringOrDefault(version["number"], "") == ver {
 				versionSet = true
-				info := lib.AndroidVersionInfo{Base: ver, Arch: make(map[string]lib.FileInfo)}
+				info := lib.AndroidVersionInfo{Base: ver, Arch: make(map[string]*lib.FileInfo)}
 				archInfoArr, archArrOk := version["arch"].([]interface{})
 				for _, arch := range lib.Arches {
 					info.HasArchSpecificInfo = info.HasArchSpecificInfo || version["arch"] != nil
 
 					// Outer app config
-					fConfig := appConfig
+					fConfig := *appConfig
 					// Android version-specific config
 					mergeFileConfig(&fConfig, parseFileConfig(version))
 					// Arch-specific config
@@ -103,12 +103,12 @@ func parseAndroidVersionConfig(item map[string]interface{}) (map[string]lib.Andr
 						}
 					}
 
-					info.Arch[arch] = fConfig
+					info.Arch[arch] = &fConfig
 				}
 
 				// Set values for this and later Android versions
 				for _, ver2 := range lib.Versions[i:] {
-					versionInfo[ver2] = info
+					versionInfo[ver2] = &info
 				}
 			} else if !versionOk {
 				return nil, fmt.Errorf("Misconfigured \"androidversion\" on item %v: is not an array", item["name"])
@@ -121,7 +121,7 @@ func parseAndroidVersionConfig(item map[string]interface{}) (map[string]lib.Andr
 	return versionInfo, nil
 }
 
-func parseAppConfig(app map[string]interface{}) (lib.AppInfo, error) {
+func parseAppConfig(app map[string]interface{}) (*lib.AppInfo, error) {
 	appInfo := lib.AppInfo{
 		PackageName:             lib.StringOrDefault(app["package_name"], ""),
 		UrlIsFDroidRepo:         lib.BoolOrDefault(app["is_fdroid_repo"], false),
@@ -134,10 +134,10 @@ func parseAppConfig(app map[string]interface{}) (lib.AppInfo, error) {
 
 	androidVersion, err := parseAndroidVersionConfig(app)
 	if err != nil {
-		return appInfo, fmt.Errorf("Error while parsing Android version information:\n  %v", err)
+		return &appInfo, fmt.Errorf("Error while parsing Android version information:\n  %v", err)
 	}
-	appInfo.AndroidVersion = androidVersion
-	return appInfo, nil
+	appInfo.Android.Version = androidVersion
+	return &appInfo, nil
 }
 
 func parseZipConfig(zip map[string]interface{}) lib.ZipInfo {
@@ -150,11 +150,12 @@ func parseZipConfig(zip map[string]interface{}) lib.ZipInfo {
 }
 
 // TODO: Throw exceptions if values are not as expected
-func MakeConfig() ([]lib.ZipInfo, lib.Apps, lib.Files, error) {
+func MakeConfig() ([]lib.ZipInfo, *lib.Apps, *lib.Files, error) {
 	// Read data from config into memory
 	fmt.Println("Loading configuration...")
 
-	apps := make(lib.Apps)
+	apps := &lib.Apps{}
+	apps.App = make(map[string]*lib.AppInfo)
 	if viper.Get("apps") != nil {
 		configApps, appsOk := viper.Get("apps").([]interface{})
 		if appsOk {
@@ -163,26 +164,27 @@ func MakeConfig() ([]lib.ZipInfo, lib.Apps, lib.Files, error) {
 				if appOk {
 					appName := lib.StringOrDefault(app["name"], "")
 					if appName == "" {
-						return nil, nil, nil, fmt.Errorf("App is missing \"name\" parameter%v", "")
+						return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("App is missing \"name\" parameter%v", "")
 					} else if lib.StringOrDefault(app["package_name"], "") == "" {
-						return nil, nil, nil, fmt.Errorf("App %v is missing \"package_name\" parameter", appName)
+						return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("App %v is missing \"package_name\" parameter", appName)
 					} else {
 						app, err := parseAppConfig(app)
 						if err != nil {
-							return nil, nil, nil, fmt.Errorf("Error while parsing app config for %v:\n  %v", appName, err)
+							return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("Error while parsing app config for %v:\n  %v", appName, err)
 						}
-						apps[appName] = app
+						apps.App[appName] = app
 					}
 				}
 			}
 		} else {
-			return nil, nil, nil, fmt.Errorf("Could not parse \"apps\" as an array%v", "")
+			return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("Could not parse \"apps\" as an array%v", "")
 		}
 	} else {
 		lib.Debug("No app installation configurations found")
 	}
 
-	files := make(lib.Files)
+	files := &lib.Files{}
+	files.File = make(map[string]*lib.AndroidVersions)
 	if viper.Get("files") != nil {
 		configFiles, filesOk := viper.Get("files").([]interface{})
 		if filesOk {
@@ -192,16 +194,17 @@ func MakeConfig() ([]lib.ZipInfo, lib.Apps, lib.Files, error) {
 				if name != "" {
 					fileConfig, err := parseAndroidVersionConfig(file)
 					if err == nil {
-						files[name] = fileConfig
+						files.File[name] = &lib.AndroidVersions{}
+						files.File[name].Version = fileConfig
 					} else {
-						return nil, nil, nil, err
+						return nil, &lib.Apps{}, &lib.Files{}, err
 					}
 				} else {
-					return nil, nil, nil, fmt.Errorf("File does not have a \"name\" set")
+					return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("File does not have a \"name\" set")
 				}
 			}
 		} else {
-			return nil, nil, nil, fmt.Errorf("Could not parse \"files\" as an array")
+			return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("Could not parse \"files\" as an array")
 		}
 	} else {
 		lib.Debug("No file installation configurations found")
@@ -216,14 +219,14 @@ func MakeConfig() ([]lib.ZipInfo, lib.Apps, lib.Files, error) {
 				if zipOk {
 					zips = append(zips, parseZipConfig(zip))
 				} else {
-					return nil, nil, nil, fmt.Errorf("Could not parse zip as configuration map")
+					return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("Could not parse zip as configuration map")
 				}
 			}
 		} else {
-			return nil, nil, nil, fmt.Errorf("Could not parse \"zips\" as an array")
+			return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("Could not parse \"zips\" as an array")
 		}
 	} else {
-		return nil, nil, nil, fmt.Errorf("At least one item needs to be defined in the \"zips\" array")
+		return nil, &lib.Apps{}, &lib.Files{}, fmt.Errorf("At least one item needs to be defined in the \"zips\" array")
 	}
 
 	fmt.Println("Loaded")
