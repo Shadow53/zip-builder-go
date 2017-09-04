@@ -18,7 +18,7 @@
   doze_whitelist = true
   data_saver_whitelist = true
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "microgsf"
@@ -32,13 +32,13 @@
     "/system/priv-app/GoogleServicesFramework"
   ]
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "playstore-patched"
   package_name = "com.android.vending"
   url = "https://gitlab.com/Nanolx/NanoMod/raw/master/Full/system/priv-app/Phonesky/Phonesky.apk"
-  sha256 = "998dd14cff319aeacf573d576fe18045234c022ca79e95c57678a3e76b020b5c"
+  sha256 = "efbb8d2038469aeef4ba41480f8363ceff9f5cf4ea669e399119563735cb9253"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   install_remove_files = [
     "/system/priv-app/PlayStore",
@@ -48,13 +48,13 @@
   permissions = ["FAKE_PACKAGE_SIGNATURE"]
   doze_whitelist_except_idle = true
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "playstore"
   package_name = "com.android.vending"
-  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80813100.apk"
-  sha256 = "e3d3e990529e9b79c826e1c84cdfd262c9e0d555b4bd17747cd21d9c1dfdcd92"
+  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80817206.apk"
+  sha256 = "afc012ea66f89d430c9fb01f4e7ee44ec23208cd815f6fc790c98275cc8e4930"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   install_remove_files = [
     "/system/priv-app/PlayStore",
@@ -63,7 +63,7 @@
   ]
   doze_whitelist_except_idle = true
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "fakestore"
@@ -78,7 +78,7 @@
   url = "https://microg.org/fdroid/repo"
   is_fdroid_repo = true
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "unifiednlp"
@@ -87,7 +87,7 @@
   is_fdroid_repo = true
   destination = "/system/app/UnifiedNlp/UnifiedNlp.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "mozillanlp"
@@ -96,7 +96,7 @@
   is_fdroid_repo = true
   destination = "/system/app/MozillaNlpBackend/MozillaNlpBackend.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "nominatim"
@@ -105,7 +105,7 @@
   is_fdroid_repo = true
   destination = "/system/app/NominatimNlpBackend/NominatimNlpBackend.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[zips]]
   name = "microg-playstore"

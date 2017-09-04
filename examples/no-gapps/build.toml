@@ -3,10 +3,19 @@
   package_name = "org.fdroid.fdroid"
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
-  destination = "/system/priv-app/FDroid/FDroid.apk"
+  destination = "/system/app/FDroid/FDroid.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "f-droid-priv"
+  package_name = "org.fdroid.fdroid.privileged"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/priv-app/FDroidPrivilegedExt/FDroidPrivilegedExt.apk"
   grant_system_user = true
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "davdroid"
@@ -16,7 +25,7 @@
   destination = "/system/priv-app/DAVDroid/DAVDroid.apk"
   doze_whitelist = true
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "openlauncher"
@@ -25,15 +34,15 @@
   is_fdroid_repo = true
   destination = "/system/app/OpenLauncher/OpenLauncher.apk"
   install_remove_files = [
-    "/system/app/Launcher3",
+    "/system/priv-app/Launcher3",
     "/system/priv-app/Trebuchet"
   ]
   update_remove_files = [
-    "/system/app/Launcher3",
+    "/system/priv-app/Launcher3",
     "/system/priv-app/Trebuchet"
   ]
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "opentasks"
@@ -42,7 +51,7 @@
   is_fdroid_repo = true
   destination = "/system/app/OpenTasks/OpenTasks.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "etar"
@@ -53,7 +62,7 @@
   install_remove_files = ["/system/app/Calendar"]
   update_remove_files = ["/system/app/Calendar"]
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "anysoftkb"
@@ -62,7 +71,7 @@
   is_fdroid_repo = true
   destination = "/system/app/AnySoftKeyboard/AnySoftKeyboard.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "firefox"
@@ -71,7 +80,7 @@
   destination = "/system/app/Firefox/Firefox.apk"
   md5 = "a63e98c49d2f8795d174032dfb8980f5"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "yalpstore"
@@ -82,7 +91,7 @@
   grant_system_user = true
   doze_whitelist_except_idle = true
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "silence"
@@ -91,7 +100,7 @@
   is_fdroid_repo = true
   destination = "/system/app/Silence/Silence.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "vanilla-music"
@@ -108,7 +117,7 @@
     "/system/app/Phonograph"
   ]
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "vanilla-cover-fetch"
@@ -117,7 +126,7 @@
   is_fdroid_repo = true
   destination = "/system/app/VanillaCoverFetch/VanillaCoverFetch.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "vanilla-tag-editor"
@@ -126,7 +135,7 @@
   is_fdroid_repo = true
   destination = "/system/app/VanillaTagEditor/VanillaTagEditor.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "vanilla-lyrics"
@@ -135,7 +144,7 @@
   is_fdroid_repo = true
   destination = "/system/app/VanillaLyrics/VanillaLyrics.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "clock+"
@@ -152,7 +161,7 @@
     "/system/app/OmniClockOSS"
   ]
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "opencamera"
@@ -169,11 +178,101 @@
     "/system/app/SnapdragonCamera"
   ]
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
+
+[[apps]]
+  name = "silence"
+  package_name = "org.smssecure.smssecure"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Silence/Silence.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "vanilla-music"
+  package_name = "ch.blinkenlights.android.vanilla"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Vanilla/Vanilla.apk"
+  install_remove_files = [
+    "/system/priv-app/Eleven",
+    "/system/app/Phonograph"
+  ]
+  update_remove_files = [
+    "/system/priv-app/Eleven",
+    "/system/app/Phonograph"
+  ]
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "vanilla-cover-fetch"
+  package_name = "com.kanedias.vanilla.coverfetch"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/VanillaCoverFetch/VanillaCoverFetch.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "vanilla-tag-editor"
+  package_name = "com.kanedias.vanilla.audiotag"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/VanillaTagEditor/VanillaTagEditor.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "vanilla-lyrics"
+  package_name = "com.kanedias.vanilla.lyrics"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/VanillaLyrics/VanillaLyrics.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "clock+"
+  package_name = "com.philliphsu.clock2"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Clock+/Clock+.apk"
+  install_remove_files = [
+    "/system/app/DeskClock",
+    "/system/app/OmniClockOSS"
+  ]
+  update_remove_files = [
+    "/system/app/DeskClock",
+    "/system/app/OmniClockOSS"
+  ]
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "opencamera"
+  package_name = "net.sourceforge.opencamera"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/OpenCamera/OpenCamera.apk"
+  install_remove_files = [
+    "/system/app/Camera2",
+    "/system/app/SnapdragonCamera"
+  ]
+  update_remove_files = [
+    "/system/app/Camera2",
+    "/system/app/SnapdragonCamera"
+  ]
+  [[apps.androidversion]]
+    number = "5.0"
 
 [[zips]]
   name = "fdroid"
-  apps = ["f-droid"]
+  apps = [
+    "f-droid",
+    "f-droid-priv"
+  ]
 
 [[zips]]
   name = "no-gapps"
@@ -183,6 +282,7 @@
     "davdroid",
     "etar",
     "f-droid",
+    "f-droid-priv",
     "firefox",
     "opencamera",
     "openlauncher",
