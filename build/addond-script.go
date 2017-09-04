@@ -90,12 +90,11 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 	baseVersion := lib.Versions[0]
 	var baseMux sync.Mutex
 
-	zip.Mux.RLock()
+	zip.RLock()
 	zipApps := zip.Apps
 	zipFiles := zip.Files
-	zip.Mux.RUnlock()
+	zip.RUnlock()
 	var wg sync.WaitGroup
-	wg.Add(len(lib.Versions) * len(lib.Arches) * (len(zipApps) + len(zipFiles)))
 
 	for _, ver := range lib.Versions {
 		lib.Debug("VERSION: " + ver)
@@ -108,100 +107,103 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 			var isArchSpecific bool
 			var archSpecificMux sync.Mutex
 
+			wg.Add(1)
+			var archwg sync.WaitGroup
+
 			for _, app := range zipApps {
+				archwg.Add(1)
 				go func(ver, arch, app string, baseVersion *string, backupFiles *[]string, deleteFiles *map[string]bool, isArchSpecific *bool, baseMux, backupMux, deleteMux, archSpecificMux *sync.Mutex, wg *sync.WaitGroup) {
 					defer wg.Done()
-
 					lib.Debug("Processing " + app + " for backup")
-					apps.Mux.RLock()
-					apps.App[app].Mux.RLock()
-					apps.App[app].Android.Mux.RLock()
-					if apps.App[app].Android.Version[ver] != nil {
-						apps.App[app].Android.Version[ver].Mux.RLock()
-						if apps.App[app].Android.Version[ver].HasArchSpecificInfo || arch == lib.Arches[0] {
-							if apps.App[app].Android.Version[ver].Arch[arch] != nil {
-								apps.App[app].Android.Version[ver].Arch[arch].Mux.RLock()
-
-								if strings.HasPrefix(apps.App[app].Android.Version[ver].Arch[arch].Destination, "/system/") {
-									lib.Debug("BACKING UP APP: " + apps.App[app].Android.Version[ver].Arch[arch].Destination)
-									backupMux.Lock()
-									*backupFiles = append(*backupFiles, apps.App[app].Android.Version[ver].Arch[arch].Destination[8:])
-									backupMux.Unlock()
-									archSpecificMux.Lock()
-									*isArchSpecific = *isArchSpecific || apps.App[app].Android.Version[ver].HasArchSpecificInfo
-									archSpecificMux.Unlock()
-									baseMux.Lock()
-									if *baseVersion < apps.App[app].Android.Version[ver].Base {
-										*baseVersion = apps.App[app].Android.Version[ver].Base
-									}
-									baseMux.Unlock()
-								}
-								deleteMux.Lock()
-								for _, del := range apps.App[app].Android.Version[ver].Arch[arch].UpdateRemoveFiles {
-									lib.Debug("DELETING FILE: " + del)
-									(*deleteFiles)[del] = true
-								}
-								deleteMux.Unlock()
-								apps.App[app].Android.Version[ver].Arch[arch].Mux.RUnlock()
-							}
+					apps.RLockApp(app)
+					defer apps.RUnlockApp(app)
+					if apps.AppVersionExists(app, ver) {
+						apps.RLockAppVersion(app, ver)
+						defer apps.RUnlockAppVersion(app, ver)
+						if !apps.GetAppVersion(app, ver).HasArchSpecificInfo {
+							arch = lib.Arches[0]
 						}
-						apps.App[app].Android.Version[ver].Mux.RUnlock()
+						if apps.AppVersionArchExists(app, ver, arch) {
+							apps.RLockAppVersionArch(app, ver, arch)
+							defer apps.RUnlockAppVersionArch(app, ver, arch)
+							if strings.HasPrefix(apps.GetAppVersionArch(app, ver, arch).Destination, "/system/") {
+								lib.Debug("BACKING UP APP: " + apps.GetAppVersionArch(app, ver, arch).Destination)
+								backupMux.Lock()
+								*backupFiles = append(*backupFiles, apps.GetAppVersionArch(app, ver, arch).Destination[8:])
+								backupMux.Unlock()
+								archSpecificMux.Lock()
+								*isArchSpecific = *isArchSpecific || apps.GetAppVersion(app, ver).HasArchSpecificInfo
+								archSpecificMux.Unlock()
+								baseMux.Lock()
+								if *baseVersion < apps.GetAppVersion(app, ver).Base {
+									*baseVersion = apps.GetAppVersion(app, ver).Base
+								}
+								baseMux.Unlock()
+							} else {
+								lib.Debug(app + " IS NOT IN /system/")
+							}
+							deleteMux.Lock()
+							for _, del := range apps.GetAppVersionArch(app, ver, arch).UpdateRemoveFiles {
+								lib.Debug("DELETING FILE: " + del)
+								(*deleteFiles)[del] = true
+							}
+							deleteMux.Unlock()
+						}
 					}
-					apps.App[app].Android.Mux.RUnlock()
-					apps.App[app].Mux.RUnlock()
-					apps.Mux.RUnlock()
-				}(ver, arch, app, &baseVersion, &backupFiles, &deleteFiles, &isArchSpecific, &baseMux, &backupMux, &deleteMux, &archSpecificMux, &wg)
+				}(ver, arch, app, &baseVersion, &backupFiles, &deleteFiles, &isArchSpecific, &baseMux, &backupMux, &deleteMux, &archSpecificMux, &archwg)
 			}
 
 			for _, file := range zipFiles {
+				archwg.Add(1)
 				go func(ver, arch, file string, baseVersion *string, backupFiles *[]string, deleteFiles *map[string]bool, isArchSpecific *bool, baseMux, backupMux, deleteMux, archSpecificMux *sync.Mutex, wg *sync.WaitGroup) {
 					defer wg.Done()
 					lib.Debug("Processing " + file + " for backup")
-					files.Mux.RLock()
-					files.File[file].Mux.RLock()
-					if files.File[file].Version[ver] != nil {
-						files.File[file].Version[ver].Mux.RLock()
-						if files.File[file].Version[ver].HasArchSpecificInfo || arch == lib.Arches[0] {
-							if files.File[file].Version[ver].Arch[arch] != nil {
-								files.File[file].Version[ver].Arch[arch].Mux.RLock()
-								if strings.HasPrefix(files.File[file].Version[ver].Arch[arch].Destination, "/system/") {
-									lib.Debug("BACKING UP FILE: " + files.File[file].Version[ver].Arch[arch].Destination)
-									backupMux.Lock()
-									*backupFiles = append(*backupFiles, files.File[file].Version[ver].Arch[arch].Destination[8:])
-									backupMux.Unlock()
-									archSpecificMux.Lock()
-									*isArchSpecific = *isArchSpecific || files.File[file].Version[ver].HasArchSpecificInfo
-									archSpecificMux.Unlock()
-									baseMux.Lock()
-									if *baseVersion < files.File[file].Version[ver].Base {
-										*baseVersion = files.File[file].Version[ver].Base
-									}
-									baseMux.Unlock()
-								}
-								deleteMux.Lock()
-								for _, del := range files.File[file].Version[ver].Arch[arch].UpdateRemoveFiles {
-									lib.Debug("DELETING FILE: " + del)
-									(*deleteFiles)[del] = true
-								}
-								deleteMux.Unlock()
-								files.File[file].Version[ver].Arch[arch].Mux.RUnlock()
-							}
+					files.RLockFile(file)
+					defer files.RUnlockFile(file)
+					if files.FileVersionExists(file, ver) {
+						files.RLockFileVersion(file, ver)
+						defer files.RUnlockFileVersion(file, ver)
+						if !files.GetFileVersion(file, ver).HasArchSpecificInfo {
+							arch = lib.Arches[0]
 						}
-						files.File[file].Version[ver].Mux.RUnlock()
+						if files.FileVersionArchExists(file, ver, arch) {
+							files.RLockFileVersionArch(file, ver, arch)
+							defer files.RUnlockFileVersionArch(file, ver, arch)
+							if strings.HasPrefix(files.GetFileVersionArch(file, ver, arch).Destination, "/system/") {
+								lib.Debug("BACKING UP FILE: " + files.GetFileVersionArch(file, ver, arch).Destination)
+								backupMux.Lock()
+								*backupFiles = append(*backupFiles, files.GetFileVersionArch(file, ver, arch).Destination[8:])
+								backupMux.Unlock()
+								archSpecificMux.Lock()
+								*isArchSpecific = *isArchSpecific || files.GetFileVersion(file, ver).HasArchSpecificInfo
+								archSpecificMux.Unlock()
+								baseMux.Lock()
+								if *baseVersion < files.GetFileVersion(file, ver).Base {
+									*baseVersion = files.GetFileVersion(file, ver).Base
+								}
+								baseMux.Unlock()
+							}
+							deleteMux.Lock()
+							for _, del := range files.GetFileVersionArch(file, ver, arch).UpdateRemoveFiles {
+								lib.Debug("DELETING FILE: " + del)
+								(*deleteFiles)[del] = true
+							}
+							deleteMux.Unlock()
+						}
 					}
-					files.File[file].Mux.RUnlock()
-					files.Mux.RUnlock()
-				}(ver, arch, file, &baseVersion, &backupFiles, &deleteFiles, &isArchSpecific, &baseMux, &backupMux, &deleteMux, &archSpecificMux, &wg)
+				}(ver, arch, file, &baseVersion, &backupFiles, &deleteFiles, &isArchSpecific, &baseMux, &backupMux, &deleteMux, &archSpecificMux, &archwg)
 			}
 
-			zip.Mux.RLock()
+			zip.RLock()
 			deleteMux.Lock()
 			for _, del := range zip.UpdateRemoveFiles {
 				lib.Debug("DELETING FILE: " + del)
 				deleteFiles[del] = true
 			}
 			deleteMux.Unlock()
-			zip.Mux.RUnlock()
+			zip.RUnlock()
+
+			archwg.Wait()
 
 			if len(backupFiles)+len(deleteFiles) > 0 {
 				scriptDest := filepath.Join(root, "files")
@@ -220,26 +222,26 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 				if err != nil {
 					lib.Debug("ADDON.D GENERATION FAILED")
 					return fmt.Errorf("Error while generating the addon.d survival script for %v:\n  %v", zip.Name, err)
-				} else {
-					lib.Debug("SUCCESSFULLY GENERATED ADDON.D AT " + scriptDest)
+				}
+				lib.Debug("SUCCESSFULLY GENERATED ADDON.D AT " + scriptDest)
+
+				if addondFile[ver] == nil {
+					addondFile[ver] = &lib.AndroidVersionInfo{
+						Base:                baseVersion,
+						HasArchSpecificInfo: isArchSpecific,
+						Arch:                make(map[string]*lib.FileInfo)}
 				}
 
-				var androidInfo = &lib.AndroidVersionInfo{
-					Base:                baseVersion,
-					HasArchSpecificInfo: isArchSpecific,
-					Arch:                make(map[string]*lib.FileInfo)}
-
-				zip.Mux.RLock()
-				androidInfo.Arch[arch] = &lib.FileInfo{
+				zip.RLock()
+				addondFile[ver].Arch[arch] = &lib.FileInfo{
 					Destination: "/system/addon.d/05-" + zip.Name + ".sh",
 					Mode:        "0644",
 					FileName:    fileName}
-				zip.Mux.RUnlock()
-
-				addondFile[ver] = androidInfo
+				zip.RUnlock()
 			} else {
 				lib.Debug("NO FILES TO BACK UP OR DELETE. SKIPPING")
 			}
+			wg.Done()
 		}
 	}
 
@@ -248,16 +250,20 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 	lib.Debug("APP AND FILE BACKUP PROCESSING COMPLETE")
 	// File was created, add to files list for installation
 	lib.Debug("ADDING ADDON.D FILE TO FILE LIST")
-	files.Mux.Lock()
-	files.File["addond"] = &lib.AndroidVersions{}
-	files.File["addond"].Mux.Lock()
-	files.File["addond"].Version = addondFile
-	files.File["addond"].Mux.Unlock()
-	files.Mux.Unlock()
+	zip.RLock()
+	fileId := zip.Name + "-addond"
+	zip.RUnlock()
+	files.Lock()
+	files.SetFile(fileId, &lib.AndroidVersions{})
+	files.Unlock()
+
+	files.LockFile(fileId)
+	files.GetFile(fileId).Version = addondFile
+	files.UnlockFile(fileId)
 
 	lib.Debug("ADDING ADDON.D FILE TO ZIP FILE LIST")
-	zip.Mux.Lock()
-	zip.Files = append(zip.Files, "addond")
-	zip.Mux.Unlock()
+	zip.Lock()
+	zip.Files = append(zip.Files, fileId)
+	zip.Unlock()
 	return nil
 }

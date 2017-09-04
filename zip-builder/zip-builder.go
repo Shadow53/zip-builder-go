@@ -75,9 +75,9 @@ func main() {
 	}
 	// Build each zip
 	var wg sync.WaitGroup
-	wg.Add(len(zips))
 	ch := make(chan error)
 	for _, zip := range zips {
+		wg.Add(1)
 		go func(zip lib.ZipInfo, apps *lib.Apps, files *lib.Files, wg *sync.WaitGroup, ch chan error) {
 			defer wg.Done()
 			if zip.Name != "" {
@@ -85,10 +85,19 @@ func main() {
 			}
 		}(zip, apps, files, &wg, ch)
 	}
+
+	var errs []error
+	go func(ch *chan error, errs *[]error) {
+		for err := range *ch {
+			fmt.Println(err)
+			*errs = append(*errs, err)
+		}
+	}(&ch, &errs)
+
 	wg.Wait()
 	close(ch)
 
-	for err := range ch {
-		fmt.Sprintf("\n%v", err)
+	for _, err := range errs {
+		fmt.Printf("\n%v", err)
 	}
 }

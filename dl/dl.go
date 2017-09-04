@@ -31,6 +31,9 @@ func Download(src, dest string) error {
 		return fmt.Errorf("Error while setting up a connection to %v:\n  %v", src, err)
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return fmt.Errorf("Error while connecting to %v:\n  Received non-ok status code %v", src, resp.StatusCode)
+	}
 
 	_, err = io.Copy(out, resp.Body)
 	if err != nil {
