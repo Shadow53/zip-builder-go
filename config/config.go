@@ -18,8 +18,8 @@ func parseFileConfig(file map[string]interface{}) *lib.FileInfo {
 	return &lib.FileInfo{
 		Url:                lib.StringOrDefault(file["url"], ""),
 		Destination:        dest,
-		InstallRemoveFiles: lib.StringSliceOrNil(file["install_remove_files"]),
-		UpdateRemoveFiles:  lib.StringSliceOrNil(file["update_remove_files"]),
+		InstallRemoveFiles: append(lib.StringSliceOrNil(file["remove_files"]), lib.StringSliceOrNil(file["install_remove_files"])...),
+		UpdateRemoveFiles:  append(lib.StringSliceOrNil(file["remove_files"]), lib.StringSliceOrNil(file["update_remove_files"])...),
 		MD5:                lib.StringOrDefault(file["md5"], ""),
 		SHA1:               lib.StringOrDefault(file["sha1"], ""),
 		SHA256:             lib.StringOrDefault(file["sha256"], ""),
@@ -143,8 +143,8 @@ func parseAppConfig(app map[string]interface{}) (*lib.AppInfo, error) {
 func parseZipConfig(zip map[string]interface{}) lib.ZipInfo {
 	return lib.ZipInfo{
 		Name:               lib.StringOrDefault(zip["name"], ""),
-		InstallRemoveFiles: lib.StringSliceOrNil(zip["install_remove_files"]),
-		UpdateRemoveFiles:  lib.StringSliceOrNil(zip["update_remove_files"]),
+		InstallRemoveFiles: append(lib.StringSliceOrNil(zip["remove_files"]), lib.StringSliceOrNil(zip["install_remove_files"])...),
+		UpdateRemoveFiles:  append(lib.StringSliceOrNil(zip["remove_files"]), lib.StringSliceOrNil(zip["update_remove_files"])...),
 		Apps:               lib.StringSliceOrNil(zip["apps"]),
 		Files:              lib.StringSliceOrNil(zip["files"])}
 }
