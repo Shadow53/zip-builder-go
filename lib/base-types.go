@@ -49,6 +49,8 @@ type ZipInfo struct {
 	UpdateRemoveFiles  []string
 	Apps               []string
 	Files              []string
+	Arches             []string
+	Versions           []string
 	Mux                sync.RWMutex
 }
 

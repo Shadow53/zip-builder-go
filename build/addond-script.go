@@ -87,7 +87,7 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 	fmt.Println("Generating addon.d recovery script(s)")
 	addondFile := make(map[string]*lib.AndroidVersionInfo)
 	// Set to lowest version so it is set if nothing is installed, for when a zip only removes
-	baseVersion := lib.Versions[0]
+	baseVersion := zip.Versions[0]
 	var baseMux sync.Mutex
 
 	zip.RLock()
@@ -96,9 +96,9 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 	zip.RUnlock()
 	var wg sync.WaitGroup
 
-	for _, ver := range lib.Versions {
+	for _, ver := range zip.Versions {
 		lib.Debug("VERSION: " + ver)
-		for _, arch := range lib.Arches {
+		for _, arch := range zip.Arches {
 			lib.Debug("ARCH: " + arch)
 			var backupFiles []string
 			var backupMux sync.Mutex
@@ -121,7 +121,7 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 						apps.RLockAppVersion(app, ver)
 						defer apps.RUnlockAppVersion(app, ver)
 						if !apps.GetAppVersion(app, ver).HasArchSpecificInfo {
-							arch = lib.Arches[0]
+							arch = lib.NOARCH
 						}
 						if apps.AppVersionArchExists(app, ver, arch) {
 							apps.RLockAppVersionArch(app, ver, arch)
@@ -164,7 +164,7 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 						files.RLockFileVersion(file, ver)
 						defer files.RUnlockFileVersion(file, ver)
 						if !files.GetFileVersion(file, ver).HasArchSpecificInfo {
-							arch = lib.Arches[0]
+							arch = lib.NOARCH
 						}
 						if files.FileVersionArchExists(file, ver, arch) {
 							files.RLockFileVersionArch(file, ver, arch)
@@ -214,6 +214,8 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 				fileName := "addond-" + baseVersion
 				if isArchSpecific {
 					fileName = fileName + "-" + arch
+				} else {
+					arch = lib.NOARCH
 				}
 				fileName = fileName + ".sh"
 				scriptDest = filepath.Join(scriptDest, fileName)

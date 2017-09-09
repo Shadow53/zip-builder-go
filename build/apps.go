@@ -9,10 +9,10 @@ import (
 	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
-func downloadApp(apps *lib.Apps, app, ver, arch, apppath string) error {
+func downloadApp(apps *lib.Apps, zip *lib.ZipInfo, app, ver, arch, apppath string) error {
 	if apps.GetApp(app).UrlIsFDroidRepo {
 		// Create separate variable to get around not being able to address map items
-		err := dl.DownloadFromFDroidRepo(apps.GetApp(app), ver, arch, apppath)
+		err := dl.DownloadFromFDroidRepo(apps.GetApp(app), zip, ver, arch, apppath)
 		if err != nil {
 			return err
 		}
@@ -45,7 +45,7 @@ func DownloadApp(zip *lib.ZipInfo, files *lib.Files, apps *lib.Apps, app, ver, a
 		apppath := filepath.Join(zippath, "files", filename)
 
 		// Download as necessary
-		err := downloadApp(apps, app, ver, arch, apppath)
+		err := downloadApp(apps, zip, app, ver, arch, apppath)
 		if err != nil {
 			ch <- fmt.Errorf("Error while downloading app \"%v\":\n  %v", apps.GetApp(app).PackageName, err)
 			return

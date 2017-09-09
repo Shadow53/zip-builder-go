@@ -88,7 +88,7 @@ func MakeZip(zip *lib.ZipInfo, apps *lib.Apps, files *lib.Files, ch chan error) 
 
 	for _, app := range zipApps {
 		lib.Debug("CHECKING TO DOWNLOAD " + app)
-		for _, ver := range lib.Versions {
+		for _, ver := range zip.Versions {
 			appVer := ""
 			hasArchInfo := false
 			apps.RLockApp(app)
@@ -102,15 +102,15 @@ func MakeZip(zip *lib.ZipInfo, apps *lib.Apps, files *lib.Files, ch chan error) 
 
 			if appVer == ver {
 				if hasArchInfo {
-					zipwg.Add(len(lib.Arches))
+					zipwg.Add(len(zip.Arches))
 					lib.Debug("Added download for each arch")
-					for _, arch := range lib.Arches {
+					for _, arch := range zip.Arches {
 						go DownloadApp(zip, files, apps, app, ver, arch, zippath, cherr, &zipwg)
 					}
 				} else {
 					zipwg.Add(1)
 					lib.Debug("Added one download")
-					go DownloadApp(zip, files, apps, app, ver, lib.Arches[0], zippath, cherr, &zipwg)
+					go DownloadApp(zip, files, apps, app, ver, lib.NOARCH, zippath, cherr, &zipwg)
 				}
 			}
 		}
@@ -119,7 +119,7 @@ func MakeZip(zip *lib.ZipInfo, apps *lib.Apps, files *lib.Files, ch chan error) 
 	// Download other files
 	for _, file := range zipFiles {
 		lib.Debug("CHECKING TO DOWNLOAD " + file)
-		for _, ver := range lib.Versions {
+		for _, ver := range zip.Versions {
 			fileVer := ""
 			hasArchInfo := false
 			files.RLockFile(file)
@@ -133,13 +133,13 @@ func MakeZip(zip *lib.ZipInfo, apps *lib.Apps, files *lib.Files, ch chan error) 
 
 			if fileVer == ver {
 				if hasArchInfo {
-					zipwg.Add(len(lib.Arches))
-					for _, arch := range lib.Arches {
+					zipwg.Add(len(zip.Arches))
+					for _, arch := range zip.Arches {
 						go DownloadFile(files, file, ver, arch, zippath, cherr, &zipwg)
 					}
 				} else {
 					zipwg.Add(1)
-					go DownloadFile(files, file, ver, lib.Arches[0], zippath, cherr, &zipwg)
+					go DownloadFile(files, file, ver, lib.NOARCH, zippath, cherr, &zipwg)
 				}
 			}
 		}

@@ -72,18 +72,18 @@ func makeFileDeleteScriptlet(filesToDelete map[string]bool, buffer *bytes.Buffer
 	}
 }
 
-func processInstallFile(item map[string]*lib.AndroidVersionInfo, ver string, extractFiles *bytes.Buffer, verFilesToDelete *map[string]bool) {
+func processInstallFile(item map[string]*lib.AndroidVersionInfo, zip *lib.ZipInfo, ver string, extractFiles *bytes.Buffer, verFilesToDelete *map[string]bool) {
 	if !item[ver].HasArchSpecificInfo {
-		if item[ver].Arch[lib.Arches[0]].FileName != "" {
-			lib.Debug("INSTALLING: " + item[ver].Arch[lib.Arches[0]].FileName)
-			makeFileInstallScriptlet(item[ver].Arch[lib.Arches[0]], extractFiles)
-			for _, del := range item[ver].Arch[lib.Arches[0]].InstallRemoveFiles {
+		if item[ver].Arch[lib.NOARCH].FileName != "" {
+			lib.Debug("INSTALLING: " + item[ver].Arch[lib.NOARCH].FileName)
+			makeFileInstallScriptlet(item[ver].Arch[lib.NOARCH], extractFiles)
+			for _, del := range item[ver].Arch[lib.NOARCH].InstallRemoveFiles {
 				lib.Debug("DELETE FILE (VERSION): " + del)
 				(*verFilesToDelete)[del] = true
 			}
 		}
 	} else {
-		for _, arch := range lib.Arches {
+		for _, arch := range zip.Arches {
 			if item[ver].Arch[arch] != nil && item[ver].Arch[arch].FileName != "" {
 				lib.Debug("TESTING FOR ANDROID ARCH: " + arch)
 				extractFiles.WriteString("if is_substring(\"")
@@ -110,17 +110,17 @@ func processInstallFile(item map[string]*lib.AndroidVersionInfo, ver string, ext
 	}
 }
 
-func makePerItemScriptlet(item map[string]*lib.AndroidVersionInfo, buff *bytes.Buffer) {
+func makePerItemScriptlet(item map[string]*lib.AndroidVersionInfo, zip *lib.ZipInfo, buff *bytes.Buffer) {
 	multVersionTest := ""
 	verFilesToDelete := make(map[string]bool)
 	var extractFiles bytes.Buffer
 	var deleteFiles bytes.Buffer
 
-	for i, ver := range append(lib.Versions, "") {
+	for i, ver := range append(zip.Versions, "") {
 		lib.Debug("ANDROID VERSION: " + ver)
 		testVersion := "is_substring(\"" + ver + "\", file_getprop(\"/system/build.prop\", \"ro.build.version.release\"))"
 		if ver == "" || (item[ver] != nil && item[ver].Base != "") {
-			if ver == "" || item[ver].Base == ver || i == len(lib.Versions) {
+			if ver == "" || item[ver].Base == ver || i == len(zip.Versions) {
 				if multVersionTest != "" && (deleteFiles.Len() > 0 || extractFiles.Len() > 0) {
 					buff.WriteString("if " + multVersionTest + " then\n")
 					makeFileDeleteScriptlet(verFilesToDelete, &deleteFiles)
@@ -132,8 +132,8 @@ func makePerItemScriptlet(item map[string]*lib.AndroidVersionInfo, buff *bytes.B
 				multVersionTest = testVersion
 				extractFiles.Reset()
 				deleteFiles.Reset()
-				if i < len(lib.Versions) {
-					processInstallFile(item, ver, &extractFiles, &verFilesToDelete)
+				if i < len(zip.Versions) {
+					processInstallFile(item, zip, ver, &extractFiles, &verFilesToDelete)
 				}
 			} else {
 				multVersionTest = multVersionTest + " || " + testVersion
@@ -175,7 +175,7 @@ ui_print("Detected arch: " + file_getprop("/system/build.prop", "ro.product.cpu.
 	for _, app := range zipApps {
 		apps.RLockApp(app)
 		if apps.App[app].PackageName != "" {
-			makePerItemScriptlet(apps.App[app].Android.Version, &script)
+			makePerItemScriptlet(apps.App[app].Android.Version, zip, &script)
 		}
 		apps.RUnlockApp(app)
 	}
@@ -183,7 +183,7 @@ ui_print("Detected arch: " + file_getprop("/system/build.prop", "ro.product.cpu.
 	var giveWarning bool
 	for _, file := range zipFiles {
 		files.RLockFile(file)
-		makePerItemScriptlet(files.File[file].Version, &script)
+		makePerItemScriptlet(files.File[file].Version, zip, &script)
 		files.RUnlockFile(file)
 
 		giveWarning = giveWarning || file == "permissions.xml" || file == "sysconfig.xml"

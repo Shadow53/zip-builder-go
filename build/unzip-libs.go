@@ -69,8 +69,8 @@ func processUnzipFile(file *zip.File, app *lib.AppInfo, root, ver, arch, a strin
 			}
 			files.UnlockFile(fileId)
 
-			for i := sort.SearchStrings(lib.Versions, ver); i < len(lib.Versions) && app.Android.Version[lib.Versions[i]].Base == ver; i++ {
-				v := lib.Versions[i]
+			for i := sort.SearchStrings(zipinfo.Versions, ver); i < len(zipinfo.Versions) && app.Android.Version[zipinfo.Versions[i]].Base == ver; i++ {
+				v := zipinfo.Versions[i]
 				lib.Debug("Adding lib to Android version " + v)
 
 				files.LockFile(fileId)
@@ -82,12 +82,13 @@ func processUnzipFile(file *zip.File, app *lib.AppInfo, root, ver, arch, a strin
 				}
 				files.UnlockFile(fileId)
 
-				dest := "/system/lib"
-				if strings.Index(a, "64") > -1 {
+				dest := app.Android.Version[ver].Arch[arch].Destination //"/system/lib"
+				dest = dest[0:strings.LastIndex(dest, "/")+1] + "lib/" + fileName
+				/*if strings.Index(a, "64") > -1 {
 					dest = dest + "64"
 				}
 				// Includes the '/'
-				dest = dest + fileName[strings.LastIndex(fileName, "/"):]
+				dest = dest + fileName[strings.LastIndex(fileName, "/"):]*/
 
 				files.LockFileVersion(fileId, v)
 				files.SetFileVersionArch(fileId, v, a, &lib.FileInfo{
@@ -120,8 +121,8 @@ func unzipSystemLibs(root string, zipinfo *lib.ZipInfo, app *lib.AppInfo, ver, a
 			if strings.HasPrefix(file.Name, "lib/") {
 				var wg sync.WaitGroup
 				ch := make(chan string)
-				wg.Add(len(lib.Arches))
-				for _, a := range lib.Arches {
+				wg.Add(len(zipinfo.Arches))
+				for _, a := range zipinfo.Arches {
 					go processUnzipFile(file, app, root, ver, arch, a, files, zipinfo, &wg, ch)
 				}
 				wg.Wait()

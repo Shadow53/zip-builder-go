@@ -36,6 +36,8 @@ var (
 		"x86_64"}
 )
 
+const NOARCH string = "noarch"
+
 func StringOrDefault(item interface{}, def string) string {
 	if item != nil {
 		str, ok := item.(string)
@@ -71,6 +73,44 @@ func StringSliceOrNil(item interface{}) []string {
 		}
 	}
 	return nil
+}
+
+func StringSliceContains(slice []string, str string) bool {
+	Debug("Searching for \"" + str + "\"")
+	for {
+		if slice == nil || len(slice) == 0 {
+			// Nothing to search against
+			return false
+		}
+		i := len(slice) / 2
+		if slice[i] == str {
+			return true
+		} else if str < slice[i] {
+			slice = slice[0:i]
+		} else if str > slice[i] {
+			slice = slice[i+1 : len(slice)]
+		}
+	}
+}
+
+func StringIntersection(strs1 []string, strs2 []string) []string {
+	var shorter *[]string
+	var longer *[]string
+	if len(strs1) > len(strs2) {
+		longer = &strs1
+		shorter = &strs2
+	} else {
+		longer = &strs2
+		shorter = &strs1
+	}
+
+	var results []string
+	for _, str := range *shorter {
+		if StringSliceContains(*longer, str) {
+			results = append(results, str)
+		}
+	}
+	return results
 }
 
 func GenerateMD5File(path string) error {

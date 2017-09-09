@@ -80,7 +80,7 @@ type FDroidRepo struct {
 	Apps    []FDroidApp `xml:"application"`
 }
 
-func DownloadFromFDroidRepo(app *lib.AppInfo, ver, arch, dest string) error {
+func DownloadFromFDroidRepo(app *lib.AppInfo, zip *lib.ZipInfo, ver, arch, dest string) error {
 	lib.Debug("DOWNLOADING " + app.PackageName + " FROM F-DROID")
 	if app.Android.Version[ver].Arch[arch].Url != "" {
 		index, err := getFDroidRepoIndex(app.Android.Version[ver].Arch[arch].Url)
@@ -107,10 +107,10 @@ func DownloadFromFDroidRepo(app *lib.AppInfo, ver, arch, dest string) error {
 			if tmpapp.Id == app.PackageName {
 				lib.Debug("ADDING PERMISSIONS LISTED ON F-DROID")
 				app.Permissions = strings.Split(tmpapp.Apks[0].Permissions, ",")
-				for _, ver := range lib.Versions {
+				for _, ver := range zip.Versions {
 					if app.Android.Version[ver] != nil && app.Android.Version[ver].Base != "" {
 						if app.Android.Version[ver].HasArchSpecificInfo {
-							for _, arch := range lib.Arches {
+							for _, arch := range zip.Arches {
 								file := app.Android.Version[ver].Arch[arch]
 								switch tmpapp.Apks[0].Hash.Type {
 								case "md5":
@@ -123,7 +123,7 @@ func DownloadFromFDroidRepo(app *lib.AppInfo, ver, arch, dest string) error {
 								app.Android.Version[ver].Arch[arch] = file
 							}
 						} else {
-							file := app.Android.Version[ver].Arch[lib.Arches[0]]
+							file := app.Android.Version[ver].Arch[lib.NOARCH]
 							switch tmpapp.Apks[0].Hash.Type {
 							case "md5":
 								file.MD5 = tmpapp.Apks[0].Hash.Hash
@@ -132,7 +132,7 @@ func DownloadFromFDroidRepo(app *lib.AppInfo, ver, arch, dest string) error {
 							case "sha256":
 								file.SHA256 = tmpapp.Apks[0].Hash.Hash
 							}
-							app.Android.Version[ver].Arch[lib.Arches[0]] = file
+							app.Android.Version[ver].Arch[lib.NOARCH] = file
 						}
 					}
 				}

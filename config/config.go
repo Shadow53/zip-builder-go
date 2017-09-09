@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -72,38 +73,40 @@ func parseAndroidVersionConfig(item map[string]interface{}) (map[string]*lib.And
 				versionSet = true
 				info := lib.AndroidVersionInfo{Base: ver, Arch: make(map[string]*lib.FileInfo)}
 				archInfoArr, archArrOk := version["arch"].([]interface{})
-				for _, arch := range lib.Arches {
-					info.HasArchSpecificInfo = info.HasArchSpecificInfo || version["arch"] != nil
+				if archArrOk && archInfoArr != nil {
+					for _, arch := range lib.Arches {
+						info.HasArchSpecificInfo = info.HasArchSpecificInfo || version["arch"] != nil
 
-					// Outer app config
-					fConfig := *appConfig
-					// Android version-specific config
-					mergeFileConfig(&fConfig, parseFileConfig(version))
-					// Arch-specific config
-					if archArrOk {
-						for _, aInfo := range archInfoArr {
-							archInfo, archInfoOk := aInfo.(map[string]interface{})
-							if archInfoOk {
-								archLabel, archLabelOk := archInfo["arch"].(string)
-								if archLabelOk {
-									if archLabel == arch {
-										mergeFileConfig(&fConfig, parseFileConfig(archInfo))
+						// Outer app config
+						fConfig := *appConfig
+						// Android version-specific config
+						mergeFileConfig(&fConfig, parseFileConfig(version))
+						// Arch-specific config
+						if archArrOk {
+							for _, aInfo := range archInfoArr {
+								archInfo, archInfoOk := aInfo.(map[string]interface{})
+								if archInfoOk {
+									archLabel, archLabelOk := archInfo["arch"].(string)
+									if archLabelOk {
+										if archLabel == arch {
+											mergeFileConfig(&fConfig, parseFileConfig(archInfo))
+										}
+									} else {
+										return nil, fmt.Errorf("Misconfigured \"arch\" on app %v, version %v: property \"arch\" is not a string", item["name"], ver)
 									}
 								} else {
-									return nil, fmt.Errorf("Misconfigured \"arch\" on app %v, version %v: property \"arch\" is not a string", item["name"], ver)
+									return nil, fmt.Errorf("Misconfigured \"arch\" on app %v, version %v: could not parse array item as architecture map", item["name"], ver)
 								}
-							} else {
-								return nil, fmt.Errorf("Misconfigured \"arch\" on app %v, version %v: could not parse array item as architecture map", item["name"], ver)
 							}
-
-						}
-					} else {
-						if version["arch"] != nil {
-							return nil, fmt.Errorf("Misconfigured \"arch\" on app %v, version %v: is not an array", item["name"], ver)
+							info.Arch[arch] = &fConfig
 						}
 					}
-
-					info.Arch[arch] = &fConfig
+				} else {
+					if version["arch"] != nil {
+						return nil, fmt.Errorf("Misconfigured \"arch\" on app %v, version %v: is not an array", item["name"], ver)
+					} else {
+						info.Arch[lib.NOARCH] = appConfig
+					}
 				}
 
 				// Set values for this and later Android versions
@@ -141,10 +144,28 @@ func parseAppConfig(app map[string]interface{}) (*lib.AppInfo, error) {
 }
 
 func parseZipConfig(zip map[string]interface{}) lib.ZipInfo {
+	arches := lib.StringSliceOrNil(zip["arches"])
+	if arches == nil {
+		arches = lib.Arches
+	} else {
+		sort.Strings(arches)
+		arches = lib.StringIntersection(lib.Arches, arches)
+	}
+
+	versions := lib.StringSliceOrNil(zip["versions"])
+	if versions == nil {
+		versions = lib.Versions
+	} else {
+		sort.Strings(versions)
+		versions = lib.StringIntersection(lib.Versions, versions)
+	}
+
 	return lib.ZipInfo{
 		Name:               lib.StringOrDefault(zip["name"], ""),
 		InstallRemoveFiles: append(lib.StringSliceOrNil(zip["remove_files"]), lib.StringSliceOrNil(zip["install_remove_files"])...),
 		UpdateRemoveFiles:  append(lib.StringSliceOrNil(zip["remove_files"]), lib.StringSliceOrNil(zip["update_remove_files"])...),
+		Arches:             arches,
+		Versions:           versions,
 		Apps:               lib.StringSliceOrNil(zip["apps"]),
 		Files:              lib.StringSliceOrNil(zip["files"])}
 }

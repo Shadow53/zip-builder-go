@@ -76,7 +76,7 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib.Fil
 	}
 
 	var minVersion string
-	for _, ver := range lib.Versions {
+	for _, ver := range zip.Versions {
 		for _, app := range zipApps {
 			apps.RLockApp(app)
 			if apps.AppVersionExists(app, ver) {
@@ -90,7 +90,7 @@ func makePermsFile(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib.Fil
 						Arch: make(map[string]*lib.FileInfo),
 						Base: minVersion}
 					// Only need to set this because is not arch-specific, will be reached first
-					permissionFile[ver].Arch[lib.Arches[0]] = &fileInfo
+					permissionFile[ver].Arch[lib.NOARCH] = &fileInfo
 				}
 			}
 			apps.RUnlockApp(app)
@@ -239,7 +239,7 @@ func makeSysconfigFile(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 	}
 
 	var minVersion string
-	for _, ver := range lib.Versions {
+	for _, ver := range zip.Versions {
 		for _, app := range zipApps {
 			apps.RLockApp(app)
 			if apps.AppVersionExists(app, ver) {
@@ -252,8 +252,7 @@ func makeSysconfigFile(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 					sysconfigFile[ver] = &lib.AndroidVersionInfo{
 						Arch: make(map[string]*lib.FileInfo),
 						Base: minVersion}
-					// Only need to set this because is not arch-specific, will be reached first
-					sysconfigFile[ver].Arch[lib.Arches[0]] = &fileInfo
+					sysconfigFile[ver].Arch[lib.NOARCH] = &fileInfo
 				}
 			}
 			apps.RUnlockApp(app)
