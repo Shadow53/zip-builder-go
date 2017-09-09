@@ -72,6 +72,8 @@ func parseAndroidVersionConfig(item map[string]interface{}) (map[string]*lib.And
 			if versionOk && lib.StringOrDefault(version["number"], "") == ver {
 				versionSet = true
 				info := lib.AndroidVersionInfo{Base: ver, Arch: make(map[string]*lib.FileInfo)}
+				// Android version-specific config
+				mergeFileConfig(appConfig, parseFileConfig(version))
 				archInfoArr, archArrOk := version["arch"].([]interface{})
 				if archArrOk && archInfoArr != nil {
 					for _, arch := range lib.Arches {
@@ -79,8 +81,6 @@ func parseAndroidVersionConfig(item map[string]interface{}) (map[string]*lib.And
 
 						// Outer app config
 						fConfig := *appConfig
-						// Android version-specific config
-						mergeFileConfig(&fConfig, parseFileConfig(version))
 						// Arch-specific config
 						if archArrOk {
 							for _, aInfo := range archInfoArr {
