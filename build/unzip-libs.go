@@ -46,7 +46,7 @@ func processUnzipFile(file *zip.File, app *lib.AppInfo, root, ver, arch, a strin
 			}
 			defer targetFile.Close()
 
-			fmt.Println("Extracting library from " + app.PackageName + ": " + file.Name)
+			lib.Verbose("Extracting library from " + app.PackageName + ": " + file.Name)
 			_, err = io.Copy(targetFile, fileReader)
 			if err != nil {
 				ch <- fmt.Sprintf("Error while copying from %v to %v:\n  %v", file.Name, path, err)
@@ -110,6 +110,7 @@ func processUnzipFile(file *zip.File, app *lib.AppInfo, root, ver, arch, a strin
 func unzipSystemLibs(root string, zipinfo *lib.ZipInfo, app *lib.AppInfo, ver, arch string, files *lib.Files) error {
 	if strings.HasPrefix(app.Android.Version[ver].Arch[arch].Destination, "/system/") {
 		// Hold all library files for this app in {ZIPROOT}/files/app-lib/
+		fmt.Println("Extracting library files from " + app.Android.Version[ver].Arch[arch].FileName)
 		zipLoc := filepath.Join(root, "files", app.Android.Version[ver].Arch[arch].FileName)
 		reader, err := zip.OpenReader(zipLoc)
 		if err != nil {

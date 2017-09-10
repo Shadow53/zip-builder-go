@@ -16,7 +16,7 @@ func checkChecksums(file *lib.FileInfo, path string) error {
 	sha1sum := file.SHA1
 	sha256sum := file.SHA256
 	if md5sum != "" {
-		fmt.Print("Checking md5sum... ")
+		fmt.Println("Checking md5sum for " + file.FileName)
 		sum, err := lib.GetHash(path, "md5")
 		if err != nil {
 			return fmt.Errorf("Error while calculating md5sum of %v:\n  %v", path, err)
@@ -25,10 +25,9 @@ func checkChecksums(file *lib.FileInfo, path string) error {
 			lib.Debug("Wrong MD5SUM")
 			return fmt.Errorf("Unexpected md5sum. Expected %v but got %v", md5sum, sum)
 		}
-		fmt.Println("md5sum matches")
 	}
 	if sha1sum != "" {
-		fmt.Print("Checking sha1sum... ")
+		fmt.Println("Checking sha1sum for " + file.FileName)
 		sum, err := lib.GetHash(path, "sha1")
 		if err != nil {
 			return fmt.Errorf("Error while calculating sha1sum of %v:\n  %v", path, err)
@@ -36,10 +35,9 @@ func checkChecksums(file *lib.FileInfo, path string) error {
 		if sum != sha1sum {
 			return fmt.Errorf("Unexpected md5sum. Expected %v but got %v", sha1sum, sum)
 		}
-		fmt.Println("sha1sum matches")
 	}
 	if sha256sum != "" {
-		fmt.Print("Checking sha256sum... ")
+		fmt.Println("Checking sha256sum for " + file.FileName)
 		sum, err := lib.GetHash(path, "sha256")
 		if err != nil {
 			return fmt.Errorf("Error while calculating sha256sum of %v:\n  %v", path, err)
@@ -47,7 +45,6 @@ func checkChecksums(file *lib.FileInfo, path string) error {
 		if sum != sha256sum {
 			return fmt.Errorf("Unexpected sha256sum. Expected %v but got %v", sha256sum, sum)
 		}
-		fmt.Println("sha256sum matches")
 	}
 	return nil
 }
@@ -145,7 +142,7 @@ func MakeZip(zip *lib.ZipInfo, apps *lib.Apps, files *lib.Files, ch chan error) 
 		}
 	}
 
-	fmt.Println("Waiting for files and apps to finish downloading")
+	lib.Verbose("Waiting for files and apps to finish downloading")
 	zipwg.Wait()
 	close(cherr)
 	errwg.Wait()

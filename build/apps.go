@@ -54,7 +54,7 @@ func DownloadApp(zip *lib.ZipInfo, files *lib.Files, apps *lib.Apps, app, ver, a
 		// Test checksums
 		err = checkChecksums(apps.GetAppVersionArch(app, ver, arch), apppath)
 		if err != nil {
-			ch <- err
+			ch <- fmt.Errorf("Error while downloading app \"%v\":\n %v", app, err)
 			return
 		}
 

@@ -18,8 +18,9 @@ import (
 func main() {
 	var destination string
 	var configPath string
+	var verbose bool
 	var debug bool
-	config.InitFlags(&destination, &configPath, &debug)
+	config.InitFlags(&destination, &configPath, &verbose, &debug)
 	flag.Parse()
 
 	viper.SetDefault("destination", "./build/")
@@ -48,6 +49,10 @@ func main() {
 
 	if debug {
 		viper.Set("debug", true)
+	}
+
+	if verbose {
+		viper.Set("verbose", true)
 	}
 
 	// Create temporary directory, use this

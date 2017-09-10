@@ -33,7 +33,7 @@ func DownloadFile(files *lib.Files, file, ver, arch, zippath string, cherr chan 
 			// Test checksums
 			err = checkChecksums(files.GetFileVersionArch(file, ver, arch), filepath)
 			if err != nil {
-				cherr <- err
+				cherr <- fmt.Errorf("Error while downloading file \"%v\":\n %v", file, err)
 				return
 			}
 		} else {

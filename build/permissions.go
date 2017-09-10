@@ -262,7 +262,7 @@ func makeSysconfigFile(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 	if len(sysconfig.DozeWhitelist) > 0 || len(sysconfig.DozeWhitelistExceptIdle) > 0 || len(sysconfig.DataSaverWhitelist) > 0 ||
 		len(sysconfig.SystemWhitelist) > 0 || len(sysconfig.SystemBlacklist) > 0 {
 
-		fmt.Println("Generating sysconfig file")
+		fmt.Println("Generating sysconfig file for " + zip.Name)
 		fileDest := filepath.Join(root, "files")
 		err := os.MkdirAll(fileDest, os.ModeDir|0755)
 		if err != nil {

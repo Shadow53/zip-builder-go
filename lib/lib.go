@@ -159,3 +159,9 @@ func Debug(msg string) {
 		fmt.Println("DEBUG: " + msg)
 	}
 }
+
+func Verbose(msg string) {
+	if viper.GetBool("verbose") || viper.GetBool("debug") {
+		fmt.Println(msg)
+	}
+}
