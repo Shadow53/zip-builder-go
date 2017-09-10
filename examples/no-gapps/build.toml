@@ -33,11 +33,7 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/OpenLauncher/OpenLauncher.apk"
-  install_remove_files = [
-    "/system/priv-app/Launcher3",
-    "/system/priv-app/Trebuchet"
-  ]
-  update_remove_files = [
+  remove_files = [
     "/system/priv-app/Launcher3",
     "/system/priv-app/Trebuchet"
   ]
@@ -59,8 +55,7 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/Etar/Etar.apk"
-  install_remove_files = ["/system/app/Calendar"]
-  update_remove_files = ["/system/app/Calendar"]
+  remove_files = ["/system/app/Calendar"]
   [[apps.androidversion]]
     number = "5.0"
 
@@ -108,11 +103,7 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/Vanilla/Vanilla.apk"
-  install_remove_files = [
-    "/system/priv-app/Eleven",
-    "/system/app/Phonograph"
-  ]
-  update_remove_files = [
+  remove_files = [
     "/system/priv-app/Eleven",
     "/system/app/Phonograph"
   ]
@@ -152,11 +143,7 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/Clock+/Clock+.apk"
-  install_remove_files = [
-    "/system/app/DeskClock",
-    "/system/app/OmniClockOSS"
-  ]
-  update_remove_files = [
+  remove_files = [
     "/system/app/DeskClock",
     "/system/app/OmniClockOSS"
   ]
@@ -169,11 +156,7 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/OpenCamera/OpenCamera.apk"
-  install_remove_files = [
-    "/system/app/Camera2",
-    "/system/app/SnapdragonCamera"
-  ]
-  update_remove_files = [
+  remove_files = [
     "/system/app/Camera2",
     "/system/app/SnapdragonCamera"
   ]
@@ -195,11 +178,7 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/Vanilla/Vanilla.apk"
-  install_remove_files = [
-    "/system/priv-app/Eleven",
-    "/system/app/Phonograph"
-  ]
-  update_remove_files = [
+  remove_files = [
     "/system/priv-app/Eleven",
     "/system/app/Phonograph"
   ]
@@ -239,11 +218,7 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/Clock+/Clock+.apk"
-  install_remove_files = [
-    "/system/app/DeskClock",
-    "/system/app/OmniClockOSS"
-  ]
-  update_remove_files = [
+  remove_files = [
     "/system/app/DeskClock",
     "/system/app/OmniClockOSS"
   ]
@@ -256,11 +231,7 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/OpenCamera/OpenCamera.apk"
-  install_remove_files = [
-    "/system/app/Camera2",
-    "/system/app/SnapdragonCamera"
-  ]
-  update_remove_files = [
+  remove_files = [
     "/system/app/Camera2",
     "/system/app/SnapdragonCamera"
   ]
