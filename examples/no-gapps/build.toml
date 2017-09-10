@@ -18,6 +18,15 @@
     number = "5.0"
 
 [[apps]]
+  name = "lightning"
+  package_name = "acr.browser.lightning"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Lightning/Lightning.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
   name = "davdroid"
   package_name = "at.bitfire.davdroid"
   url = "https://f-droid.org/repo"
@@ -254,7 +263,8 @@
     "etar",
     "f-droid",
     "f-droid-priv",
-    "firefox",
+    #"firefox",
+    "lightning",
     "opencamera",
     "openlauncher",
     "opentasks",
