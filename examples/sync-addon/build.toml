@@ -16,28 +16,24 @@
   destination = "/system/app/ContactSync/ContactSync.apk"
   permissions = [ "READ_CONTACTS", "WRITE_CONTACTS", "GET_ACCOUNTS", "USE_CREDENTIALS", "READ_SYNC_SETTINGS", "WRITE_SYNC_SETTINGS" ]
   [[apps.androidversion]]
+    number = "8.0"
+    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/26/nodpi/26.apk"
+    sha256 = "8ee5ab1011ff505d4cd4186a3b671f5860e9ce684595aac0af6240351a3571e8"
+  [[apps.androidversion]]
     number = "7.1"
     url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/25/nodpi/25.apk"
-    md5 = "7afc3f782085274c372bea662ec07b06"
-    sha1 = "05081d8fe332fc2a53c6d34bb869dc7b3a6aff8b"
-    sha256 = "bcca8702d46cb819be9c8d8511283060d02cf46675df50411a1650d3216062c8"
+    sha256 = "3881946c7f1fbfbfbadad193f76b84fafb45c4550f6f9d75936a5260b11b437f"
   [[apps.androidversion]]
     number = "7.0"
     url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/24/nodpi/24.apk"
-    md5 = "892804b2de50e4070b2fc7b75aad2445"
-    sha1 = "0bfac229027e6cbab9dd16a5eff663a58001de28"
     sha256 = "97691024c37ebd7bbed78456ec5ff32bc51d6fa089dd389fd9eb462515078286"
   [[apps.androidversion]]
     number = "6.0"
     url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/23/nodpi/23.apk"
-    md5 = "39fc9dc753a4e1be7caa49078f304578"
-    sha1 = "43245734994774cb41d832c8c5eae333b6f3bb0d"
     sha256 = "fc430824c01ebe05dfbc7bd8d7adfab94cde4e5a6bc3ac84419f4b4509101ae9"
   [[apps.androidversion]]
     number = "5.1"
     url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/22/nodpi/22.apk"
-    md5 = "d4bee111621a5a92213da4a2684ecbf0"
-    sha1 = "faa6281c52c234c4b7d1d47414f3c9f2e6a05bd1"
     sha256 = "aa1a43c4b43331f0d5a4245deeb4dfa32a31918caa225c1872f50c0c8a2086b9"
 
 [[apps]]
@@ -47,26 +43,18 @@
   [[apps.androidversion]]
     number = "7.1"
     url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/25/nodpi/25.apk"
-    md5 = "eb87799cdbf39ab496d36f470aa954c2"
-    sha1 = "3ee850ea250b34a913d41479732a2caaa649cea3"
     sha256 = "ef215a8f7cb482e369c2e7a5efd435607d89150722da09ccccc79f598b0a50b4"
   [[apps.androidversion]]
     number = "7.0"
     url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/24/nodpi/24.apk"
-    md5 = "2d61e6889e7ebb3481977beaf3333767"
-    sha1 = "09d5034ead1eea7472af86455d6a94e2b3832f5c"
     sha256 = "d402761376d02993ceed7979244225a371986ca5bc63aceaea86a2fd965af311"
   [[apps.androidversion]]
     number = "6.0"
     url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/23/nodpi/23.apk"
-    md5 = "832bf70bd5d901ea9026db9af53516dc"
-    sha1 = "67382cddb45d04d04697b4a73fbdeae3bea5f341"
     sha256 = "750f868e3001062abbeede1c786bfb541d0ba7d94c6225b730138eacd2c2233d"
   [[apps.androidversion]]
     number = "5.1"
     url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/22/nodpi/22.apk"
-    md5 = "c0e2fe0fcf4513e757e9b0be8f2202ee"
-    sha1 = "911cb2455542fc7c181153fcabbef345d01c0201"
     sha256 = "118558669343117df3047f6cf8cc3895fdc8952e5dd8c24f37acfaaf18edfba3"
 
 [[zips]]
