@@ -82,7 +82,7 @@
   package_name = "org.mozilla.firefox"
   url = "https://download.mozilla.org/?product=fennec-latest&os=android&lang=multi"
   destination = "/system/app/Firefox/Firefox.apk"
-  md5 = "a63e98c49d2f8795d174032dfb8980f5"
+  md5 = "d3c96bb69acfcdf68407f11d809f9494"
   [[apps.androidversion]]
     number = "5.0"
 
@@ -263,8 +263,8 @@
     "etar",
     "f-droid",
     "f-droid-priv",
-    #"firefox",
-    "lightning",
+    "firefox",
+    #"lightning",
     "opencamera",
     "openlauncher",
     "opentasks",
