@@ -18,14 +18,22 @@ func processUnzipFile(file *zip.File, app *lib.AppInfo, root, ver, arch, a strin
 	if !app.Android.Version[ver].HasArchSpecificInfo || arch == a {
 		// Only create the parent folder if there is a file to extract
 		fileName := file.Name[strings.LastIndex(file.Name, "lib/")+4:]
+		libArch := fileName[:strings.Index(fileName, "/")]
+		// Simplifying the arch name for arm was reported to fix crashing issues
+		if strings.HasPrefix(libArch, "armeabi") {
+			libArch = "arm"
+		} else if strings.HasPrefix(libArch, "arm64") {
+			libArch = "arm64"
+		}
+		fileName = fileName[strings.Index(fileName, "/")+1:] // Remove leading "/"
 		destFolder := filepath.Join(root, "files", app.PackageName+"-lib", ver)
 		err := os.MkdirAll(destFolder, os.ModeDir|0755)
 		if err != nil {
 			ch <- fmt.Sprintf("Error while making a directory at %v:\n  %v", destFolder, err)
 			return
 		}
-		if (a == "arm" && strings.Index(fileName, "armeabi") > -1) || (a != "arm" && strings.Index(fileName, a) > -1 && (a != "x86" || strings.Index(fileName, "x86_64") == -1)) {
-			path := filepath.Join(destFolder, fileName)
+		if a == libArch {
+			path := filepath.Join(destFolder, libArch, fileName)
 			err = os.MkdirAll(path[:strings.LastIndex(path, "/")], os.ModeDir|0755)
 			if err != nil {
 				ch <- fmt.Sprintf("Error while making a directory at %v:\n  %v", path[:strings.LastIndex(path, "/")], err)
@@ -82,19 +90,14 @@ func processUnzipFile(file *zip.File, app *lib.AppInfo, root, ver, arch, a strin
 				}
 				files.UnlockFile(fileId)
 
-				dest := app.Android.Version[ver].Arch[arch].Destination //"/system/lib"
-				dest = dest[0:strings.LastIndex(dest, "/")+1] + "lib/" + fileName
-				/*if strings.Index(a, "64") > -1 {
-					dest = dest + "64"
-				}
-				// Includes the '/'
-				dest = dest + fileName[strings.LastIndex(fileName, "/"):]*/
+				dest := app.Android.Version[ver].Arch[arch].Destination
+				dest = dest[0:strings.LastIndex(dest, "/")+1] + "lib/" + libArch + "/" + fileName
 
 				files.LockFileVersion(fileId, v)
 				files.SetFileVersionArch(fileId, v, a, &lib.FileInfo{
 					Destination: dest,
 					Mode:        "0644",
-					FileName:    app.PackageName + "-lib/" + ver + "/" + fileName})
+					FileName:    app.PackageName + "-lib/" + ver + "/" + libArch + "/" + fileName})
 				files.UnlockFileVersion(fileId, v)
 			}
 
