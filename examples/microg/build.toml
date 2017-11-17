@@ -15,6 +15,9 @@
     "/system/priv-app/GoogleLoginService",
     "/system/app/UnifiedNlp"
   ]
+  remove_files = [
+    "/system/priv-app/com.qualcomm.location"
+  ]
   doze_whitelist = true
   data_saver_whitelist = true
   [[apps.androidversion]]
@@ -53,8 +56,8 @@
 [[apps]]
   name = "playstore"
   package_name = "com.android.vending"
-  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80834200.apk"
-  sha256 = "73a28217d4336ebf344585e188ca7951e7b48d8ee00760d79b0695018fa7edc0"
+  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80837400.apk"
+  sha256 = "1216ccaa49fff2591c8283dec62b49326f1242d879d979763060ee414515f1f7"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   install_remove_files = [
     "/system/priv-app/PlayStore",
@@ -86,6 +89,9 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/UnifiedNlp/UnifiedNlp.apk"
+  remove_files = [
+    "/system/priv-app/com.qualcomm.location"
+  ]
   [[apps.androidversion]]
     number = "5.0"
 
