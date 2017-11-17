@@ -103,6 +103,6 @@ func main() {
 	close(ch)
 
 	for _, err := range errs {
-		fmt.Printf("\n%v", err)
+		fmt.Printf("\n%v\n", err)
 	}
 }
