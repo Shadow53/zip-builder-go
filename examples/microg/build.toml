@@ -5,7 +5,7 @@
   is_fdroid_repo = true
   # Needs to be in priv-app to be doze/data-saver whitelisted
   destination = "/system/priv-app/GmsCore/GmsCore.apk"
-  install_remove_files = [
+  remove_files = [
     "/system/app/GmsCore",
     "/system/priv-app/GmsCore",
     "/system/priv-app/GmsCore_update",
@@ -13,9 +13,7 @@
     "/system/priv-app/PrebuiltGmsCore",
     "/system/priv-app/GmsCoreSetupPrebuilt",
     "/system/priv-app/GoogleLoginService",
-    "/system/app/UnifiedNlp"
-  ]
-  remove_files = [
+    "/system/app/UnifiedNlp",
     "/system/priv-app/com.qualcomm.location"
   ]
   doze_whitelist = true
@@ -29,7 +27,7 @@
   url = "https://microg.org/fdroid/repo"
   is_fdroid_repo = true
   destination = "/system/priv-app/GsfProxy/GsfProxy.apk"
-  install_remove_files = [
+  remove_files = [
     "/system/app/GsfProxy",
     "/system/priv-app/GsfProxy",
     "/system/priv-app/GoogleServicesFramework"
@@ -43,10 +41,11 @@
   url = "https://gitlab.com/Nanolx/NanoMod/raw/master/Full/system/priv-app/Phonesky/Phonesky.apk"
   sha256 = "ce3f5610bd536dbbd59f9eab58b84dab9325f7949a45e7a9d410b6236c5e1e61"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
-  install_remove_files = [
+  remove_files = [
     "/system/priv-app/PlayStore",
     "/system/priv-app/FakeStore",
-    "/system/priv-app/Phonesky"
+    "/system/priv-app/Phonesky",
+    "/system/priv-app/YalpStore"
   ]
   permissions = ["FAKE_PACKAGE_SIGNATURE"]
   doze_whitelist_except_idle = true
@@ -56,23 +55,40 @@
 [[apps]]
   name = "playstore"
   package_name = "com.android.vending"
-  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80837400.apk"
-  sha256 = "1216ccaa49fff2591c8283dec62b49326f1242d879d979763060ee414515f1f7"
+  url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.android.vending/14/240-320-480/80844000.apk"
+  sha256 = "8939d4a8477f450689cc16e9af3e9625a7b1e11125d7bbe2ecc9b53aa727f182"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
-  install_remove_files = [
+  remove_files = [
     "/system/priv-app/PlayStore",
     "/system/priv-app/FakeStore",
-    "/system/priv-app/Phonesky"
+    "/system/priv-app/Phonesky",
+    "/system/priv-app/YalpStore"
   ]
   doze_whitelist_except_idle = true
   [[apps.androidversion]]
     number = "5.0"
+    [[apps.androidversion.arch]]
+    arch = "arm"
+    url = "https://raw.githubusercontent.com/opengapps/arm/master/priv-app/com.android.vending/14/240-320-480/80853700.apk"
+    sha256 = "8972d2b1b605c416dca9c142b1c3d3ca2ce02a0e679abe4b59e8f32424c93d06"
+    [[apps.androidversion.arch]]
+    arch = "arm64"
+    url = "https://raw.githubusercontent.com/opengapps/arm/master/priv-app/com.android.vending/14/240-320-480/80853700.apk"
+    sha256 = "8972d2b1b605c416dca9c142b1c3d3ca2ce02a0e679abe4b59e8f32424c93d06"
+    [[apps.androidversion.arch]]
+    arch = "x86"
+    url = "https://raw.githubusercontent.com/opengapps/x86/master/priv-app/com.android.vending/14/240-320-480/80853700.apk"
+    sha256 = "8972d2b1b605c416dca9c142b1c3d3ca2ce02a0e679abe4b59e8f32424c93d06"
+    [[apps.androidversion.arch]]
+    arch = "x86_64"
+    url = "https://raw.githubusercontent.com/opengapps/x86_64/master/priv-app/com.android.vending/14/240-320-480/80853700.apk"
+    sha256 = "8972d2b1b605c416dca9c142b1c3d3ca2ce02a0e679abe4b59e8f32424c93d06"
 
 [[apps]]
   name = "fakestore"
   package_name = "com.android.vending"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
-  install_remove_files = [
+  remove_files = [
     "/system/priv-app/PlayStore",
     "/system/priv-app/FakeStore",
     "/system/priv-app/Phonesky"
