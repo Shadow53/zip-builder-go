@@ -16,6 +16,9 @@
     "/system/app/UnifiedNlp",
     "/system/priv-app/com.qualcomm.location"
   ]
+  install_remove_files = [
+    "/data/data/com.google.android.gms"
+  ]
   doze_whitelist = true
   data_saver_whitelist = true
   [[apps.androidversion]]
@@ -32,6 +35,9 @@
     "/system/priv-app/GsfProxy",
     "/system/priv-app/GoogleServicesFramework"
   ]
+  install_remove_files = [
+    "/data/data/com.google.android.gsf"
+  ]
   [[apps.androidversion]]
     number = "5.0"
 
@@ -46,6 +52,9 @@
     "/system/priv-app/FakeStore",
     "/system/priv-app/Phonesky",
     "/system/priv-app/YalpStore"
+  ]
+  install_remove_files = [
+    "/data/data/com.android.vending"
   ]
   permissions = ["FAKE_PACKAGE_SIGNATURE"]
   doze_whitelist_except_idle = true
@@ -63,6 +72,9 @@
     "/system/priv-app/FakeStore",
     "/system/priv-app/Phonesky",
     "/system/priv-app/YalpStore"
+  ]
+  install_remove_files = [
+    "/data/data/com.android.vending"
   ]
   doze_whitelist_except_idle = true
   [[apps.androidversion]]
@@ -92,6 +104,9 @@
     "/system/priv-app/PlayStore",
     "/system/priv-app/FakeStore",
     "/system/priv-app/Phonesky"
+  ]
+  install_remove_files = [
+    "/data/data/com.android.vending"
   ]
   permissions = ["FAKE_PACKAGE_SIGNATURE"]
   url = "https://microg.org/fdroid/repo"
