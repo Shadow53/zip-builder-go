@@ -32,7 +32,8 @@ func processUnzipFile(file *zip.File, app *lib.AppInfo, root, ver, arch, a strin
 			ch <- fmt.Sprintf("Error while making a directory at %v:\n  %v", destFolder, err)
 			return
 		}
-		if a == libArch {
+		// Add exception for 32-bit arm libs on 64-bit arm devices - fix Firefox crash
+		if a == libArch || (a == "arm64" && libArch == "arm") {
 			path := filepath.Join(destFolder, libArch, fileName)
 			err = os.MkdirAll(path[:strings.LastIndex(path, "/")], os.ModeDir|0755)
 			if err != nil {
