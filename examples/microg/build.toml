@@ -149,6 +149,16 @@
   apps = [
     "microgms",
     "microgsf",
+    "playstore",
+    "mozillanlp",
+    "nominatim"
+  ]
+
+[[zips]]
+  name = "microg-playstore-patched"
+  apps = [
+    "microgms",
+    "microgsf",
     "playstore-patched",
     "mozillanlp",
     "nominatim"
