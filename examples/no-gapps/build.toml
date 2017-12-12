@@ -123,6 +123,15 @@
     number = "5.0"
 
 [[apps]]
+  name = "omni-notes"
+  package_name = "it.feio.android.omninotes.foss"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/OmniNotes/OmniNotes.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
   name = "opencamera"
   package_name = "net.sourceforge.opencamera"
   url = "https://f-droid.org/repo"
@@ -321,9 +330,9 @@
     "f-droid-priv",
     "firefox",
     "k9mail",
+    "omni-notes",
     #"openlauncher",
     "osmand",
-    "secuso-notes",
     "silence",
     "simple-gallery",
     "vanilla-music",
@@ -347,11 +356,11 @@
       "f-droid-priv",
       "firefox",
       "k9mail",
+      "omni-notes",
       "opencamera",
       #"openlauncher",
       "opentasks",
       "osmand",
-      "secuso-notes",
       "silence",
       "simple-gallery",
       "vanilla-music",
@@ -375,11 +384,11 @@
     "firefox",
     "k9mail",
     "lightning",
+    "omni-notes",
     "opencamera",
     #"openlauncher",
     "opentasks",
     "osmand",
-    "secuso-notes",
     "silence",
     "simple-gallery",
     "vanilla-music",
