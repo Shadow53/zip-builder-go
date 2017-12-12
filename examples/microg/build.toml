@@ -17,7 +17,7 @@
     "/system/priv-app/com.qualcomm.location"
   ]
   install_remove_files = [
-    "/data/data/com.google.android.gms"
+    #"/data/data/com.google.android.gms"
   ]
   doze_whitelist = true
   data_saver_whitelist = true
@@ -36,7 +36,7 @@
     "/system/priv-app/GoogleServicesFramework"
   ]
   install_remove_files = [
-    "/data/data/com.google.android.gsf"
+    #"/data/data/com.google.android.gsf"
   ]
   [[apps.androidversion]]
     number = "5.0"
