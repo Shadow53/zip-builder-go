@@ -136,6 +136,15 @@
     number = "5.0"
 
 [[apps]]
+  name = "dejavu"
+  package_name = "org.fitchfamily.android.dejavu"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/DejaVuNlpBackend/DejaVuNlpBackend.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
   name = "nominatim"
   package_name = "org.microg.nlp.backend.nominatim"
   url = "https://f-droid.org/repo"
@@ -151,6 +160,7 @@
     "microgsf",
     "playstore",
     "mozillanlp",
+    "dejavu",
     "nominatim"
   ]
 
@@ -161,6 +171,7 @@
     "microgsf",
     "playstore-patched",
     "mozillanlp",
+    "dejavu",
     "nominatim"
   ]
 
@@ -171,6 +182,7 @@
     "microgsf",
     "fakestore",
     "mozillanlp",
+    "dejavu",
     "nominatim"
   ]
 
@@ -191,5 +203,6 @@
   apps = [
     "unifiednlp",
     "mozillanlp",
+    "dejavu",
     "nominatim"
   ]
