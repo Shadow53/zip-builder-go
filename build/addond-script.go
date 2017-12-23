@@ -48,12 +48,6 @@ case "$1" in
     done
   ;;
   restore)
-    list_files | while read FILE REPLACEMENT; do
-      echo "Restoring $REPLACEMENT"
-      R=""
-      [ -n "$REPLACEMENT" ] && R="$S/$REPLACEMENT"
-      [ -f "$C/$S/$FILE" ] && restore_file $S/"$FILE" "$R"
-    done
 `)
 
 	for file := range deleteFiles {
@@ -61,7 +55,13 @@ case "$1" in
 		script.WriteString(file)
 		script.WriteString("\n")
 	}
-	script.WriteString(`  ;;
+	script.WriteString(`  list_files | while read FILE REPLACEMENT; do
+    echo "Restoring $REPLACEMENT"
+    R=""
+    [ -n "$REPLACEMENT" ] && R="$S/$REPLACEMENT"
+    [ -f "$C/$S/$FILE" ] && restore_file $S/"$FILE" "$R"
+  done
+  ;;
   pre-backup)
   #Stub
   ;;
