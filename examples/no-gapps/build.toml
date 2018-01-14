@@ -29,6 +29,19 @@
     number = "5.0"
 
 [[apps]]
+  name = "camera-roll"
+  package_name = "us.koller.cameraroll"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/CameraRoll/CameraRoll.apk"
+  remove_files = [
+    "/system/app/Gallery2",
+    "/system/priv-app/Gallery2"
+  ]
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
   name = "clock+"
   package_name = "com.philliphsu.clock2"
   url = "https://f-droid.org/repo"
@@ -97,7 +110,25 @@
   package_name = "org.mozilla.firefox"
   url = "https://download.mozilla.org/?product=fennec-latest&os=android&lang=multi"
   destination = "/system/app/Firefox/Firefox.apk"
-  md5 = "3f39ca63a4635f828333273d787b3434"
+  md5 = "aea1be9292a3a8ba33a1289ffa3e68b9"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "hayai-launcher"
+  package_name = "com.hayaisoftware.launcher"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/HayaiLauncher/HayaiLauncher.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "icsdroid"
+  package_name = "at.bitfire.icsdroid"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/ICSDroid/ICSDroid.apk"
   [[apps.androidversion]]
     number = "5.0"
 
@@ -281,6 +312,7 @@
     "duckduckgo",
     "f-droid",
     "f-droid-priv",
+    "icsdroid",
     "yalpstore"
   ]
 
@@ -292,6 +324,8 @@
     "etar",
     "f-droid",
     "f-droid-priv",
+    "hayai-launcher",
+    "icsdroid",
     "k9mail",
     #"openlauncher",
     "yalpstore"
@@ -302,17 +336,19 @@
   apps = [
     "amazefm",
     "calculator",
+    "camera-roll",
     "clock+",
     "davdroid",
     "duckduckgo",
     "etar",
     "f-droid",
     "f-droid-priv",
+    "hayai-launcher",
+    "icsdroid",
     "k9mail",
     #"openlauncher",
     "osmand",
     "silence",
-    "simple-gallery",
     "yalpstore"
   ]
 
@@ -322,6 +358,7 @@
   apps = [
     "amazefm",
     "calculator",
+    "camera-roll",
     "clock+",
     "davdroid",
     "duckduckgo",
@@ -329,12 +366,13 @@
     "f-droid",
     "f-droid-priv",
     "firefox",
+    "hayai-launcher",
+    "icsdroid",
     "k9mail",
     "omni-notes",
     #"openlauncher",
     "osmand",
     "silence",
-    "simple-gallery",
     "vanilla-music",
     "vanilla-cover-fetch",
     "vanilla-lyrics",
@@ -342,51 +380,57 @@
     "yalpstore"
   ]
 
-  [[zips]]
-    name = "no-gapps-stock"
-    apps = [
-      "amazefm",
-      "anysoftkb",
-      "calculator",
-      "clock+",
-      "davdroid",
-      "duckduckgo",
-      "etar",
-      "f-droid",
-      "f-droid-priv",
-      "firefox",
-      "k9mail",
-      "omni-notes",
-      "opencamera",
-      #"openlauncher",
-      "opentasks",
-      "osmand",
-      "silence",
-      "simple-gallery",
-      "vanilla-music",
-      "vanilla-cover-fetch",
-      "vanilla-lyrics",
-      "vanilla-tag-editor",
-      "yalpstore"
-    ]
-
 [[zips]]
-  #name = "no-gapps-custom"
+  name = "no-gapps-stock"
   apps = [
     "amazefm",
     "anysoftkb",
     "calculator",
+    "camera-roll",
     "clock+",
+    "davdroid",
     "duckduckgo",
     "etar",
     "f-droid",
     "f-droid-priv",
     "firefox",
+    "hayai-launcher",
+    "icsdroid",
+    "k9mail",
+    "omni-notes",
+    "opencamera",
+    #"openlauncher",
+    "opentasks",
+    "osmand",
+    "silence",
+    "vanilla-music",
+    "vanilla-cover-fetch",
+    "vanilla-lyrics",
+    "vanilla-tag-editor",
+    "yalpstore"
+  ]
+
+[[zips]]
+  name = "no-gapps-custom"
+  apps = [
+    "amazefm",
+    "anysoftkb",
+    "calculator",
+    "camera-roll",
+    "clock+",
+    "davdroid",
+    "duckduckgo",
+    "etar",
+    "f-droid",
+    "f-droid-priv",
+    "firefox",
+    "hayai-launcher",
+    "icsdroid",
     "k9mail",
     "lightning",
     "omni-notes",
     "opencamera",
-    #"openlauncher",
+    "openlauncher",
     "opentasks",
     "osmand",
     "silence",
