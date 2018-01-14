@@ -411,7 +411,7 @@
   ]
 
 [[zips]]
-  name = "no-gapps-custom"
+  #name = "no-gapps-custom"
   apps = [
     "amazefm",
     "anysoftkb",
