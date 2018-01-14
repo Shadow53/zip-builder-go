@@ -92,7 +92,7 @@ func processInstallFile(item map[string]*lib.AndroidVersionInfo, zip *lib.ZipInf
 				} else {
 					extractFiles.WriteString(arch)
 				}
-				extractFiles.WriteString("\", file_getprop(\"/system/build.prop\", \"ro.product.cpu.abilist\") + file_getprop(\"/system/build.prop\", \"ro.product.cpu.abi\")) then\n")
+				extractFiles.WriteString("\", getprop(\"ro.product.cpu.abilist\") + getprop(\"ro.product.cpu.abi\")) then\n")
 
 				archFilesToDelete := make(map[string]bool)
 				// Add any files that this app wants deleted
@@ -118,7 +118,7 @@ func makePerItemScriptlet(item map[string]*lib.AndroidVersionInfo, zip *lib.ZipI
 
 	for i, ver := range append(zip.Versions, "") {
 		lib.Debug("ANDROID VERSION: " + ver)
-		testVersion := "is_substring(\"" + ver + "\", file_getprop(\"/system/build.prop\", \"ro.build.version.release\"))"
+		testVersion := "is_substring(\"" + ver + "\", getprop(\"ro.build.version.release\"))"
 		if ver == "" || (item[ver] != nil && item[ver].Base != "") {
 			if ver == "" || item[ver].Base == ver || i == len(zip.Versions) {
 				if multVersionTest != "" && (deleteFiles.Len() > 0 || extractFiles.Len() > 0) {
@@ -155,8 +155,8 @@ run_program("/sbin/busybox", "mount", "/system");
 ui_print("Mounting data");
 ifelse(is_mounted("/data"), unmount("/data"));
 run_program("/sbin/busybox", "mount", "/data");
-ui_print("Detected Android version: " + file_getprop("/system/build.prop", "ro.build.version.release"));
-ui_print("Detected arch: " + file_getprop("/system/build.prop", "ro.product.cpu.abilist") + " " + file_getprop("/system/build.prop", "ro.product.cpu.abi"));
+ui_print("Detected Android version: " + getprop("ro.build.version.release"));
+ui_print("Detected arch: " + getprop("ro.product.cpu.abilist") + " " + getprop("ro.product.cpu.abi"));
 `)
 
 	filesToDelete := make(map[string]bool)
