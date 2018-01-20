@@ -120,6 +120,10 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/HayaiLauncher/HayaiLauncher.apk"
+  remove_files = [
+    "/system/priv-app/Launcher3",
+    "/system/priv-app/Trebuchet"
+  ]
   [[apps.androidversion]]
     number = "5.0"
 
