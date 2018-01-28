@@ -29,31 +29,25 @@ func parseFileConfig(file map[string]interface{}) *lib.FileInfo {
 }
 
 func mergeFileConfig(file *lib.FileInfo, toMerge *lib.FileInfo) {
-	if toMerge.Url != "" {
+	if file.Url == "" {
 		file.Url = toMerge.Url
-	}
-	if toMerge.Destination != "" {
-		file.Destination = toMerge.Destination
-	}
-	if toMerge.InstallRemoveFiles != nil {
-		file.InstallRemoveFiles = toMerge.InstallRemoveFiles
-	}
-	if toMerge.UpdateRemoveFiles != nil {
-		file.UpdateRemoveFiles = toMerge.UpdateRemoveFiles
-	}
-	if toMerge.MD5 != "" {
 		file.MD5 = toMerge.MD5
-	}
-	if toMerge.SHA1 != "" {
 		file.SHA1 = toMerge.SHA1
-	}
-	if toMerge.SHA256 != "" {
 		file.SHA256 = toMerge.SHA256
 	}
-	if toMerge.Mode != "" {
+	if file.Destination == "" {
+		file.Destination = toMerge.Destination
+	}
+	if file.InstallRemoveFiles == nil {
+		file.InstallRemoveFiles = toMerge.InstallRemoveFiles
+	}
+	if file.UpdateRemoveFiles == nil {
+		file.UpdateRemoveFiles = toMerge.UpdateRemoveFiles
+	}
+	if file.Mode == "" {
 		file.Mode = toMerge.Mode
 	}
-	if toMerge.FileName != "" {
+	if file.FileName == "" {
 		file.FileName = toMerge.FileName
 	}
 }
@@ -71,16 +65,17 @@ func parseAndroidVersionConfig(item map[string]interface{}) (map[string]*lib.And
 			version, versionOk := verInterface.(map[string]interface{})
 			if versionOk && lib.StringOrDefault(version["number"], "") == ver {
 				versionSet = true
+				vConfig := parseFileConfig(version)
 				info := lib.AndroidVersionInfo{Base: ver, Arch: make(map[string]*lib.FileInfo)}
 				// Android version-specific config
-				mergeFileConfig(appConfig, parseFileConfig(version))
+				mergeFileConfig(vConfig, appConfig)
 				archInfoArr, archArrOk := version["arch"].([]interface{})
 				if archArrOk && archInfoArr != nil {
 					for _, arch := range lib.Arches {
 						info.HasArchSpecificInfo = info.HasArchSpecificInfo || version["arch"] != nil
 
 						// Outer app config
-						fConfig := *appConfig
+						fConfig := *vConfig
 						// Arch-specific config
 						if archArrOk {
 							for _, aInfo := range archInfoArr {
@@ -105,7 +100,7 @@ func parseAndroidVersionConfig(item map[string]interface{}) (map[string]*lib.And
 					if version["arch"] != nil {
 						return nil, fmt.Errorf("Misconfigured \"arch\" on app %v, version %v: is not an array", item["name"], ver)
 					} else {
-						info.Arch[lib.NOARCH] = appConfig
+						info.Arch[lib.NOARCH] = vConfig
 					}
 				}
 
