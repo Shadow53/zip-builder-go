@@ -41,6 +41,10 @@
   package_name = "com.google.android.backuptransport"
   destination = "/system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk"
   [[apps.androidversion]]
+    number = "8.0"
+    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/26/nodpi/26.apk"
+    sha256 = "8d712333d5c729ecc9cbdddb4e51f152f72c4c701ab88d7235c4e993900ead05"
+  [[apps.androidversion]]
     number = "7.1"
     url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/25/nodpi/25.apk"
     sha256 = "ef215a8f7cb482e369c2e7a5efd435607d89150722da09ccccc79f598b0a50b4"
