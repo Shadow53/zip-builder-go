@@ -1,10 +1,27 @@
 package lib
 
-import "sync"
+import (
+	"bytes"
+	"sync"
+)
 
 type Apps struct {
 	App map[string]*AppInfo
 	Mux sync.RWMutex
+}
+
+func (a *Apps) String() string {
+	var buf bytes.Buffer
+	buf.WriteString("Apps{\n")
+	for key, app := range a.App {
+		buf.WriteString("  ")
+		buf.WriteString(key)
+		buf.WriteString(": ")
+		buf.WriteString(app.String())
+		buf.WriteString("\n")
+	}
+	buf.WriteString("}")
+	return buf.String()
 }
 
 func (a *Apps) Lock() {

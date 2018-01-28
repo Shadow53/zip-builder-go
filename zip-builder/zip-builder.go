@@ -78,6 +78,16 @@ func main() {
 		fmt.Printf("Error occurred while building configuration:\n  %v\n", err)
 		os.Exit(1)
 	}
+
+	if viper.GetBool("debug") {
+		lib.Debug("Configuration (parsed):\n")
+		for _, zip := range zips {
+			lib.Debug(zip.String())
+		}
+		lib.Debug(files.String())
+		lib.Debug(apps.String())
+	}
+
 	// Build each zip
 	var wg sync.WaitGroup
 	ch := make(chan error)

@@ -1,10 +1,26 @@
 package lib
 
-import "sync"
+import (
+	"bytes"
+	"sync"
+)
 
 type Files struct {
 	File map[string]*AndroidVersions
 	Mux  sync.RWMutex
+}
+
+func (f *Files) String() string {
+	var buf bytes.Buffer
+	buf.WriteString("Files{")
+	for key, val := range f.File {
+		buf.WriteString("\n  ")
+		buf.WriteString(key)
+		buf.WriteString(": ")
+		buf.WriteString(val.String())
+	}
+	buf.WriteString("\n}")
+	return buf.String()
 }
 
 func (f *Files) Lock() {
