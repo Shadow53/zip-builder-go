@@ -5,7 +5,7 @@
   is_fdroid_repo = true
   destination = "/system/app/HackersKeyboard/HackersKeyboard.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "termux"
@@ -14,7 +14,7 @@
   is_fdroid_repo = true
   destination = "/system/app/Termux/Termux.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "termux-api"
@@ -23,7 +23,7 @@
   is_fdroid_repo = true
   destination = "/system/app/TermuxAPI/TermuxAPI.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "termux-widget"
@@ -32,7 +32,7 @@
   is_fdroid_repo = true
   destination = "/system/app/TermuxWidget/TermuxWidget.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[apps]]
   name = "termux-styling"
@@ -41,7 +41,7 @@
   is_fdroid_repo = true
   destination = "/system/app/TermuxStyling/TermuxStyling.apk"
   [[apps.androidversion]]
-    number = "5.1"
+    number = "5.0"
 
 [[zips]]
   name = "hacker"
