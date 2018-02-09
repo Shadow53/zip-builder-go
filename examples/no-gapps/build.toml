@@ -299,6 +299,10 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/VinylMusic/VinylMusic.apk"
+  remove_files = [
+    "/system/priv-app/Eleven",
+    "/system/app/Phonograph"
+  ]
   [[apps.androidversion]]
     number = "5.0"
 
