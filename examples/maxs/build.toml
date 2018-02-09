@@ -1,0 +1,224 @@
+[[apps]]
+  name = "maxs-main"
+  package_name = "org.projectmaxs.main"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSMain/MAXSMain.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-alarmset"
+  package_name = "org.projectmaxs.module.alarmset"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSAlarmSet/MAXSAlarmSet.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-bluetooth"
+  package_name = "org.projectmaxs.module.bluetooth"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSBluetooth/MAXSBluetooth.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-bluetooth-admin"
+  package_name = "org.projectmaxs.module.bluetoothadmin"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSBluetoothAdmin/MAXSBluetoothAdmin.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-clipboard"
+  package_name = "org.projectmaxs.module.clipboard"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSClipboard/MAXSClipboard.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-constacts-read"
+  package_name = "org.projectmaxs.module.constactsread"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSContactsRead/MAXSContactsRead.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-file-read"
+  package_name = "org.projectmaxs.module.fileread"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSFileRead/MAXSFileRead.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-file-write"
+  package_name = "org.projectmaxs.module.filewrite"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSFileWrite/MAXSFileWrite.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-location-fine"
+  package_name = "org.projectmaxs.module.locationfine"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSLocationFine/MAXSLocationFine.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-misc"
+  package_name = "org.projectmaxs.module.misc"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSMisc/MAXSMisc.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-nfc"
+  package_name = "org.projectmaxs.module.nfc"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSNFC/MAXSNFC.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-notification"
+  package_name = "org.projectmaxs.module.notification"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSNotification/MAXSNotification.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-phonestate-read"
+  package_name = "org.projectmaxs.module.phonestateread"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSPhoneStateRead/MAXSPhoneStateRead.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-ringermode"
+  package_name = "org.projectmaxs.module.ringermode"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSRingerMode/MAXSRingerMode.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-shell"
+  package_name = "org.projectmaxs.module.shell"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSShell/MAXSShell.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-sms-notify"
+  package_name = "org.projectmaxs.module.smsnotify"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSSMSNotify/MAXSSMSNotify.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-sms-read"
+  package_name = "org.projectmaxs.module.smsread"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSSMSRead/MAXSSMSRead.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-sms-send"
+  package_name = "org.projectmaxs.module.smssend"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSSMSSend/MAXSSMSSend.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-sms-write"
+  package_name = "org.projectmaxs.module.smswrite"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSSMSWrite/MAXSSMSWrite.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-wifi-access"
+  package_name = "org.projectmaxs.module.wifiaccess"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSWifiAccess/MAXSWifiAccess.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-wifi-change"
+  package_name = "org.projectmaxs.module.wifichange"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSWifiChange/MAXSWifiChange.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "maxs-transport-xmpp"
+  package_name = "org.projectmaxs.transport.xmpp"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAXSTransportXMPP/MAXSTransportXMPP.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[zips]]
+    name = "maxs-full"
+    apps = [
+        "maxs-main",
+        "maxs-transport-xmpp",
+        "maxs-alarmset",
+        "maxs-bluetooth",
+        "maxs-bluetooth-admin",
+        "maxs-clipboard",
+        "maxs-contacts-read",
+        "maxs-file-read",
+        "maxs-file-write",
+        "maxs-location-fine",
+        "maxs-misc",
+        "maxs-nfc",
+        "maxs-notification",
+        "maxs-phonestate-read",
+        "maxs-ringermode",
+        "maxs-shell",
+        "maxs-sms-notify",
+        "maxs-sms-read",
+        "maxs-sms-send",
+        "maxs-sms-write",
+        "maxs-wifi-access",
+        "maxs-wifi-change"
+    ]
