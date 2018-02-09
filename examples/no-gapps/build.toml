@@ -106,6 +106,16 @@
     number = "5.0"
 
 [[apps]]
+  name = "fennec"
+  package_name = "org.mozilla.fennec_fdroid"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Fennec/Fennec.apk"
+  grant_system_user = true
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
   name = "firefox"
   package_name = "org.mozilla.firefox"
   url = "https://download.mozilla.org/?product=fennec-latest&os=android&lang=multi"
@@ -284,6 +294,15 @@
     number = "5.0"
 
 [[apps]]
+  name = "vinyl-music"
+  package_name = "com.poupa.vinylmusicplayer"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/VinylMusic/VinylMusic.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
   name = "yalpstore"
   package_name = "com.github.yeriomin.yalpstore"
   url = "https://f-droid.org/repo"
@@ -369,7 +388,8 @@
     "etar",
     "f-droid",
     "f-droid-priv",
-    "firefox",
+    "fennec",
+    #"firefox",
     "hayai-launcher",
     "icsdroid",
     "k9mail",
@@ -377,10 +397,11 @@
     #"openlauncher",
     "osmand",
     "silence",
-    "vanilla-music",
-    "vanilla-cover-fetch",
-    "vanilla-lyrics",
-    "vanilla-tag-editor",
+    #"vanilla-music",
+    #"vanilla-cover-fetch",
+    #"vanilla-lyrics",
+    #"vanilla-tag-editor",
+    "vinyl-music",
     "yalpstore"
   ]
 
@@ -397,7 +418,8 @@
     "etar",
     "f-droid",
     "f-droid-priv",
-    "firefox",
+    "fennec",
+    #"firefox",
     "hayai-launcher",
     "icsdroid",
     "k9mail",
@@ -407,10 +429,11 @@
     "opentasks",
     "osmand",
     "silence",
-    "vanilla-music",
-    "vanilla-cover-fetch",
-    "vanilla-lyrics",
-    "vanilla-tag-editor",
+    #"vanilla-music",
+    #"vanilla-cover-fetch",
+    #"vanilla-lyrics",
+    #"vanilla-tag-editor",
+    "vinyl-music",
     "yalpstore"
   ]
 
@@ -427,6 +450,7 @@
     "etar",
     "f-droid",
     "f-droid-priv",
+    "fennec",
     "firefox",
     "hayai-launcher",
     "icsdroid",
@@ -443,5 +467,6 @@
     "vanilla-cover-fetch",
     "vanilla-lyrics",
     "vanilla-tag-editor",
+    "vinyl-music",
     "yalpstore"
   ]
