@@ -45,7 +45,7 @@
   name = "playstore-patched"
   package_name = "com.android.vending"
   url = "https://nanolx.org/apk/Phonesky.apk"
-  sha256 = "99abb19844b607e5b1fce0e832a4a67a352d976a2aea8"
+  sha256 = "99abb19844b607e5b1fce0e832a4a67a352d976a2aea89156d358f36251a1aa3"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   remove_files = [
     "/system/priv-app/PlayStore",
