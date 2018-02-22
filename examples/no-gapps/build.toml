@@ -125,12 +125,12 @@
 
 [[apps]]
   name = "galaxy"
-  package_name = ""
+  package_name = "in.dragons.galaxy"
   url = "https://github.com/whyorean/Galaxy_Release/raw/master/Galaxy_Release_1.0.3.apk"
   destination = "/system/priv-app/GalaxyStore/GalaxyStore.apk"
   grant_system_user = true
   doze_whitelist_except_idle = true
-  permissions = ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+  permissions = ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "REQUEST_INSTALL_PACKAGES", "INSTALL_PACKAGES"]
   [[apps.androidversion]]
     number = "5.0"
 
