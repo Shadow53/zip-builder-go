@@ -1,0 +1,82 @@
+[[apps]]
+  name = "adaway"
+  package_name = "org.adaway"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/AdAway/AdAway.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "afwall"
+  package_name = "dev.ukanth.ufirewall"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/AFWall+/AFWall+.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "andotp"
+  package_name = "org.shadowice.flocke.andotp"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/AdAway/AdAway.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "blokada"
+  package_name = "org.blokada.alarm"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Blokada/Blokada.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "keepass-dx"
+  package_name = "com.kunzisoft.keepass.libre"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/KeepassDX/KeepassDX.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "netguard"
+  package_name = "eu.faircode.netguard"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/NetGuard/NetGuard.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "openkeychain"
+  package_name = "org.sufficientlysecure.keychain"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/OpenKeychain/OpenKeychain.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[zips]]
+  name = "security-root"
+  apps = [
+    "adaway",
+    "afwall",
+    "andotp",
+    "keepass-dx",
+    "openkeychain" 
+  ]
+
+[[zips]]
+  name = "security-noroot"
+  apps = [
+    "andotp",
+    "blokada",
+    "keepass-dx",
+    "netguard",
+    "openkeychain" 
+  ]
