@@ -124,6 +124,17 @@
     number = "5.0"
 
 [[apps]]
+  name = "galaxy"
+  package_name = ""
+  url = "https://github.com/whyorean/Galaxy_Release/raw/master/Galaxy_Release_1.0.3.apk"
+  destination = "/system/priv-app/GalaxyStore/GalaxyStore.apk"
+  grant_system_user = true
+  doze_whitelist_except_idle = true
+  permissions = ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
   name = "hayai-launcher"
   package_name = "com.hayaisoftware.launcher"
   url = "https://f-droid.org/repo"
@@ -154,6 +165,27 @@
   remove_files = [
     "/system/app/Email"
   ]
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "lawnchair"
+  package_name = "ch.deletescape.lawnchair.plah"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/Lawnchair/Lawnchair.apk"
+  #remove_files = [
+  #  "/system/priv-app/Launcher3",
+  #  "/system/priv-app/Trebuchet"
+  #]
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "lawnfeed"
+  package_name = "ch.deletescape.lawnchair.lawnfeed"
+  url = "https://storage.codebucket.de/lawnchair/1.1.0.1742/Lawnfeed-1.1.0.1742.apk"
+  destination = "/system/app/Lawnfeed/Lawnfeed.apk"
   [[apps.androidversion]]
     number = "5.0"
 
@@ -441,35 +473,38 @@
   ]
 
 [[zips]]
-  #name = "no-gapps-custom"
+  name = "no-gapps-custom"
   apps = [
     "amazefm",
     "anysoftkb",
-    "calculator",
-    "camera-roll",
-    "clock+",
+    #"calculator",
+    #"camera-roll",
+    #"clock+",
     "davdroid",
     "duckduckgo",
     "etar",
     "f-droid",
     "f-droid-priv",
     "fennec",
-    "firefox",
-    "hayai-launcher",
+    #"firefox",
+    "galaxy",
+    #"hayai-launcher",
     "icsdroid",
     "k9mail",
-    "lightning",
+    "lawnchair",
+    "lawnfeed",
+    #"lightning",
     "omni-notes",
-    "opencamera",
-    "openlauncher",
+    #"opencamera",
+    #"openlauncher",
     "opentasks",
     "osmand",
     "silence",
-    "simple-gallery",
-    "vanilla-music",
-    "vanilla-cover-fetch",
-    "vanilla-lyrics",
-    "vanilla-tag-editor",
+    #"simple-gallery",
+    #"vanilla-music",
+    #"vanilla-cover-fetch",
+    #"vanilla-lyrics",
+    #"vanilla-tag-editor",
     "vinyl-music",
-    "yalpstore"
+    #"yalpstore"
   ]
