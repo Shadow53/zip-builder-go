@@ -107,12 +107,21 @@
 [[apps]]
   name = "fennec"
   package_name = "org.mozilla.fennec_fdroid"
-  url = "https://f-droid.org/repo"
-  is_fdroid_repo = true
   destination = "/system/app/Fennec/Fennec.apk"
-  grant_system_user = true
   [[apps.androidversion]]
     number = "5.0"
+    [[apps.androidversion.arches]]
+      arch = "x86"
+      url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580210.apk"
+    [[apps.androidversion.arches]]
+      arch = "x86_64"
+      url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580210.apk"
+    [[apps.androidversion.arches]]
+      arch = "arm"
+      url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580200.apk"
+    [[apps.androidversion.arches]]
+      arch = "arm64"
+      url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580200.apk"
 
 [[apps]]
   name = "firefox"
@@ -487,7 +496,7 @@
     "etar",
     "f-droid",
     "f-droid-priv",
-    #"fennec",
+    "fennec",
     #"firefox",
     "galaxy",
     #"hayai-launcher",
@@ -495,7 +504,7 @@
     "k9mail",
     "lawnchair",
     "lawnfeed",
-    "lightning",
+    #"lightning",
     "omni-notes",
     #"opencamera",
     #"openlauncher",
