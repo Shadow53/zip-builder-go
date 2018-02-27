@@ -108,20 +108,9 @@
   name = "fennec"
   package_name = "org.mozilla.fennec_fdroid"
   destination = "/system/app/Fennec/Fennec.apk"
+  url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580200.apk"
   [[apps.androidversion]]
     number = "5.0"
-    [[apps.androidversion.arches]]
-      arch = "x86"
-      url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580210.apk"
-    [[apps.androidversion.arches]]
-      arch = "x86_64"
-      url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580210.apk"
-    [[apps.androidversion.arches]]
-      arch = "arm"
-      url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580200.apk"
-    [[apps.androidversion.arches]]
-      arch = "arm64"
-      url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_580200.apk"
 
 [[apps]]
   name = "firefox"
