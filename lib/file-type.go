@@ -53,11 +53,25 @@ func (f *Files) SetFile(name string, file *AndroidVersions) {
 
 func (f *Files) LockFile(name string) {
 	f.RLock()
+	if f.File == nil {
+		f.RUnlock()
+		f.Lock()
+		f.File = make(map[string]*AndroidVersions)
+		f.Unlock()
+		f.RLock()
+	}
 	f.File[name].Mux.Lock()
 }
 
 func (f *Files) RLockFile(name string) {
 	f.RLock()
+	if f.File == nil {
+		f.RUnlock()
+		f.Lock()
+		f.File = make(map[string]*AndroidVersions)
+		f.Unlock()
+		f.RLock()
+	}
 	f.File[name].Mux.RLock()
 }
 
@@ -79,20 +93,41 @@ func (f *Files) GetFileVersion(name, ver string) *AndroidVersionInfo {
 	if !f.FileExists(name) {
 		return nil
 	}
+	if f.File[name].Version == nil {
+		f.File[name].Version = make(map[string]*AndroidVersionInfo)
+	}
 	return f.File[name].Version[ver]
 }
 
 func (f *Files) SetFileVersion(name, ver string, file *AndroidVersionInfo) {
+	if f.File == nil {
+		f.File = make(map[string]*AndroidVersions)
+	}
+	if f.File[name].Version == nil {
+		f.File[name].Version = make(map[string]*AndroidVersionInfo)
+	}
 	f.File[name].Version[ver] = file
 }
 
 func (f *Files) LockFileVersion(name, ver string) {
 	f.RLockFile(name)
+	if f.File == nil {
+		f.File = make(map[string]*AndroidVersions)
+	}
+	if f.File[name].Version == nil {
+		f.File[name].Version = make(map[string]*AndroidVersionInfo)
+	}
 	f.File[name].Version[ver].Mux.Lock()
 }
 
 func (f *Files) RLockFileVersion(name, ver string) {
 	f.RLockFile(name)
+	if f.File == nil {
+		f.File = make(map[string]*AndroidVersions)
+	}
+	if f.File[name].Version == nil {
+		f.File[name].Version = make(map[string]*AndroidVersionInfo)
+	}
 	f.File[name].Version[ver].Mux.RLock()
 }
 
@@ -113,6 +148,15 @@ func (f *Files) FileVersionArchExists(name, ver, arch string) bool {
 func (f *Files) GetFileVersionArch(name, ver, arch string) *FileInfo {
 	if !f.FileVersionExists(name, ver) {
 		return nil
+	}
+	if f.File == nil {
+		f.File = make(map[string]*AndroidVersions)
+	}
+	if f.File[name].Version == nil {
+		f.File[name].Version = make(map[string]*AndroidVersionInfo)
+	}
+	if f.File[name].Version[ver].Arch == nil {
+		f.File[name].Version[ver].Arch = make(map[string]*FileInfo)
 	}
 	return f.File[name].Version[ver].Arch[arch]
 }
