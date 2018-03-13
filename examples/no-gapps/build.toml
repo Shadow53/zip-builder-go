@@ -124,7 +124,7 @@
 [[apps]]
   name = "galaxy"
   package_name = "in.dragons.galaxy"
-  url = "https://github.com/whyorean/Galaxy_Release/raw/master/Galaxy_Release_1.0.3.apk"
+  url = "https://github.com/whyorean/Galaxy_Release/raw/master/Galaxy_Release_1.0.4.apk"
   destination = "/system/priv-app/GalaxyStore/GalaxyStore.apk"
   grant_system_user = true
   doze_whitelist_except_idle = true
