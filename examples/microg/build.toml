@@ -1,4 +1,4 @@
- [[apps]]
+[[apps]]
   name = "microgms"
   package_name = "com.google.android.gms"
   url = "https://microg.org/fdroid/repo"
@@ -45,7 +45,7 @@
   name = "playstore-patched"
   package_name = "com.android.vending"
   url = "https://nanolx.org/apk/Phonesky.apk"
-  sha256 = "460a2303540dfe33d7a20baf3b1a70c6bb74438cdddfab6738face2143bad7cd"
+  sha256 = "e52d5ddfef2995208151bb6120768231ae900a6a996b348021f7fa06b91234d9"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   remove_files = [
     "/system/priv-app/PlayStore",
