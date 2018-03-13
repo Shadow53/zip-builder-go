@@ -83,7 +83,7 @@ func processInstallFile(item map[string]*lib.AndroidVersionInfo, zip *lib.ZipInf
 			}
 		}
 	} else {
-		for _, arch := range zip.Arches {
+		for _, arch := range lib.Arches {
 			if item[ver].Arch[arch] != nil && item[ver].Arch[arch].FileName != "" {
 				lib.Debug("TESTING FOR ANDROID ARCH: " + arch)
 				extractFiles.WriteString("if is_substring(\"")
