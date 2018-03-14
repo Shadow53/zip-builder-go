@@ -233,7 +233,7 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 						HasArchSpecificInfo: isArchSpecific,
 						Arch:                make(map[string]*lib.FileInfo)}
 				}
-
+				addondFile[ver].HasArchSpecificInfo = addondFile[ver].HasArchSpecificInfo || isArchSpecific
 				zip.RLock()
 				addondFile[ver].Arch[arch] = &lib.FileInfo{
 					Destination: "/system/addon.d/05-" + zip.Name + ".sh",
