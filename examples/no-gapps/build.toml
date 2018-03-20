@@ -124,7 +124,7 @@
 [[apps]]
   name = "galaxy"
   package_name = "in.dragons.galaxy"
-  url = "https://github.com/whyorean/Galaxy_Release/raw/master/Galaxy_Release_1.0.4.apk"
+  url = "https://github.com/whyorean/Galaxy/releases/download/v1.0.4/Galaxy_Release_1.0.4.apk"
   destination = "/system/priv-app/GalaxyStore/GalaxyStore.apk"
   grant_system_user = true
   doze_whitelist_except_idle = true
@@ -197,6 +197,15 @@
     number = "5.0"
 
 [[apps]]
+  name = "maps"
+  package_name = "com.github.axet.maps"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
+  destination = "/system/app/MAPS/MAPS.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
   name = "omni-notes"
   package_name = "it.feio.android.omninotes.foss"
   url = "https://f-droid.org/repo"
@@ -226,10 +235,10 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/OpenLauncher/OpenLauncher.apk"
-  remove_files = [
-    "/system/priv-app/Launcher3",
-    "/system/priv-app/Trebuchet"
-  ]
+  #remove_files = [
+  #  "/system/priv-app/Launcher3",
+  #  "/system/priv-app/Trebuchet"
+  #]
   [[apps.androidversion]]
     number = "5.0"
 
@@ -380,10 +389,10 @@
     "etar",
     "f-droid",
     "f-droid-priv",
-    "hayai-launcher",
+    #"hayai-launcher",
     "icsdroid",
     "k9mail",
-    #"openlauncher",
+    "openlauncher",
     "yalpstore"
   ]
 
@@ -399,10 +408,11 @@
     "etar",
     "f-droid",
     "f-droid-priv",
-    "hayai-launcher",
+    #"hayai-launcher",
     "icsdroid",
     "k9mail",
-    #"openlauncher",
+    "maps",
+    "openlauncher",
     "osmand",
     "silence",
     "yalpstore"
@@ -423,12 +433,13 @@
     "f-droid-priv",
     #"fennec",
     #"firefox",
-    "hayai-launcher",
+    #"hayai-launcher",
     "icsdroid",
     "k9mail",
     "lightning",
+    "maps",
     "omni-notes",
-    #"openlauncher",
+    "openlauncher",
     "osmand",
     "silence",
     #"vanilla-music",
@@ -454,15 +465,16 @@
     "f-droid-priv",
     #"fennec",
     #"firefox",
-    "hayai-launcher",
+    #"hayai-launcher",
     "icsdroid",
     "k9mail",
     "lightning",
+    "maps",
     "omni-notes",
     "opencamera",
-    #"openlauncher",
+    "openlauncher",
     "opentasks",
-    "osmand",
+    #"osmand",
     "silence",
     #"vanilla-music",
     #"vanilla-cover-fetch",
@@ -488,17 +500,18 @@
     "fennec",
     #"firefox",
     "galaxy",
-    "hayai-launcher",
-    "icsdroid",
+    #"hayai-launcher",
+    #"icsdroid",
     "k9mail",
     #"lawnchair",
     #"lawnfeed",
     #"lightning",
+    "maps",
     "omni-notes",
-    #"opencamera",
-    #"openlauncher",
-    "opentasks",
-    "osmand",
+    "opencamera",
+    "openlauncher",
+    #"opentasks",
+    #"osmand",
     #"silence",
     #"simple-gallery",
     #"vanilla-music",
