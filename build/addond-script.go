@@ -12,7 +12,7 @@ import (
 	"gitlab.com/Shadow53/zip-builder/lib"
 )
 
-func genAddondScript(dest string, zip *lib.ZipInfo, backupFiles []string, deleteFiles map[string]bool) error {
+func genAddondScript(dest string, zip *lib.ZipInfo, backupFiles map[string]bool, deleteFiles map[string]bool) error {
 	lib.Debug("GENERATING ADDON.D AT " + dest)
 	var script bytes.Buffer
 	script.WriteString(`#!/sbin/sh
@@ -34,7 +34,9 @@ list_files() {
   cat <<EOF
 `)
 
-	script.WriteString(strings.Join(backupFiles, "\n"))
+	for file, _ := range backupFiles {
+		script.WriteString(file + "\n")
+	}
 
 	script.WriteString(`
 EOF
@@ -96,23 +98,24 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 	zip.RUnlock()
 	var wg sync.WaitGroup
 
+	backupFiles := make(map[string]bool)
+	var backupMux sync.Mutex
+	deleteFiles := make(map[string]bool)
+	var deleteMux sync.Mutex
+	var isArchSpecific bool
+	var archSpecificMux sync.Mutex
+
 	for _, ver := range zip.Versions {
 		lib.Debug("VERSION: " + ver)
 		for _, arch := range zip.Arches {
 			lib.Debug("ARCH: " + arch)
-			var backupFiles []string
-			var backupMux sync.Mutex
-			deleteFiles := make(map[string]bool)
-			var deleteMux sync.Mutex
-			var isArchSpecific bool
-			var archSpecificMux sync.Mutex
 
 			wg.Add(1)
 			var archwg sync.WaitGroup
 
 			for _, app := range zipApps {
 				archwg.Add(1)
-				go func(ver, arch, app string, baseVersion *string, backupFiles *[]string, deleteFiles *map[string]bool, isArchSpecific *bool, baseMux, backupMux, deleteMux, archSpecificMux *sync.Mutex, wg *sync.WaitGroup) {
+				go func(ver, arch, app string, baseVersion *string, backupFiles *map[string]bool, deleteFiles *map[string]bool, isArchSpecific *bool, baseMux, backupMux, deleteMux, archSpecificMux *sync.Mutex, wg *sync.WaitGroup) {
 					defer wg.Done()
 					lib.Debug("Processing " + app + " for backup")
 					apps.RLockApp(app)
@@ -129,7 +132,7 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 							if strings.HasPrefix(apps.GetAppVersionArch(app, ver, arch).Destination, "/system/") {
 								lib.Debug("BACKING UP APP: " + apps.GetAppVersionArch(app, ver, arch).Destination)
 								backupMux.Lock()
-								*backupFiles = append(*backupFiles, apps.GetAppVersionArch(app, ver, arch).Destination[8:])
+								(*backupFiles)[apps.GetAppVersionArch(app, ver, arch).Destination[8:]] = true
 								backupMux.Unlock()
 								archSpecificMux.Lock()
 								*isArchSpecific = *isArchSpecific || apps.GetAppVersion(app, ver).HasArchSpecificInfo
@@ -155,7 +158,7 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 
 			for _, file := range zipFiles {
 				archwg.Add(1)
-				go func(ver, arch, file string, baseVersion *string, backupFiles *[]string, deleteFiles *map[string]bool, isArchSpecific *bool, baseMux, backupMux, deleteMux, archSpecificMux *sync.Mutex, wg *sync.WaitGroup) {
+				go func(ver, arch, file string, baseVersion *string, backupFiles *map[string]bool, deleteFiles *map[string]bool, isArchSpecific *bool, baseMux, backupMux, deleteMux, archSpecificMux *sync.Mutex, wg *sync.WaitGroup) {
 					defer wg.Done()
 					lib.Debug("Processing " + file + " for backup")
 					files.RLockFile(file)
@@ -172,7 +175,7 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 							if strings.HasPrefix(files.GetFileVersionArch(file, ver, arch).Destination, "/system/") {
 								lib.Debug("BACKING UP FILE: " + files.GetFileVersionArch(file, ver, arch).Destination)
 								backupMux.Lock()
-								*backupFiles = append(*backupFiles, files.GetFileVersionArch(file, ver, arch).Destination[8:])
+								(*backupFiles)[files.GetFileVersionArch(file, ver, arch).Destination[8:]] = true
 								backupMux.Unlock()
 								archSpecificMux.Lock()
 								*isArchSpecific = *isArchSpecific || files.GetFileVersion(file, ver).HasArchSpecificInfo
@@ -202,49 +205,43 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 			}
 			deleteMux.Unlock()
 			zip.RUnlock()
-
-			archwg.Wait()
-
-			if len(backupFiles)+len(deleteFiles) > 0 {
-				scriptDest := filepath.Join(root, "files")
-				err := os.MkdirAll(scriptDest, os.ModeDir|0755)
-				if err != nil {
-					return fmt.Errorf("Error while making parent directories for %v:\n  %v", scriptDest, err)
-				}
-				fileName := "addond-" + baseVersion
-				if isArchSpecific {
-					fileName = fileName + "-" + arch
-				} else {
-					arch = lib.NOARCH
-				}
-				fileName = fileName + ".sh"
-				scriptDest = filepath.Join(scriptDest, fileName)
-
-				err = genAddondScript(scriptDest, zip, backupFiles, deleteFiles)
-				if err != nil {
-					lib.Debug("ADDON.D GENERATION FAILED")
-					return fmt.Errorf("Error while generating the addon.d survival script for %v:\n  %v", zip.Name, err)
-				}
-				lib.Debug("SUCCESSFULLY GENERATED ADDON.D AT " + scriptDest)
-
-				if addondFile[ver] == nil {
-					addondFile[ver] = &lib.AndroidVersionInfo{
-						Base:                baseVersion,
-						HasArchSpecificInfo: isArchSpecific,
-						Arch:                make(map[string]*lib.FileInfo)}
-				}
-				addondFile[ver].HasArchSpecificInfo = addondFile[ver].HasArchSpecificInfo || isArchSpecific
-				zip.RLock()
-				addondFile[ver].Arch[arch] = &lib.FileInfo{
-					Destination: "/system/addon.d/05-" + zip.Name + ".sh",
-					Mode:        "0644",
-					FileName:    fileName}
-				zip.RUnlock()
-			} else {
-				lib.Debug("NO FILES TO BACK UP OR DELETE. SKIPPING")
-			}
 			wg.Done()
 		}
+	}
+
+	if len(backupFiles)+len(deleteFiles) > 0 {
+		scriptDest := filepath.Join(root, "files")
+		err := os.MkdirAll(scriptDest, os.ModeDir|0755)
+		if err != nil {
+			return fmt.Errorf("Error while making parent directories for %v:\n  %v", scriptDest, err)
+		}
+		fileName := "addond-" + baseVersion
+		fileName = fileName + ".sh"
+		scriptDest = filepath.Join(scriptDest, fileName)
+
+		err = genAddondScript(scriptDest, zip, backupFiles, deleteFiles)
+		if err != nil {
+			lib.Debug("ADDON.D GENERATION FAILED")
+			return fmt.Errorf("Error while generating the addon.d survival script for %v:\n  %v", zip.Name, err)
+		}
+		lib.Debug("SUCCESSFULLY GENERATED ADDON.D AT " + scriptDest)
+
+		for _, ver := range lib.Versions {
+			if addondFile[ver] == nil {
+				addondFile[ver] = &lib.AndroidVersionInfo{
+					Base:                baseVersion,
+					HasArchSpecificInfo: false,
+					Arch:                make(map[string]*lib.FileInfo)}
+			}
+			zip.RLock()
+			addondFile[ver].Arch[lib.NOARCH] = &lib.FileInfo{
+				Destination: "/system/addon.d/05-" + zip.Name + ".sh",
+				Mode:        "0644",
+				FileName:    fileName}
+			zip.RUnlock()
+		}
+	} else {
+		lib.Debug("NO FILES TO BACK UP OR DELETE. SKIPPING")
 	}
 
 	lib.Debug("AWAITING APP AND FILE BACKUP PROCESSING")
