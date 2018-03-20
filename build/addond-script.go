@@ -205,9 +205,12 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 			}
 			deleteMux.Unlock()
 			zip.RUnlock()
+			archwg.Wait()
 			wg.Done()
 		}
 	}
+
+	wg.Wait()
 
 	if len(backupFiles)+len(deleteFiles) > 0 {
 		scriptDest := filepath.Join(root, "files")
