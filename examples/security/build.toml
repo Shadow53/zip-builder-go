@@ -21,7 +21,7 @@
   package_name = "org.shadowice.flocke.andotp"
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
-  destination = "/system/app/AdAway/AdAway.apk"
+  destination = "/system/app/AndOTP/AndOTP.apk"
   [[apps.androidversion]]
     number = "5.0"
 
@@ -31,6 +31,15 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/Blokada/Blokada.apk"
+  [[apps.androidversion]]
+    number = "5.0"
+
+[[apps]]
+  name = "keepass2android"
+  package_name = "keepass2android.keepass2android"
+  url = "https://github.com/PhilippC/keepass2android/releases/download/1.04b/keepass2android.keepass2android-1.04b.apk"
+  sha256 = "1886dd10eb0d6b38c21b4dfd9c296121975a1f9eb0398b67ecddf83353917e1f"
+  destination = "/system/app/Keepass2Android/Keepass2Android.apk"
   [[apps.androidversion]]
     number = "5.0"
 
@@ -67,7 +76,7 @@
     "adaway",
     "afwall",
     "andotp",
-    "keepass-dx",
+    "keepass2android",
     "openkeychain" 
   ]
 
@@ -76,7 +85,7 @@
   apps = [
     "andotp",
     "blokada",
-    "keepass-dx",
+    "keepass2android",
     "netguard",
     "openkeychain" 
   ]
