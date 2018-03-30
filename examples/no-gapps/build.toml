@@ -340,7 +340,8 @@
   destination = "/system/app/VinylMusic/VinylMusic.apk"
   remove_files = [
     "/system/priv-app/Eleven",
-    "/system/app/Phonograph"
+    "/system/app/Phonograph",
+    "/system/app/crDroidMusic"
   ]
   [[apps.androidversion]]
     number = "5.0"
