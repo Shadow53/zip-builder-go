@@ -218,7 +218,7 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 		if err != nil {
 			return fmt.Errorf("Error while making parent directories for %v:\n  %v", scriptDest, err)
 		}
-		fileName := "addond-" + baseVersion
+		fileName := "addond-" + lib.Versions[0]
 		fileName = fileName + ".sh"
 		scriptDest = filepath.Join(scriptDest, fileName)
 
@@ -229,20 +229,18 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 		}
 		lib.Debug("SUCCESSFULLY GENERATED ADDON.D AT " + scriptDest)
 
-		for _, ver := range lib.Versions {
-			if addondFile[ver] == nil {
-				addondFile[ver] = &lib.AndroidVersionInfo{
-					Base:                baseVersion,
-					HasArchSpecificInfo: false,
-					Arch:                make(map[string]*lib.FileInfo)}
-			}
-			zip.RLock()
-			addondFile[ver].Arch[lib.NOARCH] = &lib.FileInfo{
-				Destination: "/system/addon.d/05-" + zip.Name + ".sh",
-				Mode:        "0644",
-				FileName:    fileName}
-			zip.RUnlock()
+		if addondFile[lib.Versions[0]] == nil {
+			addondFile[lib.Versions[0]] = &lib.AndroidVersionInfo{
+				Base:                lib.Versions[0],
+				HasArchSpecificInfo: false,
+				Arch:                make(map[string]*lib.FileInfo)}
 		}
+		zip.RLock()
+		addondFile[lib.Versions[0]].Arch[lib.NOARCH] = &lib.FileInfo{
+			Destination: "/system/addon.d/05-" + zip.Name + ".sh",
+			Mode:        "0644",
+			FileName:    fileName}
+		zip.RUnlock()
 	} else {
 		lib.Debug("NO FILES TO BACK UP OR DELETE. SKIPPING")
 	}
