@@ -139,10 +139,11 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/HayaiLauncher/HayaiLauncher.apk"
-  #remove_files = [
-  #  "/system/priv-app/Launcher3",
-  #  "/system/priv-app/Trebuchet"
-  #]
+  remove_files = [
+    "/system/priv-app/Launcher3",
+    "/system/priv-app/Trebuchet",
+    "/system/priv-app/crDroidHome"
+  ]
   [[apps.androidversion]]
     number = "5.0"
 
@@ -173,10 +174,11 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/Lawnchair/Lawnchair.apk"
-  #remove_files = [
-  #  "/system/priv-app/Launcher3",
-  #  "/system/priv-app/Trebuchet"
-  #]
+  remove_files = [
+    "/system/priv-app/Launcher3",
+    "/system/priv-app/Trebuchet",
+    "/system/priv-app/crDroidHome"
+  ]
   [[apps.androidversion]]
     number = "5.0"
 
@@ -236,10 +238,11 @@
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
   destination = "/system/app/OpenLauncher/OpenLauncher.apk"
-  #remove_files = [
-  #  "/system/priv-app/Launcher3",
-  #  "/system/priv-app/Trebuchet"
-  #]
+  remove_files = [
+    "/system/priv-app/Launcher3",
+    "/system/priv-app/Trebuchet",
+    "/system/priv-app/crDroidHome"
+  ]
   [[apps.androidversion]]
     number = "5.0"
 
