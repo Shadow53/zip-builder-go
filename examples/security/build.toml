@@ -3,7 +3,7 @@
   package_name = "org.adaway"
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
-  destination = "/system/app/AdAway/AdAway.apk"
+  destination = "/system/priv-app/AdAway/AdAway.apk"
   [[apps.androidversion]]
     number = "5.0"
 
