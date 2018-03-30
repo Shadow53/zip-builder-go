@@ -89,7 +89,8 @@
 [[apps]]
   name = "f-droid"
   package_name = "org.fdroid.fdroid"
-  url = "https://f-droid.org/FDroid.apk"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
   destination = "/system/app/FDroid/FDroid.apk"
   [[apps.androidversion]]
     number = "5.0"
