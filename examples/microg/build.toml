@@ -14,7 +14,19 @@
     "/system/priv-app/GmsCoreSetupPrebuilt",
     "/system/priv-app/GoogleLoginService",
     "/system/app/UnifiedNlp",
-    "/system/priv-app/com.qualcomm.location"
+    "/system/priv-app/com.qualcomm.location",
+    "/system/priv-app/com.amap.android.location",
+    "/system/priv-app/com.baidu.location",
+    "/system/priv-app/com.google.android.location",
+    "/system/priv-app/org.microg.nlp",
+    "/system/priv-app/org.microg.unifiednlp",
+    "/system/app/com.qualcomm.location",
+    "/system/app/com.amap.android.location",
+    "/system/app/com.baidu.location",
+    "/system/app/com.google.android.location",
+    "/system/app/org.microg.nlp",
+    "/system/app/org.microg.unifiednlp"
+
   ]
   install_remove_files = [
     #"/data/data/com.google.android.gms"
@@ -105,7 +117,18 @@
   is_fdroid_repo = true
   destination = "/system/app/UnifiedNlp/UnifiedNlp.apk"
   remove_files = [
-    "/system/priv-app/com.qualcomm.location"
+    "/system/priv-app/com.qualcomm.location",
+    "/system/priv-app/com.amap.android.location",
+    "/system/priv-app/com.baidu.location",
+    "/system/priv-app/com.google.android.location",
+    "/system/priv-app/org.microg.nlp",
+    "/system/priv-app/org.microg.unifiednlp",
+    "/system/app/com.qualcomm.location",
+    "/system/app/com.amap.android.location",
+    "/system/app/com.baidu.location",
+    "/system/app/com.google.android.location",
+    "/system/app/org.microg.nlp",
+    "/system/app/org.microg.unifiednlp"
   ]
   [[apps.androidversion]]
     number = "5.0"
