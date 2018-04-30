@@ -58,7 +58,7 @@
   package_name = "com.android.vending"
   url = "https://nanolx.org/apk/Phonesky.apk"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
-  sha256 = "bf1124c4a96deef6fd736e735b11de3daf243a504f7b6a18d6e3797fd3dcab26"
+  sha256 = "6cfe7360ce0d188bd959da9a78ed600ee58cc9ee004241615ffccb97cfd19190"
   remove_files = [
     "/system/priv-app/PlayStore",
     "/system/priv-app/FakeStore",
@@ -76,8 +76,8 @@
 [[apps]]
   name = "playstore"
   package_name = "com.android.vending"
-  url = "https://raw.githubusercontent.com/opengapps/arm/master/priv-app/com.android.vending/14/240-320-480/80971100.apk"
-  sha256 = "085d088da0a521570782a754d7d86153cb377d701e979f763afce5730da54b75"
+  url = "https://raw.githubusercontent.com/opengapps/arm/master/priv-app/com.android.vending/14/240-320-480/80980700.apk"
+  sha256 = "a4d3c1c5a83f3a1bd606af9dc24a5438c33a30819b5d0d19b44e371497170577"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   remove_files = [
     "/system/priv-app/PlayStore",
