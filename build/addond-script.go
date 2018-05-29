@@ -229,18 +229,20 @@ func makeAddondScripts(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 		}
 		lib.Debug("SUCCESSFULLY GENERATED ADDON.D AT " + scriptDest)
 
-		if addondFile[lib.Versions[0]] == nil {
-			addondFile[lib.Versions[0]] = &lib.AndroidVersionInfo{
-				Base:                lib.Versions[0],
-				HasArchSpecificInfo: false,
-				Arch:                make(map[string]*lib.FileInfo)}
-		}
-		zip.RLock()
-		addondFile[lib.Versions[0]].Arch[lib.NOARCH] = &lib.FileInfo{
-			Destination: "/system/addon.d/05-" + zip.Name + ".sh",
-			Mode:        "0644",
-			FileName:    fileName}
-		zip.RUnlock()
+        zip.RLock()
+        for _, ver := range zip.Versions {
+            if addondFile[ver] == nil {
+                addondFile[ver] = &lib.AndroidVersionInfo{
+                    Base:                zip.Versions[0],
+                    HasArchSpecificInfo: false,
+                    Arch:                make(map[string]*lib.FileInfo)}
+            }
+            addondFile[ver].Arch[lib.NOARCH] = &lib.FileInfo{
+                Destination: "/system/addon.d/05-" + zip.Name + ".sh",
+                Mode:        "0644",
+                FileName:    fileName}
+        }
+        zip.RUnlock()
 	} else {
 		lib.Debug("NO FILES TO BACK UP OR DELETE. SKIPPING")
 	}
