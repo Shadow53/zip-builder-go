@@ -114,19 +114,10 @@
     number = "5.0"
 
 [[apps]]
-  name = "firefox"
-  package_name = "org.mozilla.firefox"
-  url = "https://download.mozilla.org/?product=fennec-latest&os=android&lang=multi"
-  destination = "/system/app/Firefox/Firefox.apk"
-  md5 = "3381401a61e9efd2ef54a14a7308bb96"
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "galaxy"
-  package_name = "in.dragons.galaxy"
-  url = "https://github.com/whyorean/Galaxy/releases/download/v1.0.4/Galaxy_Release_1.0.4.apk"
-  destination = "/system/priv-app/GalaxyStore/GalaxyStore.apk"
+  name = "aurora"
+  package_name = "com.dragons.aurora"
+  url = "https://gitlab.com/AuroraOSS/AuroraStore/uploads/9ba252f2aa443f229d474160e357b1e7/AuroraStore_2.0.2_beta.apk"
+  destination = "/system/priv-app/AuroraStore/AuroraStore.apk"
   grant_system_user = true
   doze_whitelist_except_idle = true
   permissions = ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "REQUEST_INSTALL_PACKAGES", "INSTALL_PACKAGES"]
@@ -179,23 +170,6 @@
     "/system/priv-app/Trebuchet",
     "/system/priv-app/crDroidHome"
   ]
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "lawnfeed"
-  package_name = "ch.deletescape.lawnchair.lawnfeed"
-  url = "https://storage.codebucket.de/lawnchair/1.1.0.1742/Lawnfeed-1.1.0.1742.apk"
-  destination = "/system/app/Lawnfeed/Lawnfeed.apk"
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "lightning"
-  package_name = "acr.browser.lightning"
-  url = "https://f-droid.org/repo"
-  is_fdroid_repo = true
-  destination = "/system/app/Lightning/Lightning.apk"
   [[apps.androidversion]]
     number = "5.0"
 
@@ -265,73 +239,11 @@
     number = "5.0"
 
 [[apps]]
-  name = "secuso-notes"
-  package_name = "org.secuso.privacyfriendlynotes"
+  name = "qksms"
+  package_name = "com.moez.QKSMS"
   url = "https://f-droid.org/repo"
   is_fdroid_repo = true
-  destination = "/system/app/PrivacyFriendlyNotes/PrivacyFriendlyNotes.apk"
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "silence"
-  package_name = "org.smssecure.smssecure"
-  url = "https://f-droid.org/repo"
-  is_fdroid_repo = true
-  destination = "/system/app/Silence/Silence.apk"
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "simple-gallery"
-  package_name = "com.simplemobiletools.gallery"
-  url = "https://f-droid.org/repo"
-  is_fdroid_repo = true
-  destination = "/system/app/SimpleGallery/SimpleGallery.apk"
-  remove_files = [
-    "/system/app/Gallery2",
-    "/system/priv-app/Gallery2"
-  ]
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "vanilla-cover-fetch"
-  package_name = "com.kanedias.vanilla.coverfetch"
-  url = "https://f-droid.org/repo"
-  is_fdroid_repo = true
-  destination = "/system/app/VanillaCoverFetch/VanillaCoverFetch.apk"
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "vanilla-lyrics"
-  package_name = "com.kanedias.vanilla.lyrics"
-  url = "https://f-droid.org/repo"
-  is_fdroid_repo = true
-  destination = "/system/app/VanillaLyrics/VanillaLyrics.apk"
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "vanilla-music"
-  package_name = "ch.blinkenlights.android.vanilla"
-  url = "https://f-droid.org/repo"
-  is_fdroid_repo = true
-  destination = "/system/app/Vanilla/Vanilla.apk"
-  remove_files = [
-    "/system/priv-app/Eleven",
-    "/system/app/Phonograph"
-  ]
-  [[apps.androidversion]]
-    number = "5.0"
-
-[[apps]]
-  name = "vanilla-tag-editor"
-  package_name = "com.kanedias.vanilla.audiotag"
-  url = "https://f-droid.org/repo"
-  is_fdroid_repo = true
-  destination = "/system/app/VanillaTagEditor/VanillaTagEditor.apk"
+  destination = "/system/app/QKSMS/QKSMS.apk"
   [[apps.androidversion]]
     number = "5.0"
 
@@ -370,25 +282,28 @@
 [[zips]]
   name = "no-gapps-pico"
   apps = [
+    "aurora",
     "f-droid",
     "f-droid-priv",
-    "yalpstore"
+    #"yalpstore"
   ]
 
 [[zips]]
   name = "no-gapps-nano"
   apps = [
+    "aurora",
     "davdroid",
     "duckduckgo",
     "f-droid",
     "f-droid-priv",
     "icsdroid",
-    "yalpstore"
+    #"yalpstore"
   ]
 
 [[zips]]
   name = "no-gapps-micro"
   apps = [
+    "aurora",
     "davdroid",
     "duckduckgo",
     "etar",
@@ -398,13 +313,14 @@
     "icsdroid",
     "k9mail",
     "openlauncher",
-    "yalpstore"
+    #"yalpstore"
   ]
 
 [[zips]]
   name = "no-gapps-mini"
   apps = [
     "amazefm",
+    "aurora",
     "calculator",
     "camera-roll",
     "clock+",
@@ -419,8 +335,8 @@
     #"maps",
     "openlauncher",
     "osmand",
-    "silence",
-    "yalpstore"
+    "qksms",
+    #"yalpstore"
   ]
 
 [[zips]]
@@ -428,6 +344,7 @@
   name = "no-gapps-full"
   apps = [
     "amazefm",
+    "aurora",
     "calculator",
     "camera-roll",
     "clock+",
@@ -437,22 +354,16 @@
     "f-droid",
     "f-droid-priv",
     "fennec",
-    #"firefox",
     #"hayai-launcher",
     "icsdroid",
     "k9mail",
-    #"lightning",
     #"maps",
     "omni-notes",
     "openlauncher",
     "osmand",
-    "silence",
-    #"vanilla-music",
-    #"vanilla-cover-fetch",
-    #"vanilla-lyrics",
-    #"vanilla-tag-editor",
+    "qksms",
     "vinyl-music",
-    "yalpstore"
+    #"yalpstore"
   ]
 
 [[zips]]
@@ -460,6 +371,7 @@
   apps = [
     "amazefm",
     "anysoftkb",
+    "aurora",
     "calculator",
     "camera-roll",
     "clock+",
@@ -469,24 +381,18 @@
     "f-droid",
     "f-droid-priv",
     "fennec",
-    #"firefox",
     #"hayai-launcher",
     "icsdroid",
     "k9mail",
-    #"lightning",
     #"maps",
     "omni-notes",
     "opencamera",
     "openlauncher",
     "opentasks",
     "osmand",
-    "silence",
-    #"vanilla-music",
-    #"vanilla-cover-fetch",
-    #"vanilla-lyrics",
-    #"vanilla-tag-editor",
+    "qksms",
     "vinyl-music",
-    "yalpstore"
+    #"yalpstore"
   ]
 
 [[zips]]
@@ -494,8 +400,9 @@
   apps = [
     "amazefm",
     "anysoftkb",
+    "aurora",
     #"calculator",
-    #"camera-roll",
+    "camera-roll",
     #"clock+",
     "davdroid",
     "duckduckgo",
@@ -503,26 +410,17 @@
     "f-droid",
     "f-droid-priv",
     "fennec",
-    #"firefox",
-    "galaxy",
     #"hayai-launcher",
     "icsdroid",
     "k9mail",
     #"lawnchair",
-    #"lawnfeed",
-    #"lightning",
     "maps",
-    "omni-notes",
+    #"omni-notes",
     "opencamera",
     "openlauncher",
     #"opentasks",
     #"osmand",
-    #"silence",
-    #"simple-gallery",
-    #"vanilla-music",
-    #"vanilla-cover-fetch",
-    #"vanilla-lyrics",
-    #"vanilla-tag-editor",
+    "qksms",
     "vinyl-music",
     #"yalpstore"
   ]
