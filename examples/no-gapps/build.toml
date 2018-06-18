@@ -109,7 +109,7 @@
   name = "fennec"
   package_name = "org.mozilla.fennec_fdroid"
   destination = "/system/app/Fennec/Fennec.apk"
-  url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_600000.apk"
+  url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_600200.apk"
   [[apps.androidversion]]
     number = "5.0"
 
