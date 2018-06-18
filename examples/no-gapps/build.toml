@@ -281,6 +281,12 @@
   ]
 
 [[zips]]
+  name = "aurora"
+  apps = [
+    "aurora"
+  ]
+
+[[zips]]
   name = "no-gapps-pico"
   apps = [
     "aurora",
