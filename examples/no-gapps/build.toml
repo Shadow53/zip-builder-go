@@ -116,7 +116,8 @@
 [[apps]]
   name = "aurora"
   package_name = "com.dragons.aurora"
-  url = "https://gitlab.com/AuroraOSS/AuroraStore/uploads/9ba252f2aa443f229d474160e357b1e7/AuroraStore_2.0.2_beta.apk"
+  url = "https://f-droid.org/repo"
+  is_fdroid_repo = true
   destination = "/system/priv-app/AuroraStore/AuroraStore.apk"
   grant_system_user = true
   doze_whitelist_except_idle = true
