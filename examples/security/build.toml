@@ -37,8 +37,8 @@
 [[apps]]
   name = "keepass2android"
   package_name = "keepass2android.keepass2android"
-  url = "https://github.com/PhilippC/keepass2android/releases/download/1.04b/keepass2android.keepass2android-1.04b.apk"
-  sha256 = "1886dd10eb0d6b38c21b4dfd9c296121975a1f9eb0398b67ecddf83353917e1f"
+  url = "https://github.com/PhilippC/keepass2android/releases/download/1.05e/keepass2android.keepass2android-1.05e.apk"
+  sha256 = "dc2bf81360352881cde878c766521034516ee33a1b32a83ad710d12e5021578d"
   destination = "/system/app/Keepass2Android/Keepass2Android.apk"
   [[apps.androidversion]]
     number = "5.0"
