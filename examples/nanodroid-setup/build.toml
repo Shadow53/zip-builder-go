@@ -1,0 +1,35 @@
+[[files]]
+    name = "nanodroid-setup"
+    url = "https://dl.shadow53.com/android/nanodroid-setup/nanodroid-setup"
+    destination = "/data/.nanodroid-setup"
+    md5sum = "c64bb590205a80f074ba60b5f014cb36"
+    [[files.androidversion]]
+        number = "5.0"
+
+[[files]]
+    name = "nanodroid-setup-playstore"
+    url = "https://dl.shadow53.com/android/nanodroid-setup/nanodroid-setup-playstore"
+    destination = "/data/.nanodroid-setup"
+    md5sum = "558d5136c430566c5212b1cb465fe4d7"
+    [[files.androidversion]]
+        number = "5.0"
+
+[[files]]
+    name = "nanodroid-setup-playstore-patched"
+    url = "https://dl.shadow53.com/android/nanodroid-setup/nanodroid-setup-playstore-patched"
+    destination = "/data/.nanodroid-setup"
+    md5sum = "fb1e70c7e42392b26ebf538138def121"
+    [[files.androidversion]]
+        number = "5.0"
+
+[[zips]]
+    name = "nanodroid-setup"
+    files = [ "nanodroid-setup" ]
+
+[[zips]]
+    name = "nanodroid-setup-playstore"
+    files = [ "nanodroid-setup-playstore" ]
+
+[[zips]]
+    name = "nanodroid-setup-playstore-patched"
+    files = [ "nanodroid-setup-playstore-patched" ]
