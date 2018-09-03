@@ -161,6 +161,16 @@
     number = "5.0"
 
 [[apps]]
+    name = "klar"
+    package_name = "org.mozilla.klar"
+    url = "https://f-droid.org/repo"
+    is_fdroid_repo = true
+    destination = "/system/app/Klar/Klar.apk"
+    remove_files = [
+        "/system/app/QuickSearchBox"
+    ]
+
+[[apps]]
   name = "lawnchair"
   package_name = "ch.deletescape.lawnchair.plah"
   url = "https://f-droid.org/repo"
@@ -420,6 +430,7 @@
     #"hayai-launcher",
     "icsdroid",
     "k9mail",
+    "klar",
     #"lawnchair",
     "maps",
     "omni-notes",
