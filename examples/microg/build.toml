@@ -161,7 +161,7 @@
     number = "5.0"
 
 [[zips]]
-  #name = "microg-playstore"
+  name = "microg-playstore"
   apps = [
     "microgms",
     "microgsf",
@@ -172,7 +172,7 @@
   ]
 
 [[zips]]
-  #name = "microg-playstore-patched"
+  name = "microg-playstore-patched"
   apps = [
     "microgms",
     "microgsf",
@@ -183,7 +183,7 @@
   ]
 
 [[zips]]
-  #name = "microg"
+  name = "microg"
   apps = [
     "microgms",
     "microgsf",
