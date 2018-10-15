@@ -1,7 +1,7 @@
 [[files]]
   name = "emojione"
-  url = "https://github.com/emojione/emojione-assets/releases/download/3.1.2/emojione-android.ttf"
-  md5 = "2e8e64f2e134a15357f0b8dd3a77c42a"
+  url = "https://github.com/emojione/emojione-assets/releases/download/4.0.1/emojione-android.ttf"
+  sha256sum = "8955dd64a7d1db5d476392c4bfc70e155c5d2caf74a48539b08a818830ebbafb"
   destination = "/system/fonts/NotoColorEmoji.ttf"
   [[files.androidversion]]
     number = "5.0"

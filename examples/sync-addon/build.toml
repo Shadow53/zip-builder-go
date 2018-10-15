@@ -16,6 +16,10 @@
   destination = "/system/app/ContactSync/ContactSync.apk"
   permissions = [ "READ_CONTACTS", "WRITE_CONTACTS", "GET_ACCOUNTS", "USE_CREDENTIALS", "READ_SYNC_SETTINGS", "WRITE_SYNC_SETTINGS" ]
   [[apps.androidversion]]
+    number = "9.0"
+    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/28/nodpi/28.apk"
+    sha256 = "9cad7c99c9318ef3114c14642b2d381a8551412d289598dca35066d56c15c207"
+  [[apps.androidversion]]
     number = "8.1"
     url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/27/nodpi/27.apk"
     sha256 = "6546c935951a23de8e908a3119dd30d3971b3cbefcbb48d7164688296a5222f5"
@@ -44,6 +48,10 @@
   name = "backup-transporter"
   package_name = "com.google.android.backuptransport"
   destination = "/system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk"
+  [[apps.androidversion]]
+    number = "9.0"
+    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/28/nodpi/28.apk"
+    sha256 = "85caf143d2bdad92a2cc377059a3486103b0cfd4b77507f3f42ce51450d3b470"
   [[apps.androidversion]]
     number = "8.1"
     url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/27/nodpi/27.apk"

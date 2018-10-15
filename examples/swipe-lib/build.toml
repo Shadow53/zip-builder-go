@@ -71,6 +71,30 @@
         url = "https://raw.githubusercontent.com/opengapps/x86_64/master/lib64/23/libjni_latinimegoogle.so"
         sha256 = "bd946d126c957b5a6dea3bafa07fa36a27950b30e2b684dffc60746d0a1c7ad8"
         destination = "/system/lib64/libjni_latinimegoogle.so"
+  [[files.androidversion]]
+    number = "8.1"
+    [[files.androidversion.arch]]
+        arch = "arm"
+        url = "https://raw.githubusercontent.com/opengapps/arm/master/lib/27/libjni_latinimegoogle.so"
+        sha256 = "442a2a8bfcb25489564bc9433a916fa4dc0dba9000fe6f6f03f5939b985091e6"
+        destination = "/system/lib/libjni_latinimegoogle.so"
+    [[files.androidversion.arch]]
+        arch = "arm64"
+        url = "https://raw.githubusercontent.com/opengapps/arm64/master/lib64/27/libjni_latinimegoogle.so"
+        sha256 = "b1049983e6ac5cfc6d1c66e38959751044fad213dff0637a6cf1d2a2703e754f"
+        destination = "/system/lib64/libjni_latinimegoogle.so"
+  [[files.androidversion]]
+    number = "9.0"
+    [[files.androidversion.arch]]
+        arch = "arm"
+        url = "https://raw.githubusercontent.com/opengapps/arm/master/lib/28/libjni_latinimegoogle.so"
+        sha256 = "442a2a8bfcb25489564bc9433a916fa4dc0dba9000fe6f6f03f5939b985091e6"
+        destination = "/system/lib/libjni_latinimegoogle.so"
+    [[files.androidversion.arch]]
+        arch = "arm64"
+        url = "https://raw.githubusercontent.com/opengapps/arm64/master/lib64/28/libjni_latinimegoogle.so"
+        sha256 = "b1049983e6ac5cfc6d1c66e38959751044fad213dff0637a6cf1d2a2703e754f"
+        destination = "/system/lib64/libjni_latinimegoogle.so"
 
 [[zips]]
   name = "swipelib"
