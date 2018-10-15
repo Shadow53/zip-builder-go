@@ -109,7 +109,7 @@
   name = "fennec"
   package_name = "org.mozilla.fennec_fdroid"
   destination = "/system/app/Fennec/Fennec.apk"
-  url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_610200.apk"
+  url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_620200.apk"
   [[apps.androidversion]]
     number = "5.0"
 
@@ -169,6 +169,8 @@
     remove_files = [
         "/system/app/QuickSearchBox"
     ]
+    [[apps.androidversion]]
+        number = "5.0"
 
 [[apps]]
   name = "lawnchair"
