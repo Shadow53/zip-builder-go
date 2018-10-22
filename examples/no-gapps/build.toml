@@ -214,7 +214,8 @@
     "/system/app/Camera2",
     "/system/app/SnapdragonCamera",
     "/system/app/SnapdragonCamera2",
-    "/system/priv-app/Snap"
+    "/system/priv-app/Snap",
+    "/system/priv-app/GoogleCamera"
   ]
   [[apps.androidversion]]
     number = "5.0"
@@ -269,7 +270,8 @@
   remove_files = [
     "/system/priv-app/Eleven",
     "/system/app/Phonograph",
-    "/system/app/crDroidMusic"
+    "/system/app/crDroidMusic",
+    "/system/app/RetroMusicPlayer"
   ]
   [[apps.androidversion]]
     number = "5.0"
@@ -421,7 +423,7 @@
     "anysoftkb",
     "aurora",
     #"calculator",
-    #"camera-roll",
+    "camera-roll",
     #"clock+",
     "davdroid",
     "duckduckgo",
