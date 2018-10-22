@@ -17,7 +17,7 @@ func makeFileInstallScriptlet(file *lib.FileInfo, buffer *bytes.Buffer) {
 	file.Mux.RLock()
 	destParent := file.Destination[0:strings.LastIndex(file.Destination, "/")]
 	file.Mux.RUnlock()
-	buffer.WriteString("assert(run_program(\"/sbin/busybox\", \"mkdir\", \"-p\", \"")
+	buffer.WriteString("assert(run_program(\"/sbin/mkdir\", \"-p\", \"")
 	buffer.WriteString(destParent)
 	buffer.WriteString("\") == 0);\n")
 	buffer.WriteString("assert(set_metadata_recursive(\"")
@@ -56,13 +56,13 @@ func makeFileDeleteScriptlet(filesToDelete map[string]bool, buffer *bytes.Buffer
 		// The weird spacing should cause a nice tree structure in the output
 		// The generated code should recursively delete directories and normal delete files
 		// TODO: Add output telling what is happening
-		buffer.WriteString("if run_program(\"/sbin/busybox\", \"test\", \"-d\", \"")
+		buffer.WriteString("if run_program(\"/sbin/test\", \"-d\", \"")
 		buffer.WriteString(file)
 		buffer.WriteString("\") == 0 then\n    ui_print(\"Recursively deleting existing folder ")
 		buffer.WriteString(file)
 		buffer.WriteString("\") && delete_recursive(\"")
 		buffer.WriteString(file)
-		buffer.WriteString("\");\nelse\n    if run_program(\"/sbin/busybox\", \"test\", \"-f\", \"")
+		buffer.WriteString("\");\nelse\n    if run_program(\"/sbin/test\", \"-f\", \"")
 		buffer.WriteString(file)
 		buffer.WriteString("\") == 0 then\n        ui_print(\"Deleting existing file ")
 		buffer.WriteString(file)
@@ -151,10 +151,10 @@ func makeUpdaterScript(root string, zip *lib.ZipInfo, apps *lib.Apps, files *lib
 	script.WriteString(`ui_print("--------------------------------------");
 ui_print("Mounting system");
 ifelse(is_mounted("/system"), unmount("/system"));
-run_program("/sbin/busybox", "mount", "/system");
+run_program("/sbin/mount", "/system");
 ui_print("Mounting data");
 ifelse(is_mounted("/data"), unmount("/data"));
-run_program("/sbin/busybox", "mount", "/data");
+run_program("/sbin/mount", "/data");
 ui_print("Detected Android version: " + getprop("ro.build.version.release"));
 ui_print("Detected arch: " + getprop("ro.product.cpu.abilist") + " " + getprop("ro.product.cpu.abi"));
 `)
@@ -190,7 +190,7 @@ ui_print("Detected arch: " + getprop("ro.product.cpu.abilist") + " " + getprop("
 	}
 
 	if giveWarning {
-		script.WriteString(`if run_program("/sbin/busybox", "test", "-d", "/data/data") == 0 then
+		script.WriteString(`if run_program("/sbin/test", "-d", "/data/data") == 0 then
 	ui_print("---");
 	ui_print("|- WARNING:");
 	ui_print("|- It appears you have previously booted");
