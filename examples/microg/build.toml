@@ -76,8 +76,8 @@
 [[apps]]
   name = "playstore"
   package_name = "com.android.vending"
-  url = "https://raw.githubusercontent.com/opengapps/arm/master/priv-app/com.android.vending/16/nodpi/81241400.apk"
-  sha256 = "19af8b4fb73704db1f81e012b4951ed5d4af0b0107a9b0e5c686e103c73e0774"
+  url = "https://raw.githubusercontent.com/opengapps/arm/master/priv-app/com.android.vending/16/nodpi/81261300.apk"
+  sha256 = "b3d367fda6230c44b9d3dab9f2732b8ea957bcd765dc9a2dcef0cbfaf8c6aaf4"
   destination = "/system/priv-app/Phonesky/Phonesky.apk"
   remove_files = [
     "/system/priv-app/PlayStore",
