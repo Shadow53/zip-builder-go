@@ -76,7 +76,7 @@
     "adaway",
     "afwall",
     "andotp",
-    "keepass2android"
+    "keepass-dx"
   ]
 
 [[zips]]
@@ -84,6 +84,6 @@
   apps = [
     "andotp",
     "blokada",
-    "keepass2android",
+    "keepass-dx",
     "netguard"
   ]
