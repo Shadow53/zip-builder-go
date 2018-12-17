@@ -1,3 +1,17 @@
+[[files]]
+  name = "fdroid-repos"
+  url = "https://gitlab.com/Shadow53/zip-builder/raw/master/examples/microg/additional_repos.xml"
+  destination = "/system/etc/org.fdroid.fdroid/additional_repos.xml"
+  [[files.androidversion]]
+    number = "5.0"
+
+[[files]]
+  name = "fdroid-repos-nanodroid"
+  url = "https://gitlab.com/Shadow53/zip-builder/raw/master/examples/microg/additional_repos_nanodroid.xml"
+  destination = "/system/etc/org.fdroid.fdroid/additional_repos.xml"
+  [[files.androidversion]]
+    number = "5.0"
+
 [[apps]]
   name = "microgms"
   package_name = "com.google.android.gms"
@@ -170,6 +184,7 @@
     "dejavu",
     "nominatim"
   ]
+  files = ["fdroid-repos"]
 
 [[zips]]
   name = "microg-playstore-patched"
@@ -181,6 +196,7 @@
     "dejavu",
     "nominatim"
   ]
+  files = ["fdroid-repos-nanodroid"]
 
 [[zips]]
   name = "microg"
@@ -192,12 +208,14 @@
     "dejavu",
     "nominatim"
   ]
+  files = ["fdroid-repos"]
 
 [[zips]]
   name = "playstore-patched"
   apps = [
     "playstore-patched"
   ]
+  files = ["fdroid-repos-nanodroid"]
 
 [[zips]]
   name = "playstore"
