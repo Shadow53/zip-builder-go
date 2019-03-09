@@ -1,6 +1,6 @@
 [[apps]]
   name = "calendar-adapter"
-  url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.calendar/15/nodpi/2015080710.apk"
+  url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/app/com.google.android.syncadapters.calendar/15/nodpi/2015080710.apk"
   md5 = "1442d2f2c5ec83efd788d8ce9815978c"
   sha1 = "aa482580c87a43c83882c05a4757754917d47f32"
   sha256 = "ce3a2ab097db6ef4883eab4bd6f14c78902c3594f8858f121c6de1b82d02d56a"
@@ -17,31 +17,31 @@
   permissions = [ "READ_CONTACTS", "WRITE_CONTACTS", "GET_ACCOUNTS", "USE_CREDENTIALS", "READ_SYNC_SETTINGS", "WRITE_SYNC_SETTINGS" ]
   [[apps.androidversion]]
     number = "9.0"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/28/nodpi/28.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/28/nodpi/28.apk"
     sha256 = "9cad7c99c9318ef3114c14642b2d381a8551412d289598dca35066d56c15c207"
   [[apps.androidversion]]
     number = "8.1"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/27/nodpi/27.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/27/nodpi/27.apk"
     sha256 = "6546c935951a23de8e908a3119dd30d3971b3cbefcbb48d7164688296a5222f5"
   [[apps.androidversion]]
     number = "8.0"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/26/nodpi/26.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/26/nodpi/26.apk"
     sha256 = "8ee5ab1011ff505d4cd4186a3b671f5860e9ce684595aac0af6240351a3571e8"
   [[apps.androidversion]]
     number = "7.1"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/25/nodpi/25.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/25/nodpi/25.apk"
     sha256 = "3881946c7f1fbfbfbadad193f76b84fafb45c4550f6f9d75936a5260b11b437f"
   [[apps.androidversion]]
     number = "7.0"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/24/nodpi/24.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/24/nodpi/24.apk"
     sha256 = "97691024c37ebd7bbed78456ec5ff32bc51d6fa089dd389fd9eb462515078286"
   [[apps.androidversion]]
     number = "6.0"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/23/nodpi/23.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/23/nodpi/23.apk"
     sha256 = "fc430824c01ebe05dfbc7bd8d7adfab94cde4e5a6bc3ac84419f4b4509101ae9"
   [[apps.androidversion]]
     number = "5.1"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/app/com.google.android.syncadapters.contacts/22/nodpi/22.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/22/nodpi/22.apk"
     sha256 = "aa1a43c4b43331f0d5a4245deeb4dfa32a31918caa225c1872f50c0c8a2086b9"
 
 [[apps]]
@@ -50,31 +50,31 @@
   destination = "/system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk"
   [[apps.androidversion]]
     number = "9.0"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/28/nodpi/28.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/28/nodpi/28.apk"
     sha256 = "85caf143d2bdad92a2cc377059a3486103b0cfd4b77507f3f42ce51450d3b470"
   [[apps.androidversion]]
     number = "8.1"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/27/nodpi/27.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/27/nodpi/27.apk"
     sha256 = "fda449271414697d3551b94eebd79d2f3116518bc8a51e85fc9696da4dd72bcd"
   [[apps.androidversion]]
     number = "8.0"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/26/nodpi/26.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/26/nodpi/26.apk"
     sha256 = "8d712333d5c729ecc9cbdddb4e51f152f72c4c701ab88d7235c4e993900ead05"
   [[apps.androidversion]]
     number = "7.1"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/25/nodpi/25.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/25/nodpi/25.apk"
     sha256 = "ef215a8f7cb482e369c2e7a5efd435607d89150722da09ccccc79f598b0a50b4"
   [[apps.androidversion]]
     number = "7.0"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/24/nodpi/24.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/24/nodpi/24.apk"
     sha256 = "d402761376d02993ceed7979244225a371986ca5bc63aceaea86a2fd965af311"
   [[apps.androidversion]]
     number = "6.0"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/23/nodpi/23.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/23/nodpi/23.apk"
     sha256 = "750f868e3001062abbeede1c786bfb541d0ba7d94c6225b730138eacd2c2233d"
   [[apps.androidversion]]
     number = "5.1"
-    url = "https://raw.githubusercontent.com/opengapps/all/master/priv-app/com.google.android.backuptransport/22/nodpi/22.apk"
+    url = "https://gitlab.nezorfla.me/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/22/nodpi/22.apk"
     sha256 = "118558669343117df3047f6cf8cc3895fdc8952e5dd8c24f37acfaaf18edfba3"
 
 [[zips]]

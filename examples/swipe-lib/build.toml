@@ -4,22 +4,22 @@
     number = "6.0"
     [[files.androidversion.arch]]
         arch = "arm"
-        url = "https://raw.githubusercontent.com/opengapps/arm/master/lib/23/libjni_keyboarddecoder.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm/raw/master/lib/23/libjni_keyboarddecoder.so"
         sha256 = "58b458dc0a72d2182e0dd1f93d313eb06add6d12ac9367225aa539688a2bb96e"
         destination = "/system/lib/libjni_keyboarddecoder.so"
     [[files.androidversion.arch]]
         arch = "arm64"
-        url = "https://raw.githubusercontent.com/opengapps/arm64/master/lib64/23/libjni_keyboarddecoder.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm64/raw/master/lib64/23/libjni_keyboarddecoder.so"
         sha256 = "200852b79e39e3789aa3bf77b2190a20bf8becd1951eea843f25e82457106742"
         destination = "/system/lib64/libjni_keyboarddecoder.so"
     [[files.androidversion.arch]]
         arch = "x86"
-        url = "https://raw.githubusercontent.com/opengapps/x86/master/lib/23/libjni_keyboarddecoder.so"
+        url = "https://gitlab.nezorfla.me/opengapps/x86/raw/master/lib/23/libjni_keyboarddecoder.so"
         sha256 = "43d316643757bdc7f40c043c240f71ce90168d2cd02524c98e59594941ed3c4d"
         destination = "/system/lib/libjni_keyboarddecoder.so"
     [[files.androidversion.arch]]
         arch = "x86_64"
-        url = "https://raw.githubusercontent.com/opengapps/x86_64/master/lib64/23/libjni_keyboarddecoder.so"
+        url = "https://gitlab.nezorfla.me/opengapps/x86_64/raw/master/lib64/23/libjni_keyboarddecoder.so"
         sha256 = "c601a11d259c81058c428c9f734b282e713ca6658d7523d138642b87fcffc9eb"
         destination = "/system/lib64/libjni_keyboarddecoder.so"
 
@@ -29,70 +29,70 @@
     number = "5.0"
     [[files.androidversion.arch]]
         arch = "arm"
-        url = "https://raw.githubusercontent.com/opengapps/arm/master/lib/21/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm/raw/master/lib/21/libjni_latinimegoogle.so"
         sha256 = "167911a88b50a7ce8f98b5743f5e065ced3935d6ac72c651d10013fb4a16358f"
         destination = "/system/lib/libjni_latinimegoogle.so"
     [[files.androidversion.arch]]
         arch = "arm64"
-        url = "https://raw.githubusercontent.com/opengapps/arm64/master/lib64/21/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm64/raw/master/lib64/21/libjni_latinimegoogle.so"
         sha256 = "bfd82a3942a88e07009f53a6e9595e2e4b3d9dd1aa2573e239dbdc41896dc80a"
         destination = "/system/lib64/libjni_latinimegoogle.so"
   [[files.androidversion]]
     number = "5.1"
     [[files.androidversion.arch]]
         arch = "arm"
-        url = "https://raw.githubusercontent.com/opengapps/arm/master/lib/22/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm/raw/master/lib/22/libjni_latinimegoogle.so"
         sha256 = "7054c1e373be3b6a0ec50c450cd44d7c0763994b195a81dba1a24b5e3d5c10fb"
         destination = "/system/lib/libjni_latinimegoogle.so"
     [[files.androidversion.arch]]
         arch = "arm64"
-        url = "https://raw.githubusercontent.com/opengapps/arm64/master/lib64/22/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm64/raw/master/lib64/22/libjni_latinimegoogle.so"
         sha256 = "f789340799829b21a56276fb299cf426ab36e5ab0f954adb9a1b2d557fd929a0"
         destination = "/system/lib64/libjni_latinimegoogle.so"
   [[files.androidversion]]
     number = "6.0"
     [[files.androidversion.arch]]
         arch = "arm"
-        url = "https://raw.githubusercontent.com/opengapps/arm/master/lib/23/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm/raw/master/lib/23/libjni_latinimegoogle.so"
         sha256 = "442a2a8bfcb25489564bc9433a916fa4dc0dba9000fe6f6f03f5939b985091e6"
         destination = "/system/lib/libjni_latinimegoogle.so"
     [[files.androidversion.arch]]
         arch = "arm64"
-        url = "https://raw.githubusercontent.com/opengapps/arm64/master/lib64/23/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm64/raw/master/lib64/23/libjni_latinimegoogle.so"
         sha256 = "b1049983e6ac5cfc6d1c66e38959751044fad213dff0637a6cf1d2a2703e754f"
         destination = "/system/lib64/libjni_latinimegoogle.so"
     [[files.androidversion.arch]]
         arch = "x86"
-        url = "https://raw.githubusercontent.com/opengapps/x86/master/lib/23/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/x86/raw/master/lib/23/libjni_latinimegoogle.so"
         sha256 = "c882e12e6d48dd946e0b644c66868a720bd11ac3fecf152000e21a3d5abd59c9"
         destination = "/system/lib/libjni_latinimegoogle.so"
     [[files.androidversion.arch]]
         arch = "x86_64"
-        url = "https://raw.githubusercontent.com/opengapps/x86_64/master/lib64/23/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/x86_64/raw/master/lib64/23/libjni_latinimegoogle.so"
         sha256 = "bd946d126c957b5a6dea3bafa07fa36a27950b30e2b684dffc60746d0a1c7ad8"
         destination = "/system/lib64/libjni_latinimegoogle.so"
   [[files.androidversion]]
     number = "8.1"
     [[files.androidversion.arch]]
         arch = "arm"
-        url = "https://raw.githubusercontent.com/opengapps/arm/master/lib/27/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm/raw/master/lib/27/libjni_latinimegoogle.so"
         sha256 = "442a2a8bfcb25489564bc9433a916fa4dc0dba9000fe6f6f03f5939b985091e6"
         destination = "/system/lib/libjni_latinimegoogle.so"
     [[files.androidversion.arch]]
         arch = "arm64"
-        url = "https://raw.githubusercontent.com/opengapps/arm64/master/lib64/27/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm64/raw/master/lib64/27/libjni_latinimegoogle.so"
         sha256 = "b1049983e6ac5cfc6d1c66e38959751044fad213dff0637a6cf1d2a2703e754f"
         destination = "/system/lib64/libjni_latinimegoogle.so"
   [[files.androidversion]]
     number = "9.0"
     [[files.androidversion.arch]]
         arch = "arm"
-        url = "https://raw.githubusercontent.com/opengapps/arm/master/lib/28/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm/raw/master/lib/28/libjni_latinimegoogle.so"
         sha256 = "442a2a8bfcb25489564bc9433a916fa4dc0dba9000fe6f6f03f5939b985091e6"
         destination = "/system/lib/libjni_latinimegoogle.so"
     [[files.androidversion.arch]]
         arch = "arm64"
-        url = "https://raw.githubusercontent.com/opengapps/arm64/master/lib64/28/libjni_latinimegoogle.so"
+        url = "https://gitlab.nezorfla.me/opengapps/arm64/raw/master/lib64/28/libjni_latinimegoogle.so"
         sha256 = "b1049983e6ac5cfc6d1c66e38959751044fad213dff0637a6cf1d2a2703e754f"
         destination = "/system/lib64/libjni_latinimegoogle.so"
 
