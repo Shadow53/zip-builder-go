@@ -110,7 +110,7 @@
   package_name = "org.mozilla.fennec_fdroid"
   destination = "/system/app/Fennec/Fennec.apk"
   url = "https://f-droid.org/repo/org.mozilla.fennec_fdroid_650100.apk"
-  sha256 = "efc1a34af53a7ca5d389478a4e044bb6c7029cacb8b6723100e5ae33f1211855"
+  sha256 = "7c9a96613f55481be29fb998929c183b1755ca359f4d145eb437e4e4d1441f50"
   [[apps.androidversion]]
     number = "5.0"
 
